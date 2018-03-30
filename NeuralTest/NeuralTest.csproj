@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BC81D4C4-C572-4EC2-AB24-FD3D7A068629}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NeuralNetworks</RootNamespace>
-    <AssemblyName>NeuralNetworks</AssemblyName>
+    <ProjectGuid>{B23D17E9-4FCD-4D6E-ABB1-44163C89CF77}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NeuralTest</RootNamespace>
+    <AssemblyName>NeuralTest</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -45,19 +47,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActivationFunction\ActivationFunctionType.cs" />
-    <Compile Include="ActivationFunction\IActivationFunction.cs" />
-    <Compile Include="ActivationFunction\IdentityFunction.cs" />
-    <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
-    <Compile Include="Layer.cs" />
-    <Compile Include="LayerCharacteristic.cs" />
-    <Compile Include="LearningAlgorithm.cs" />
-    <Compile Include="MeanSquareError.cs" />
-    <Compile Include="NeuralNetwork.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NeuralNetworks\NeuralNetworks.csproj">
+      <Project>{bc81d4c4-c572-4ec2-ab24-fd3d7a068629}</Project>
+      <Name>NeuralNetworks</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

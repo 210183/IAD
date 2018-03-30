@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    class Layer
+    public class Layer
     {
         public Matrix<double> Weights  { get; set; }
-    
-        public Layer(Matrix<double> weights)
+        public IActivationFunction ActivationFunction { get; set; }
+        public Layer(Matrix<double> weights, IActivationFunction activationFunction)
         {
             Weights = weights;
+            ActivationFunction = activationFunction;
         }
     }
 }
