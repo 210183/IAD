@@ -48,12 +48,20 @@
     <Compile Include="ActivationFunction\ActivationFunctionType.cs" />
     <Compile Include="ActivationFunction\IActivationFunction.cs" />
     <Compile Include="ActivationFunction\IdentityFunction.cs" />
+    <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
-    <Compile Include="Layer.cs" />
-    <Compile Include="LayerCharacteristic.cs" />
-    <Compile Include="LearningAlgorithm.cs" />
-    <Compile Include="MeanSquareError.cs" />
-    <Compile Include="NeuralNetwork.cs" />
+    <Compile Include="Learning\BackPropagationAlgorithm.cs" />
+    <Compile Include="Data\DataProvider.cs" />
+    <Compile Include="Data\Datum.cs" />
+    <Compile Include="Error\IErrorCalculator.cs" />
+    <Compile Include="ITrainer.cs" />
+    <Compile Include="Networks\CalculateMode.cs" />
+    <Compile Include="Networks\Layer.cs" />
+    <Compile Include="Networks\LayerCharacteristic.cs" />
+    <Compile Include="Learning\LearningAlgorithm.cs" />
+    <Compile Include="Error\MeanSquareError.cs" />
+    <Compile Include="Networks\NeuralNetwork.cs" />
+    <Compile Include="OnlineTrainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeuralNetworks
+namespace NeuralNetworks.ActivationFunction
 {
-    class MeanSquareError
+    interface IDifferentiable
     {
+        double CalculateDerivative(double argument);
     }
 }

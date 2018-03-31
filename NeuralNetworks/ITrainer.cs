@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    class LearningAlgorithm
+    interface ITrainer
     {
+        void TrainNetwork(NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate);
     }
 }

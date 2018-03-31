@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.ActivationFunction
 {
-    public class IdentityFunction : IActivationFunction
+    public class IdentityFunction : IActivationFunction, IDifferentiable
     {
         public double Calculate(double argument)
         {
             return argument;
+        }
+
+        public double CalculateDerivative(double argument)
+        {
+            return 1;
         }
     }
 }

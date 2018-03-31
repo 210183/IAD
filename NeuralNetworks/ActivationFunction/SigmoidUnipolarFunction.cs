@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.ActivationFunction
 {
-    public class SigmoidUnipolarFunction : IActivationFunction
+    public class SigmoidUnipolarFunction : IActivationFunction, IDifferentiable
     {
         public double Beta { get; set; }
 
@@ -17,6 +17,12 @@ namespace NeuralNetworks.ActivationFunction
         public double Calculate(double argument)
         {
             return 1 / (1 + Math.Pow(Math.E, -Beta * argument));
+        }
+
+        public double CalculateDerivative(double argument)
+        {
+            var valueOnArgument = Calculate(argument);
+            return Beta * valueOnArgument * (1 - valueOnArgument);
         }
     }
 }

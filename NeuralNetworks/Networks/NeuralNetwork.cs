@@ -1,5 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using NeuralNetworks.ActivationFunction;
+using NeuralNetworks.Networks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,12 @@ namespace NeuralNetworks
         public int NumberOfLayers { get; set; }
         public bool IsBiasExisting { get; }
         public Layer[] Layers { get; set; }
+        /// <summary>
+        /// Stores outputs for every neuron calculated during last execution of CalculateOutput method.
+        /// Input is also stored as first vector (0 index) like output of virtual 'input layer'
+        /// </summary>
+        public Vector<double>[] LastOutputs { get; set; } = new Vector<double>[1];
+        public Vector<double>[] LastDerivatives { get; set; } = new Vector<double>[1];
 
         /// <summary>
         /// 
@@ -45,11 +53,32 @@ namespace NeuralNetworks
                 int inputsAmount = Layers[i - 1].Weights.ColumnCount + inputNumberModifier;
                 Layers[i] = new Layer(Matrix<double>.Build.Dense(inputsAmount, numberOfNeurons, (x, y) => randomizer.NextDouble()), layersChars[i].ActivationFunction); // +1 becuase of bias weights.
             }
+            //create place to store outputs
+            LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
+            //create place to store derivatives
+            LastDerivatives = new Vector<double>[NumberOfLayers];
+            for (int layerIndex = 0; layerIndex < NumberOfLayers; layerIndex++)
+            {
+                LastDerivatives[layerIndex] = Vector<double>.Build.Dense(Layers[layerIndex].Weights.ColumnCount);
+            }
         }
 
-        public Vector<double> CalculateOutput(Vector<double> input)
+        /// <summary>
+        /// Calculates output. Can also calculate and store all neurons outputs and act. function derivatives.
+        /// </summary>
+        /// <exception cref="ArgumentException">If CalculateDerivatives is on and any Activation Function is not differentiable</exception>
+        /// <remarks>
+        /// You should usually provide proper mode enum.
+        /// </remarks>
+        /// <seealso cref="CalculateMode"/>
+        /// <param name="input"></param>
+        /// <returns>Output Vector</returns>
+        public Vector<double> CalculateOutput(Vector<double> input, CalculateMode mode = CalculateMode.NetworkOutput)
         {
-            //Matrix<double> inputMatrix = input.ToRowMatrix();
+            if (mode.HasFlag(CalculateMode.AllOutputs))
+            {
+                LastOutputs[0] = Vector<double>.Build.DenseOfVector(input); //copy of
+            }
             Vector<double> neuronSums;
             Vector<double> output = Vector<double>.Build.Dense(1); //initial unused value
             for (int layerIndex=0; layerIndex < NumberOfLayers; layerIndex++)
@@ -66,10 +95,27 @@ namespace NeuralNetworks
                 for (int outputIndex = biasModifier; outputIndex < neuronSums.Count() + biasModifier; outputIndex++)
                 {
                     output[outputIndex] = Layers[layerIndex].ActivationFunction.Calculate(neuronSums[outputIndex - biasModifier]);
+                    if (mode.HasFlag(CalculateMode.Derivatives))
+                    {
+                        var differentiableFunction = Layers[layerIndex].ActivationFunction as IDifferentiable;
+                        LastDerivatives[layerIndex][outputIndex - biasModifier] = differentiableFunction.CalculateDerivative(neuronSums[outputIndex - biasModifier]);
+                    }
                 }
                 input = output;
+                if (mode.HasFlag(CalculateMode.AllOutputs))
+                    LastOutputs[layerIndex] = Vector<double>.Build.DenseOfVector(output); //copy of
             }
             return output;
+        }
+
+        public void ConsoleDisplay()
+        {
+            Console.WriteLine($"Neural network with : {NumberOfLayers} layers, {NumberOfInputs} inputs");
+            foreach(var layer in Layers)
+            {
+                Console.Write(layer.Weights);
+                Console.WriteLine("---------------------------------");
+            }
         }
     }
 }
