@@ -9,10 +9,10 @@ namespace NeuralNetworks
 {
     public class MeanSquareErrorCalculator : IErrorCalculator
     {
-        public Vector<double> Errors { get; set; } = Vector<double>.Build.Dense(1);
+        public Vector<double> Errors { get; set; } = Vector<double>.Build.Dense(0); // empty
 
         /// <summary>
-        /// Calculates single error squared value
+        /// Calculates errors vector
         /// </summary>
         /// <param name="output"></param>
         /// <param name="desiredOutput"></param>
@@ -43,7 +43,6 @@ namespace NeuralNetworks
                 var errors = CalculateErrorVector(output, desiredOutput);
                 errors = errors.PointwisePower(2);
                 var resultError = errors.Sum();
-                Errors.Add(resultError);
                 return resultError;
             }
             else
@@ -53,19 +52,21 @@ namespace NeuralNetworks
         }
 
         /// <summary>
-        /// Calculate square root from errors counted before sum and divides it by 2.
-        /// Also clears stored error values.
+        /// Calculate square root from given errors and divides it by 2.
         /// </summary>
+        /// <param name="errors"> Vector of errors counted for single data. These values should probably be counted using CalculateSingleError</param>
+        /// <seealso cref="CalculateSingleError"/>
         /// <returns></returns>
-        public double CalculateEpochError()
+        public double CalculateEpochError(Vector<double> errors)
         {
             double meanSquaredError = 0;
-            for (int i = 0; i < Errors.Count; i++) //sum already squared errors
+            for (int i = 0; i < errors.Count; i++) //sum already squared errors
             {
-                meanSquaredError += Errors[i];
+                meanSquaredError += errors[i];
             }
             meanSquaredError = Math.Sqrt(meanSquaredError) / 2;
             return meanSquaredError;
         }
+
     }
 }

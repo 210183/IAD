@@ -14,21 +14,22 @@ namespace NeuralTest
     {
         static void Main(string[] args)
         {
-            LayerCharacteristic[] layers = new LayerCharacteristic[2];
-            layers[0] = new LayerCharacteristic(2, new SigmoidUnipolarFunction());
-            layers[1] = new LayerCharacteristic(2, new IdentityFunction());
-            var network = new NeuralNetwork(1, layers);
-            DataProvider dataProvider = new DataProvider
-            {
-                LearnSet = new Datum[2]
-            };
-            dataProvider.LearnSet[0] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 1));
-            dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0));
-            var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(0.01));
+            //LayerCharacteristic[] layers = new LayerCharacteristic[2];
+            //layers[0] = new LayerCharacteristic(2, new SigmoidUnipolarFunction());
+            //layers[1] = new LayerCharacteristic(2, new IdentityFunction());
+            //var network = new NeuralNetwork(1, layers);
+            //DataProvider dataProvider = new DataProvider
+            //{
+            //    LearnSet = new Datum[2]
+            //};
+            //dataProvider.LearnSet[0] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 1));
+            //dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0)); 
+            //var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(0.01));
 
-            trainer.TrainNetwork(network, 10);
-            network.ConsoleDisplay();
-            Console.ReadLine();
+            //trainer.TrainNetwork(network, 10);
+            //network.ConsoleDisplay();
+            //Console.ReadLine();
+
             #region old demo
             //LayerCharacteristic[] layers = new LayerCharacteristic[2];
             //layers[0] = new LayerCharacteristic(2, new SigmoidUnipolarFunction());

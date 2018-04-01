@@ -23,6 +23,6 @@ namespace NeuralNetworks
         /// That method will calc error from errors counted before
         /// </summary>
         /// <returns></returns>
-        double CalculateEpochError();
+        double CalculateEpochError(Vector<double> errors);
     }
 }

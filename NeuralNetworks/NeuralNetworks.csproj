@@ -55,6 +55,8 @@
     <Compile Include="Data\Datum.cs" />
     <Compile Include="Error\IErrorCalculator.cs" />
     <Compile Include="ITrainer.cs" />
+    <Compile Include="Learning\IWithMomentum.cs" />
+    <Compile Include="Learning\LearningRateHandler.cs" />
     <Compile Include="Networks\CalculateMode.cs" />
     <Compile Include="Networks\Layer.cs" />
     <Compile Include="Networks\LayerCharacteristic.cs" />
