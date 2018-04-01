@@ -50,6 +50,12 @@
     <Compile Include="ActivationFunction\IdentityFunction.cs" />
     <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
+    <Compile Include="Data\ApproximationDataProvider.cs" />
+    <Compile Include="Data\ClassificationDataProvider.cs" />
+    <Compile Include="Data\IDataProvider.cs" />
+    <Compile Include="Data\ILearningProvider.cs" />
+    <Compile Include="Data\LearningApproximationDataProvider.cs" />
+    <Compile Include="Data\LearningClassificationDataProvider.cs" />
     <Compile Include="Learning\BackPropagationAlgorithm.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="Data\Datum.cs" />

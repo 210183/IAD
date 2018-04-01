@@ -1,4 +1,5 @@
-﻿using NeuralNetworks.Networks;
+﻿using NeuralNetworks.Data;
+using NeuralNetworks.Networks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace NeuralNetworks
 {
     public class OnlineTrainer : ITrainer
     {
-        public OnlineTrainer(IErrorCalculator errorCalculator, DataProvider dataProvider, LearningAlgorithm learningAlgorithm)
+        public OnlineTrainer(IErrorCalculator errorCalculator, ILearningProvider dataProvider, LearningAlgorithm learningAlgorithm)
         {
             ErrorCalculator = errorCalculator;
             DataProvider = dataProvider;
@@ -17,7 +18,7 @@ namespace NeuralNetworks
         }
 
         public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
-        public DataProvider DataProvider { get; set; }
+        public ILearningProvider DataProvider { get; set; }
         public LearningAlgorithm LearningAlgorithm { get; set; }
 
 
