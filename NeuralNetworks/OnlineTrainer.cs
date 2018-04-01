@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using NeuralNetworks.Data;
 using NeuralNetworks.Networks;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace NeuralNetworks
 {
     public class OnlineTrainer : ITrainer
     {
-        public OnlineTrainer(IErrorCalculator errorCalculator, DataProvider dataProvider, LearningAlgorithm learningAlgorithm)
+        public OnlineTrainer(IErrorCalculator errorCalculator, ILearningProvider dataProvider, LearningAlgorithm learningAlgorithm)
         {
             ErrorCalculator = errorCalculator;
             DataProvider = dataProvider;
@@ -18,7 +19,7 @@ namespace NeuralNetworks
         }
 
         public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
-        public DataProvider DataProvider { get; set; }
+        public ILearningProvider DataProvider { get; set; }
         public LearningAlgorithm LearningAlgorithm { get; set; }
         public double LastEpochError { get; set; } = 0;
         public Vector<double> CurrentEpochErrors { get; set; }
