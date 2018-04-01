@@ -103,7 +103,7 @@ namespace NeuralNetworks
                 }
                 input = output;
                 if (mode.HasFlag(CalculateMode.AllOutputs))
-                    LastOutputs[layerIndex] = Vector<double>.Build.DenseOfVector(output); //copy of
+                    LastOutputs[layerIndex +1 ] = Vector<double>.Build.DenseOfVector(output); //copy of, +1 because first place is occupied by input
             }
             return output;
         }

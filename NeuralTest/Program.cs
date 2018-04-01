@@ -28,6 +28,7 @@ namespace NeuralTest
 
             trainer.TrainNetwork(network, 10);
             network.ConsoleDisplay();
+            Console.ReadLine();
             #region old demo
             //LayerCharacteristic[] layers = new LayerCharacteristic[2];
             //layers[0] = new LayerCharacteristic(2, new SigmoidUnipolarFunction());
