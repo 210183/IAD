@@ -50,6 +50,7 @@
     <Compile Include="ActivationFunction\IdentityFunction.cs" />
     <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
+    <Compile Include="CompleteNetworkCreator.cs" />
     <Compile Include="Data\ApproximationDataProvider.cs" />
     <Compile Include="Data\ClassificationDataProvider.cs" />
     <Compile Include="Data\IDataProvider.cs" />

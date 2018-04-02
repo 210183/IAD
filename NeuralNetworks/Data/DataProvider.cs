@@ -11,13 +11,6 @@ namespace NeuralNetworks.Data
     public abstract class DataProvider : IDataProvider
     {
 
-
-        /// <summary>
-        /// TODO!
-        /// </summary>
-        /// 
-
-
         public Datum[] DataSet { get; set; }
 
         protected string[] LoadFileToStringTable(int inputsNumber, int outputsNumber, string fileName)
@@ -30,7 +23,20 @@ namespace NeuralNetworks.Data
 
             return tempSet;
         }
-
+        /// <summary>
+        /// Shuffles given data set by swaping two random elements n times.
+        /// </summary>
+        /// <param name="set">data set to shuffle</param>
+        /// <param name="shuffleNumber"> How many times should two random elements be swaped</param>
+        public void ShuffleDataSet(Datum[] set, int shuffleNumber = 100)
+        {
+            var randomizer = new Random();
+            int setLength = set.Length;
+            for (int i = 0; i < shuffleNumber; i++)
+            {
+                set[randomizer.Next(setLength)] = set[randomizer.Next(setLength)];
+            }
+        }
     }
 
 }
