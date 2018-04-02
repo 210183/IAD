@@ -36,7 +36,7 @@ namespace NeuralNetworks
         /// Best network result on test set can be seen here after CreateNetwork.
         /// </summary>
         public double BestTestError { get; set; } = 0;
-
+        public Matrix<double> ClassificationFullResults { get; set; }
 
         /// <summary>
         /// Creates new networks with randomized initial weights, learns and tests them. Chooses best of all created. 
@@ -55,6 +55,8 @@ namespace NeuralNetworks
                 if (isUpdated)
                     BestNetworkEpochHistory = trainer.CurrentEpochErrorVector; // save learning history of best network
             }
+            if (taskType == TaskType.Classification)
+                CreateResultMatrixForClassification(BestNetwork); //generate full results (divided by classes)
             return BestNetwork;
         }
 
@@ -106,7 +108,16 @@ namespace NeuralNetworks
 
         private void CreateResultMatrixForClassification(NeuralNetwork network)
         {
-
+            var testSet = DataProvider.DataSet; //helper variable to shorten code and clarify;
+            int numberOfClasses = network.Layers[Layers.Length].Weights.ColumnCount; //neurons in last layer
+            Matrix<double> ClassificationFullResults = Matrix<double>.Build.Dense(numberOfClasses, numberOfClasses);
+            for (int dataIndex = 0; dataIndex < testSet.Length; dataIndex++)
+            {
+                var output = network.CalculateOutput(testSet[dataIndex].X, CalculateMode.NetworkOutput);
+                int chosenClassNumber = output.MaximumIndex();
+                int properClassNumber = testSet[dataIndex].D.MaximumIndex();
+                ClassificationFullResults[chosenClassNumber, properClassNumber] += 1;
+            }
         }
     }
 }
