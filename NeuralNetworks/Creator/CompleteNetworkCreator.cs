@@ -103,5 +103,10 @@ namespace NeuralNetworks
             var errorSum = ErrorCalculator.CalculateEpochError(errors);
             return errorSum;
         }
+
+        private void CreateResultMatrixForClassification(NeuralNetwork network)
+        {
+
+        }
     }
 }
