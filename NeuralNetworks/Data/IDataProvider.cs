@@ -9,6 +9,6 @@ namespace NeuralNetworks.Data
     public interface IDataProvider
     {
         Datum[] DataSet { get; set; }
-
+        void ShuffleDataSet(Datum[] set, int shuffleNumber = 100);
     }
 }

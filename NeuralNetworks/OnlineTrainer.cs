@@ -31,9 +31,10 @@ namespace NeuralNetworks
 
             Vector<double> TemporaryEpochErrorHistory = Vector<double>.Build.Dense(maxEpochs, 0); //place to temporary store epoch errors for all epochs
             TemporaryEpochErrorHistory[0] = Double.MaxValue; // assume error at beginning is maximal
-
-            while(currentEpochIndex < maxEpochs)
+            int shuffleAmount = (int)Math.Round(Math.Log(learnSet.Length, 2)); // calculate how much should shuffle learn set depending on its size
+            while (currentEpochIndex < maxEpochs)
             {
+                DataProvider.ShuffleDataSet(learnSet, shuffleAmount); // shuffle some data in learn set
                 CurrentEpochErrorVector = Vector<double>.Build.Dense(learnSet.Length, 0); // init with 0s
 
                 #region first data must be handled separately, because of indexing to previous element

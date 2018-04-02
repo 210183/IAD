@@ -68,19 +68,19 @@ namespace NeuralNetworks
                 {
                     for(int weightIndex=0; weightIndex < layers[layerIndex].Weights.RowCount; weightIndex++)
                     {
-                       
+                        var derivative = network.LastDerivatives[layerIndex][neuronIndex];
+                        var signal = network.LastOutputs[layerIndex][weightIndex];
+                        var currentError = propagatedErrors[layerIndex][neuronIndex];
+                        var backPropagationImpact = derivative * signal * currentError * LearningRateHandler.LearningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {
-                            var derivative = network.LastDerivatives[layerIndex][neuronIndex];
-                            var signal = network.LastOutputs[layerIndex][weightIndex];
-                            var currentError = propagatedErrors[layerIndex][neuronIndex];
-                            var backPropagationImpact = derivative * signal * currentError * LearningRateHandler.LearningRate;
                             var momentumImpact = MomentumCoefficient * LastWeightsChange[layerIndex][weightIndex, neuronIndex];
                             layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact + momentumImpact;
                             LastWeightsChange[layerIndex][weightIndex, neuronIndex] = backPropagationImpact + momentumImpact; //update weights last change stored value
                         }
-                        else // ignore results, so only set weights changes to zero
+                        else // ignore momentum
                         {
+                            layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact;
                             LastWeightsChange[layerIndex][weightIndex, neuronIndex] = 0;
                         }
                     }
