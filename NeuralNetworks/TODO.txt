@@ -1,0 +1,18 @@
+﻿TODO:
+	- V zapisyswanie historii błedu 
+	- testowanie na zbiorze testwoym
+	- debugging (poprawa) algorytm uczenia
+	- offline trainer
+	UI: 
+		- wybór zadania
+			- wybór plików
+			- wybór parametrów uczenia
+			-  uczenie sieci
+		- POSTPONED wybór algorytmu 
+		- testowanie sieci
+			- na wczytanych danych testowych
+			- na danych podanych na bieżąco
+			- wyświetlanie rezultatów sieci
+				- wartości błędów itp
+				- jeżeli odpowiednie do zadania
+					-wyświetlenie np postaci otrzymanej funkcji aproksymacji

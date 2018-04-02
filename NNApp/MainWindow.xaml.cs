@@ -1,8 +1,13 @@
-﻿using System;
+﻿using NeuralNetworks;
+using NeuralNetworks.ActivationFunction;
+using NeuralNetworks.Data;
+using NeuralNetworks.Learning;
+using OxyPlot;
+using OxyPlot.Series;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,23 +18,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using NeuralNetworks;
-using NeuralNetworks.ActivationFunction;
-using NeuralNetworks.Data;
-using NeuralNetworks.Learning;
-using OxyPlot;
-using OxyPlot.Series;
 
-namespace NeuralNetworkApp
+namespace NNApp
 {
-    public class MainViewModel
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-        public PlotModel MyModel { get; private set; }
-
-        public MainViewModel()
+        public MainWindow()
         {
-  
+            InitializeComponent();
+            
         }
-
     }
 }
