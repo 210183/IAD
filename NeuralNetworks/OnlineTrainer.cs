@@ -67,6 +67,7 @@ namespace NeuralNetworks
                 
                 currentEpochIndex++;
             }
+            EpochErrorHistory = Vector<double>.Build.Dense(currentEpochIndex);
             TemporaryEpochErrorHistory.CopySubVectorTo(EpochErrorHistory, 0, 0, currentEpochIndex); // save errors for all epochs that really were calculated
         }
         ///// <summary>

@@ -9,7 +9,7 @@ namespace NeuralNetworks
 {
     public class MeanSquareErrorCalculator : IErrorCalculator
     {
-        public Vector<double> Errors { get; set; } = Vector<double>.Build.Dense(0); // empty
+        public Vector<double> Errors { get; set; } = Vector<double>.Build.Dense(1); // empty
 
         /// <summary>
         /// Calculates errors vector

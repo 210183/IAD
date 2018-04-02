@@ -2,6 +2,7 @@
 using NeuralNetworks;
 using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Data;
+using NeuralNetworks.Learning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,19 +15,21 @@ namespace NeuralTest
     {
         static void Main(string[] args)
         {
+            string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
+            string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
+
             LayerCharacteristic[] layers = new LayerCharacteristic[2];
             layers[0] = new LayerCharacteristic(2, new SigmoidUnipolarFunction());
-            layers[1] = new LayerCharacteristic(2, new IdentityFunction());
+            layers[1] = new LayerCharacteristic(1, new IdentityFunction());
             var network = new NeuralNetwork(1, layers);
-            //DataProvider dataProvider = new DataProvider
-            //{
-            //    LearnSet = new Datum[2]
-            //};
+
+            ILearningProvider dataProvider = new LearningApproximationDataProvider(learningFileName, testFileName, 1, 1, true);
+
             //dataProvider.LearnSet[0] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 1));
             //dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0));
-            //var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(0.01));
+            var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(network, new LearningRateHandler(0.01, 0.7,1.05,1.04), 0.2, 1.05));
 
-            //trainer.TrainNetwork(network, 10);
+            trainer.TrainNetwork(network, 100);
             network.ConsoleDisplay();
             Console.ReadLine();
             #region old demo

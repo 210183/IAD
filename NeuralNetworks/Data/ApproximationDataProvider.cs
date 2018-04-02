@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    class ApproximationDataProvider : DataProvider
+    public class ApproximationDataProvider : DataProvider
     {
         public ApproximationDataProvider(string fileName, int inputsNumber, int outputsNumber, bool isBiasOn)
         {
@@ -18,17 +18,17 @@ namespace NeuralNetworks.Data
         {
             int biasModifier = 0;
 
+            if (isBiasOn)
+            {
+                biasModifier = 1;
+            }
+
             var tempInputOutputSet = base.LoadFileToStringTable(inputsNumber, outputsNumber, fileName);
             Datum[] tempData = new Datum[tempInputOutputSet.Length];
 
             var singleInputData = Vector<double>.Build.Dense(inputsNumber + biasModifier, 0);
             var singleOutputData = Vector<double>.Build.Dense(outputsNumber, 0);
 
-            if (isBiasOn)
-            {
-                biasModifier = 1;
-
-            }
             string[] tempLine;
 
             var delimiter = ' ';
@@ -50,7 +50,7 @@ namespace NeuralNetworks.Data
                     }
                     for (int j = 0; j < outputsNumber; j++)
                     {
-                        singleOutputData[j] = Convert.ToInt16(tempLine[inputsNumber + biasModifier + j]);
+                        singleOutputData[j] = Convert.ToDouble(tempLine[inputsNumber + j]);
 
                     }
                 }

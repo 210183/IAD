@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    class LearningApproximationDataProvider : ApproximationDataProvider, ILearningProvider
+    public class LearningApproximationDataProvider : ApproximationDataProvider, ILearningProvider
     {
 
         public Datum[] LearnSet { get; set; }
