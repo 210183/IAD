@@ -73,5 +73,10 @@ namespace NNApp
 
             layers = new LayerCharacteristic[numberOfLayers];
         }
+
+        private void CurrentLayerNeuronsBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
