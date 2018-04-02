@@ -18,18 +18,20 @@
                 <Setter Property="StrokeDashArray" Value="2"></Setter>
             </Style>
         </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="219*"/>
+            <ColumnDefinition Width="77*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock TextWrapping="Wrap">
-            Perceptron
-        </TextBlock>
+        <TextBlock TextWrapping="Wrap" Text="Network" Grid.ColumnSpan="2"/>
         <lvc:CartesianChart Grid.Row="1" DisableAnimations="False"
                             Series="{Binding Series}" 
                             DataTooltip="{x:Null}"
                             AnimationsSpeed="0:0:0.15"
-                            Zoom="Xy"
+                            Zoom="Xy" Grid.ColumnSpan="2"
                             />
     </Grid>
 </Window>
