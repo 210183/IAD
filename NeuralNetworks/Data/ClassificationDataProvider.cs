@@ -18,17 +18,16 @@ namespace NeuralNetworks.Data
         protected Datum[] SetData(string fileName,int inputsNumber, int outputsNumber, bool isBiasOn)
         {
             int biasModifier = 0;
+            if (isBiasOn)
+            {
+                biasModifier = 1;
+            }
 
             var tempInputOutputSet = base.LoadFileToStringTable(inputsNumber, outputsNumber, fileName);
             Datum[] tempData = new Datum[tempInputOutputSet.Length];
 
             var singleInputData = Vector<double>.Build.Dense(inputsNumber + biasModifier, 0);
             var singleOutputData = Vector<double>.Build.Dense(outputsNumber, 0);
-
-            if (isBiasOn)
-            {
-                biasModifier = 1;
-            }
 
             string[] tempLine;
 
@@ -51,7 +50,7 @@ namespace NeuralNetworks.Data
                     }
                     for (int j = 0; j < outputsNumber; j++)
                     {
-                       int classNumber  = Convert.ToInt16(tempLine[inputsNumber + biasModifier + j]);
+                       int classNumber  = Convert.ToInt16(tempLine[inputsNumber + j]);
                         singleOutputData[classNumber - 1] = 1;
                     }
                 }
