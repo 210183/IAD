@@ -17,11 +17,11 @@ namespace NNApp
         public MainViewModel()
         {
             #region create and train network
-            //string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
-            //string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
+            string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
+            string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
 
-            string learningFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
-            string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
+            //string learningFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
+            //string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
             LayerCharacteristic[] layers = new LayerCharacteristic[2];
             layers[0] = new LayerCharacteristic(20, new SigmoidUnipolarFunction());
