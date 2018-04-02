@@ -60,7 +60,7 @@ namespace NNApp
         public double Momentum { get => momentum; set => momentum = value; }
         public double ErrorIncreaseCoefficient { get => errorIncreaseCoefficient; set => errorIncreaseCoefficient = value; }
 
-        private LearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
+        public LearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
         public IErrorCalculator ErrorCalculator { get => errorCalculator; set => errorCalculator = value; }
         public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
         public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }
@@ -92,7 +92,11 @@ namespace NNApp
             paramWindow.ShowDialog();
         }
 
+        private void Learn_Click(object sender, RoutedEventArgs e)
+        {
+            Window paramWindow = new TrainerParametersWindow();
+            paramWindow.ShowDialog();
 
-
+        }
     }
 }

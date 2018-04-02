@@ -19,17 +19,17 @@ namespace NNApp
     /// <summary>
     /// Interaction logic for TreinerParametersWindow.xaml
     /// </summary>
-    public partial class TreinerParametersWindow : Window
+    public partial class TrainerParametersWindow : Window
     {
-        public TreinerParametersWindow()
+        public TrainerParametersWindow()
         {
             InitializeComponent();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            
-        
+
+
             ((MainWindow)Application.Current.MainWindow).LearningRate = Convert.ToInt32(LearningRateBox.Text);
             ((MainWindow)Application.Current.MainWindow).ReductionRate = Convert.ToInt32(ReductionRateBox.Text);
             ((MainWindow)Application.Current.MainWindow).IncreaseRate = Convert.ToInt32(IncreaseRateBox.Text);
@@ -42,8 +42,8 @@ namespace NNApp
 
             LearningRateHandler tempHandler = new LearningRateHandler(Convert.ToInt32(LearningRateBox.Text), Convert.ToInt32(ReductionRateBox.Text), Convert.ToInt32(IncreaseRateBox.Text), Convert.ToInt32(MaxErrorIncreaseRateBox.Text));
 
-            //if (LearningAlgorithmComboBox.Text == "Back Propagation")
-            //((MainWindow)Application.Current.MainWindow).LearningAlgorithm = new BackPropagationAlgorithm();
+            if (LearningAlgorithmComboBox.Text == "Back Propagation")
+                ((MainWindow)Application.Current.MainWindow).LearningAlgorithm = new BackPropagationAlgorithm(tempHandler, Convert.ToInt32(MomentumBox.Text), Convert.ToInt32(ErrorIncreaseCoefficientBox.Text));
             if (ErrorCalculatorComboBox.Text == "Mean Square Error")
                 ((MainWindow)Application.Current.MainWindow).ErrorCalculator = new MeanSquareErrorCalculator();
         }

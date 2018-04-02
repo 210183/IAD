@@ -48,7 +48,7 @@
         <!-- Buttons -->
         <Button Name="DataFilesButton" Grid.Column="0" Grid.Row="1" Click="DataFilesButton_Click"> Choose data files</Button>
         <Button Name="SetParameters" Grid.Column="1" Grid.Row="1" Click="SetParameters_Click">Set parameters</Button>
-        <Button Name="Learn" Grid.Column="2" Grid.Row="1">Learn</Button>
+        <Button Name="Learn" Grid.Column="2" Grid.Row="1" Click="Learn_Click">Learn</Button>
         <Button Name="Test" Grid.Column="3" Grid.Row="1">Test</Button>
         <oxy:PlotView Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="2" Model="{Binding MyModel}"/>
     </Grid>
