@@ -36,7 +36,7 @@ namespace NeuralNetworks
         /// <param name="output"></param>
         /// <param name="desiredOutput"></param>
         /// <returns></returns>
-        public double CalculateSingleError(Vector<double> output, Vector<double> desiredOutput)
+        public double CalculateErrorSum(Vector<double> output, Vector<double> desiredOutput)
         {
             if (output.Count == desiredOutput.Count)
             {
@@ -54,8 +54,8 @@ namespace NeuralNetworks
         /// <summary>
         /// Calculate square root from given errors and divides it by 2.
         /// </summary>
-        /// <param name="errors"> Vector of errors counted for single data. These values should probably be counted using CalculateSingleError</param>
-        /// <seealso cref="CalculateSingleError"/>
+        /// <param name="errors"> Vector of errors counted for single data. These values should probably be counted using CalculateSumError</param>
+        /// <seealso cref="CalculateErrorSum"/>
         /// <returns></returns>
         public double CalculateEpochError(Vector<double> errors)
         {

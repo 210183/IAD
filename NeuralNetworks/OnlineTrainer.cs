@@ -21,58 +21,62 @@ namespace NeuralNetworks
         public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
         public ILearningProvider DataProvider { get; set; }
         public LearningAlgorithm LearningAlgorithm { get; set; }
-        public double LastEpochError { get; set; } = 0;
-        public Vector<double> CurrentEpochErrors { get; set; }
+        public Vector<double> EpochErrorHistory { get; set; } = Vector<double>.Build.Dense(1);
+        public Vector<double> CurrentEpochErrorVector { get; set; }
 
         public void TrainNetwork(NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate = 0)
         {
-            /* dopoki epoki
-             *  przejd przez epoke
-             *  policz blad
-             *  jezeli blad wystarczajacy
-             *      zakoncz
-             *  adaptuj wagi
-             *  
-             */
             var learnSet = DataProvider.LearnSet;
-            int currentEpoch = 0;
-            double currentEpochError = 0;
-            while(currentEpoch < maxEpochs)
+            int currentEpochIndex = 1; // epochs are counted starting from 1
+
+            Vector<double> TemporaryEpochErrorHistory = Vector<double>.Build.Dense(maxEpochs, 0); //place to temporary store epoch errors for all epochs
+            TemporaryEpochErrorHistory[0] = Double.MaxValue; // assume error at beginning is maximal
+
+            while(currentEpochIndex < maxEpochs)
             {
-                CurrentEpochErrors = Vector<double>.Build.Dense(learnSet.Length, 0); // init with 0s
+                CurrentEpochErrorVector = Vector<double>.Build.Dense(learnSet.Length, 0); // init with 0s
+
                 #region first data must be handled separately, because of indexing to previous element
                 var output = networkToTrain.CalculateOutput(learnSet[0].X, CalculateMode.OutputsAndDerivatives);
-                var error = ErrorCalculator.CalculateErrorVector(output, learnSet[0].D); // save error
-                CurrentEpochErrors[0] = ErrorCalculator.CalculateSingleError(output, learnSet[0].D);
-                LearningAlgorithm.AdaptWeights(networkToTrain, error, CurrentEpochErrors[0], CurrentEpochErrors[0]);
+                var errorVector = ErrorCalculator.CalculateErrorVector(output, learnSet[0].D);
+                CurrentEpochErrorVector[0] = ErrorCalculator.CalculateErrorSum(output, learnSet[0].D);
+                LearningAlgorithm.AdaptWeights(networkToTrain, errorVector, CurrentEpochErrorVector[0], CurrentEpochErrorVector[0]);
                 #endregion 
                 #region calculate rest of  epoch
                 for (int dataIndex = 1; dataIndex < learnSet.Length; dataIndex++)
                 {
                     output = networkToTrain.CalculateOutput(learnSet[dataIndex].X, CalculateMode.OutputsAndDerivatives);
-                    error = ErrorCalculator.CalculateErrorVector(output, learnSet[dataIndex].D); // save error
-                    CurrentEpochErrors[dataIndex] = ErrorCalculator.CalculateSingleError(output, learnSet[dataIndex].D);
+                    errorVector = ErrorCalculator.CalculateErrorVector(output, learnSet[dataIndex].D); 
+                    CurrentEpochErrorVector[dataIndex] = ErrorCalculator.CalculateErrorSum(output, learnSet[dataIndex].D);
                     #region adapt weights
-                    LearningAlgorithm.AdaptWeights(networkToTrain,error, CurrentEpochErrors[dataIndex], CurrentEpochErrors[dataIndex-1] );
+                    LearningAlgorithm.AdaptWeights(networkToTrain,errorVector, CurrentEpochErrorVector[dataIndex], CurrentEpochErrorVector[dataIndex-1] );
                     #endregion
 
                 }
                 #endregion
-
                 #region epoch error
-                currentEpochError = ErrorCalculator.CalculateEpochError(CurrentEpochErrors);
-                #endregion
-
-                if(currentEpochError <= desiredErrorRate) //learning is done
+                TemporaryEpochErrorHistory[currentEpochIndex] = ErrorCalculator.CalculateEpochError(CurrentEpochErrorVector);
+                if(TemporaryEpochErrorHistory[currentEpochIndex] <= desiredErrorRate) //learning is done
                 {
                     return; 
                 }
-                #region Adapt Learning Rate
-                LearningAlgorithm.AdaptLearningRate(currentEpochError, LastEpochError);
                 #endregion
-
-                LastEpochError = currentEpochError; // store epoch error
+                #region Adapt Learning Rate
+                LearningAlgorithm.AdaptLearningRate(TemporaryEpochErrorHistory[currentEpochIndex], TemporaryEpochErrorHistory[currentEpochIndex - 1]);
+                #endregion
+                
+                currentEpochIndex++;
             }
+            TemporaryEpochErrorHistory.CopySubVectorTo(EpochErrorHistory, 0, 0, currentEpochIndex); // save errors for all epochs that really were calculated
         }
+        ///// <summary>
+        ///// Simple helper method that returns 0 if current index is 0 or less
+        ///// </summary>
+        ///// <param name="currentIndex"></param>
+        ///// <returns>currentIndex - 1 or 0</returns>
+        //private int GetPreviousIndex(int currentIndex)
+        //{
+        //    return currentIndex > 0 ? currentIndex - 1 : 0;
+        //}
     }
 }

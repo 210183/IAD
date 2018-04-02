@@ -13,14 +13,14 @@ namespace NeuralNetworks
         Vector<double> CalculateErrorVector(Vector<double> output, Vector<double> desiredOutput);
 
         /// <summary>
-        /// That method will store calculated error in class implementing it.
+        /// That method will store calculate sum of error from given vectors.
         /// </summary>
         /// <param name="output"></param>
         /// <param name="desiredOutput"></param>
-        double CalculateSingleError(Vector<double> output, Vector<double> desiredOutput);
+        double CalculateErrorSum(Vector<double> output, Vector<double> desiredOutput);
 
         /// <summary>
-        /// That method will calc error from errors counted before
+        /// That method will calc sumaric error from given errors.
         /// </summary>
         /// <returns></returns>
         double CalculateEpochError(Vector<double> errors);
