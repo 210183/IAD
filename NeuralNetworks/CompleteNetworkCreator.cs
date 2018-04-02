@@ -12,5 +12,18 @@ namespace NeuralNetworks
     /// </summary>
     class CompleteNetworkCreator
     {
+
+       
+        public LearningAlgorithm LearningAlgorithm { get; set; }
+       
+        double learningRate,
+        double reductionRate,
+        double increaseRate,
+        double maxErrorIncreaseRate
+        double momentum,
+        double errorIncreaseCoefficient
+        public IErrorCalculator ErrorCalculator { get; set; }
+        public int MaxEpochs { get; set; }
+        public double DesiredMaxError { get; set; }
     }
 }

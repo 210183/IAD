@@ -27,6 +27,7 @@ namespace NNApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region properties
         private string learnFileName;
         private string testFileName;
 
@@ -35,18 +36,41 @@ namespace NNApp
         private bool isBiasOn;
         private LayerCharacteristic[] layers;
 
+        
+        private double learningRate;
+        private double reductionRate;
+        private double increaseRate;
+        private double maxErrorIncreaseRate;
+        private double momentum;
+        private double errorIncreaseCoefficient;
+        private IErrorCalculator errorCalculator;
+        private int maxEpochs;
+        private double desiredMaxError;
+        private LearningAlgorithm learningAlgorithm;
+
         public int InputsNumber { get => inputsNumber; set => inputsNumber = value; }
         public int OutputsNumber { get => outputsNumber; set => outputsNumber = value; }
         public bool IsBiasOn { get => isBiasOn; set => isBiasOn = value; }
+
         public LayerCharacteristic[] Layers { get => layers; set => layers = value; }
+        public double LearningRate { get => learningRate; set => learningRate = value; }
+        public double ReductionRate { get => reductionRate; set => reductionRate = value; }
+        public double IncreaseRate { get => increaseRate; set => increaseRate = value; }
+        public double MaxErrorIncreaseRate { get => maxErrorIncreaseRate; set => maxErrorIncreaseRate = value; }
+        public double Momentum { get => momentum; set => momentum = value; }
+        public double ErrorIncreaseCoefficient { get => errorIncreaseCoefficient; set => errorIncreaseCoefficient = value; }
+
+        private LearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
+        public IErrorCalculator ErrorCalculator { get => errorCalculator; set => errorCalculator = value; }
+        public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
+        public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }
+        #endregion
 
         public MainWindow()
         {
             InitializeComponent();
-            
-        }
 
-        
+        }
 
         private void DataFilesButton_Click(object sender, RoutedEventArgs e)
         {
@@ -66,9 +90,9 @@ namespace NNApp
         {
             Window paramWindow = new ParametersWindow();
             paramWindow.ShowDialog();
-
-   
         }
+
+
 
     }
 }

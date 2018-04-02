@@ -6,6 +6,7 @@ using OxyPlot;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,20 +18,22 @@ namespace NNApp
         public MainViewModel()
         {
             #region create and train network
-            //string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
-            //string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
+            string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
+            string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
 
-            string learningFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
-            string testFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+            string svgFileName = @"C:\Users\Jakub\Desktop\nowy.svg";
+
+            //string learningFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+            //string testFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
 
             int inputsNumber = 4;
 
             LayerCharacteristic[] layers = new LayerCharacteristic[2];
-            layers[0] = new LayerCharacteristic(7, new SigmoidUnipolarFunction());
+            layers[0] = new LayerCharacteristic(4, new SigmoidUnipolarFunction());
             layers[1] = new LayerCharacteristic(3, new IdentityFunction());
             var network = new NeuralNetwork(inputsNumber, layers);
 
-            ILearningProvider dataProvider = new LearningApproximationDataProvider(learningFileName, testFileName, inputsNumber, 3, true);
+            ILearningProvider dataProvider = new LearningClassificationDataProvider(learningFileName, testFileName, inputsNumber, 3, true);
 
             //dataProvider.LearnSet[0] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 1));
             //dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0));
@@ -52,7 +55,11 @@ namespace NNApp
             MyModel.Series.Add(series);
             MyModel.InvalidatePlot(true);
             #endregion
-            
+            using (var stream = File.Create(svgFileName))
+            {
+                var exporter = new SvgExporter { Width = 600, Height = 400 };
+                exporter.Export(MyModel, stream);
+            }
         }
         public PlotModel MyModel { get; private set; }
     }

@@ -1,0 +1,74 @@
+﻿<Window x:Class="NNApp.TreinerParametersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NNApp"
+        mc:Ignorable="d"
+        Title="TreinerParametersWindow" Height="300" Width="500">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Gainsboro" Offset="0" />
+            <GradientStop Color="Gainsboro" Offset="0.5" />
+            <GradientStop Color="DarkGray" Offset="2" />
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="10"></Setter>
+            <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="MaxWidth" Value="120" />
+            <Setter Property="MaxHeight" Value="40" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+    </Window.Resources>
+    <Grid Background="OliveDrab">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <TextBlock Name="LearningRateText" Grid.Column="0" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Learning Rate</TextBlock>
+        <TextBox Name="LearningRateBox" Grid.Column="0" Grid.Row="0" Margin="12,22,10.2,10.2">Learning Rate</TextBox>
+
+        <TextBlock Name="ReductionRateText" Grid.Column="1" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Reduction Rate</TextBlock>
+        <TextBox Name="ReductionRateBox" Grid.Column="1" Grid.Row="0" Margin="12,22,10.2,10.2" >Reduction Rate</TextBox>
+
+        <TextBlock Name="IncreaseRateText" Grid.Column="2" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Increase Rate</TextBlock>
+        <TextBox Name="IncreaseRateBox" Grid.Column="2" Grid.Row="0" Margin="12,22,10.2,10.2" >Increase Rate</TextBox>
+
+        <TextBlock Name="MaxErrorIncreaseRateText" Grid.Column="3" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Err Incr Rate</TextBlock>
+        <TextBox Name="MaxErrorIncreaseRateBox" Grid.Column="3" Grid.Row="0" Margin="12,22,10.2,10.2" >Max Err Incr Rate</TextBox>
+
+
+        <TextBlock Name="LearningAlgorithmText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Learning Algorithm</TextBlock>
+        <ComboBox Name="LearningAlgorithmComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" >
+            <ComboBoxItem Name="BackPropagation">Back Propagation</ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock Name="ErrorCalculatorText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Error Calculator</TextBlock>
+        <ComboBox Name="ErrorCalculatorComboBox" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" >
+            <ComboBoxItem Name="MeanSquareError">Mean Square Error</ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock Name="MomentumText" Grid.Column="0" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Momentum</TextBlock>
+        <TextBox Name="MomentumBox" Grid.Column="0" Grid.Row="2" Margin="12,22,10.2,10.2">Momentum</TextBox>
+
+        <TextBlock Name="ErrorIncreaseCoefficientText" Grid.Column="1" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Error Incr Coef</TextBlock>
+        <TextBox Name="ErrorIncreaseCoefficientBox" Grid.Column="1" Grid.Row="2" Margin="12,22,10.2,10.2" >Error Incr Coef</TextBox>
+
+        <TextBlock Name="MaxEpochsText" Grid.Column="2" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Epochs</TextBlock>
+        <TextBox Name="MaxEpochsBox" Grid.Column="2" Grid.Row="2" Margin="12,22,10.2,10.2" >Max Epochs</TextBox>
+
+        <TextBlock Name="DesiredMaxErrorText" Grid.Column="3" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Desired Max Error</TextBlock>
+        <TextBox Name="DesiredMaxErrorBox" Grid.Column="3" Grid.Row="2" Margin="12,22,10.2,10.2" >Desired Max Error</TextBox>
+        
+        <Button Name="SaveButton" Grid.Column="3" Grid.Row="3" Click="SaveButton_Click">Save All</Button>
+    </Grid>
+</Window>
