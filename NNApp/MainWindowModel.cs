@@ -34,7 +34,7 @@ namespace NNApp
 
             //dataProvider.LearnSet[0] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 1));
             //dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0));
-            var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(network, new LearningRateHandler(0.001, 0.8, 1.1, 1.05), 0.02, 1.05));
+            var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(new LearningRateHandler(0.001, 0.8, 1.1, 1.05), 0.02, 1.05));
 
             trainer.TrainNetwork(network, 100);
 

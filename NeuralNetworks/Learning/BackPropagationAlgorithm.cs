@@ -10,15 +10,10 @@ namespace NeuralNetworks
 {
     public class BackPropagationAlgorithm : LearningAlgorithm, IWithMomentum
     {
-        public BackPropagationAlgorithm(NeuralNetwork network, LearningRateHandler learningRateHandler, double momentum, double errorIncreaseCoefficient) : base(learningRateHandler)
+        public BackPropagationAlgorithm( LearningRateHandler learningRateHandler, double momentum, double errorIncreaseCoefficient) : base(learningRateHandler)
         {
             MomentumCoefficient = momentum;
             MaxErrorIncreaseCoefficient = errorIncreaseCoefficient;
-            LastWeightsChange = new Matrix<double>[network.NumberOfLayers]; 
-            for(int layerIndex=0; layerIndex < network.NumberOfLayers; layerIndex++) // create weights changes vectors
-            {
-                LastWeightsChange[layerIndex] = Matrix<double>.Build.Dense(network.Layers[layerIndex].Weights.RowCount, network.Layers[layerIndex].Weights.ColumnCount);
-            }
         }
 
         public double MomentumCoefficient { get; set; }
@@ -27,17 +22,19 @@ namespace NeuralNetworks
 
         public override void AdaptWeights(NeuralNetwork network, Vector<double> errors, double currentDataError, double previousDataError)
         {
-            /* dla kazdej warstwy od konca
-             *      dla kazdego neuronu
-             *          dla kazdej wagi
-             *          policz jego delta wagi (skladowa gradientu razy wspl uczenia)
-             * dodaj delty do wag
-             */
             #region helper variables
             int numberOfLayers = network.Layers.Count();
             var layers = network.Layers;
-
             #endregion
+            if(LastWeightsChange is null) // then initialize it with proper size
+            {
+                LastWeightsChange = new Matrix<double>[numberOfLayers];
+                for (int layerIndex = 0; layerIndex < numberOfLayers; layerIndex++) // create weights changes vectors
+                {
+                    LastWeightsChange[layerIndex] = Matrix<double>.Build.Dense(layers[layerIndex].Weights.RowCount, layers[layerIndex].Weights.ColumnCount);
+                }
+            }
+
             #region calculate propagated errors
             Vector<double>[] propagatedErrors = new Vector<double>[numberOfLayers];
             for (int layerIndex = numberOfLayers-1; layerIndex >= 0; layerIndex--) // begin with the ulitmate layer
@@ -81,7 +78,7 @@ namespace NeuralNetworks
                         else // ignore momentum
                         {
                             layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact;
-                            LastWeightsChange[layerIndex][weightIndex, neuronIndex] = 0;
+                            LastWeightsChange[layerIndex][weightIndex, neuronIndex] = backPropagationImpact;
                         }
                     }
                 }
