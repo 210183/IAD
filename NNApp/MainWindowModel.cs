@@ -20,21 +20,23 @@ namespace NNApp
             //string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
             //string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
 
-            string learningFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
-            string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
+            string learningFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+            string testFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+
+            int inputsNumber = 4;
 
             LayerCharacteristic[] layers = new LayerCharacteristic[2];
-            layers[0] = new LayerCharacteristic(20, new SigmoidUnipolarFunction());
-            layers[1] = new LayerCharacteristic(1, new IdentityFunction());
-            var network = new NeuralNetwork(1, layers);
+            layers[0] = new LayerCharacteristic(7, new SigmoidUnipolarFunction());
+            layers[1] = new LayerCharacteristic(3, new IdentityFunction());
+            var network = new NeuralNetwork(inputsNumber, layers);
 
-            ILearningProvider dataProvider = new LearningApproximationDataProvider(learningFileName, testFileName, 1, 1, true);
+            ILearningProvider dataProvider = new LearningApproximationDataProvider(learningFileName, testFileName, inputsNumber, 3, true);
 
             //dataProvider.LearnSet[0] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 1));
             //dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0));
-            var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(network, new LearningRateHandler(0.01, 0.8, 1.1, 1.05), 0.02, 1.05));
+            var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(network, new LearningRateHandler(0.001, 0.8, 1.1, 1.05), 0.02, 1.05));
 
-            trainer.TrainNetwork(network, 2000);
+            trainer.TrainNetwork(network, 100);
 
             #endregion
 
