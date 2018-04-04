@@ -1,4 +1,5 @@
 ﻿using NeuralNetworks;
+using NeuralNetworks.Data;
 using NeuralNetworks.Learning;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,38 @@ namespace NNApp
                 ((MainWindow)Application.Current.MainWindow).LearningAlgorithm = new BackPropagationAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
             if (ErrorCalculatorComboBox.Text == "Mean Square Error")
                 ((MainWindow)Application.Current.MainWindow).ErrorCalculator = new MeanSquareErrorCalculator();
+        }
+
+        private void TrainButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ( ((MainWindow)Application.Current.MainWindow).Layers != null)
+            {
+                if (((MainWindow)Application.Current.MainWindow).DataProvider is ILearningProvider)
+                {
+                    var creator = new CompleteNetworkCreator()
+                    {
+                        DataProvider = ((MainWindow)Application.Current.MainWindow).DataProvider as ILearningProvider,
+                        DesiredError = ((MainWindow)Application.Current.MainWindow).DesiredMaxError,
+                        ErrorCalculator = ((MainWindow)Application.Current.MainWindow).ErrorCalculator,
+                        InputsNumber = ((MainWindow)Application.Current.MainWindow).InputsNumber,
+                        IsBiasOn = ((MainWindow)Application.Current.MainWindow).IsBiasOn,
+                        Layers = ((MainWindow)Application.Current.MainWindow).Layers,
+                        LearningAlgorithm = ((MainWindow)Application.Current.MainWindow).LearningAlgorithm,
+                        MaxEpochs = ((MainWindow)Application.Current.MainWindow).MaxEpochs,
+                    };
+                    var network = creator.CreateNetwork(TaskType.Approximation, 30);
+                    ((MainWindow)Application.Current.MainWindow).Creator = creator;
+                    ((MainWindow)Application.Current.MainWindow).CurrentNetwork = network;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot start training without data for learning and testing. Setup data sources first.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Specify network layers first.");
+            }
         }
     }
 }

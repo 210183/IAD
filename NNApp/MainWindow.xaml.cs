@@ -7,6 +7,7 @@ using OxyPlot;
 using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -48,6 +49,8 @@ namespace NNApp
         private double desiredMaxError;
         private LearningAlgorithm learningAlgorithm;
 
+        public IDataProvider DataProvider { get; set; }
+
         public int InputsNumber { get => inputsNumber; set => inputsNumber = value; }
         public int OutputsNumber { get => outputsNumber; set => outputsNumber = value; }
         public bool IsBiasOn { get => isBiasOn; set => isBiasOn = value; }
@@ -64,6 +67,9 @@ namespace NNApp
         public IErrorCalculator ErrorCalculator { get => errorCalculator; set => errorCalculator = value; }
         public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
         public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }
+
+        public CompleteNetworkCreator Creator { get; set; }
+        public NeuralNetwork CurrentNetwork { get; set; }
         #endregion
 
         public MainWindow()
@@ -83,7 +89,6 @@ namespace NNApp
             openFileDialog.Title = "Test file";
             if (openFileDialog.ShowDialog() == true)
                 testFileName = openFileDialog.FileName;
-
         }
 
         private void SetParameters_Click(object sender, RoutedEventArgs e)
@@ -94,22 +99,45 @@ namespace NNApp
 
         private void Learn_Click(object sender, RoutedEventArgs e)
         {
-            Window paramWindow = new TrainerParametersWindow();
-            paramWindow.ShowDialog();
-            var dataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, OutputsNumber, isBiasOn);
-            var creator = new CompleteNetworkCreator()
+            //create data provider before moving further
+            if (TaskChooseComboBox.SelectedIndex > -1) // if any item was chosen 
             {
-                DataProvider = dataProvider,
-                DesiredError = desiredMaxError,
-                ErrorCalculator = errorCalculator,
-                InputsNumber = inputsNumber,
-                IsBiasOn = isBiasOn,
-                Layers = layers,
-                LearningAlgorithm = learningAlgorithm,
-                MaxEpochs = maxEpochs,
-            };
-            var network = creator.CreateNetwork(TaskType.Approximation, 30);
-            Thread.Sleep(1000_000_000);
+                if (File.Exists(learnFileName) && File.Exists(testFileName))
+                {
+                    if (TaskChooseComboBox.SelectedItem == Approximation || TaskChooseComboBox.SelectedItem == Transformation) // the same provider ffor both
+                    {
+                        DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+                    }
+                    else if (TaskChooseComboBox.SelectedItem == Classification)
+                    {
+                        DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+                    }
+                    Window paramWindow = new TrainerParametersWindow();
+                    paramWindow.ShowDialog();
+                } //create learning provdier
+                else if (File.Exists(testFileName))
+                {
+                    if (TaskChooseComboBox.SelectedItem == Approximation || TaskChooseComboBox.SelectedItem == Transformation) // the same provider ffor both
+                    {
+                        DataProvider = new ApproximationDataProvider(learnFileName , inputsNumber, outputsNumber, isBiasOn);
+                    }
+                    else if (TaskChooseComboBox.SelectedItem == Classification)
+                    {
+                        DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+                    }
+                    Window paramWindow = new TrainerParametersWindow();
+                    paramWindow.ShowDialog();
+                }   //create provider for test only purposes
+                else
+                {
+                    MessageBox.Show("Could not find any files under specified paths.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("You have to choose the type of the task first.");
+            }
+ 
         }
     }
 }

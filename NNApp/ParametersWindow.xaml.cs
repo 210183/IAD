@@ -55,6 +55,8 @@ namespace NNApp
             {
                 if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidUnipolar")
                     layers[currentLayer] = new LayerCharacteristic(Convert.ToInt32(CurrentLayerNeuronsBox.Text), new SigmoidUnipolarFunction());
+                else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidBipolar")
+                    layers[currentLayer] = new LayerCharacteristic(Convert.ToInt32(CurrentLayerNeuronsBox.Text), new SigmoidBipolarFunction());
                 else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "IdentityFunction")
                     layers[currentLayer] = new LayerCharacteristic(Convert.ToInt32(CurrentLayerNeuronsBox.Text), new IdentityFunction());
 

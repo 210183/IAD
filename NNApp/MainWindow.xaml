@@ -12,13 +12,14 @@
     </Window.DataContext>
     <Window.Resources>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="Gainsboro" Offset="0" />
-            <GradientStop Color="Gainsboro" Offset="0.5" />
-            <GradientStop Color="DarkGray" Offset="2" />
+            <GradientStop Color="FloralWhite" Offset="0" />
+            <GradientStop Color="Gainsboro" Offset="0.2" />
+            <GradientStop Color="Transparent" Offset="2.5" />
         </LinearGradientBrush>
         <Style TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="10"></Setter>
             <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="BorderBrush" Value="DarkOliveGreen" />
             <Setter Property="Width" Value="80" />
             <Setter Property="MaxWidth" Value="120" />
             <Setter Property="MaxHeight" Value="40" />
@@ -33,14 +34,14 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <!--  -->
         <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" Text="Choose type of task" Margin="10,10,10,10"/>
-        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="10,10,10,10">
+        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="10,10,10,10" SelectedIndex="0">
             <ComboBoxItem Name="Approximation">Approximation</ComboBoxItem>
             <ComboBoxItem Name="Classification">Classification</ComboBoxItem>
             <ComboBoxItem Name="Transformation">Transformation</ComboBoxItem>
