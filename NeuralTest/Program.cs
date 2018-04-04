@@ -29,7 +29,6 @@ namespace NeuralTest
             //dataProvider.LearnSet[1] = new Datum(Vector<double>.Build.Dense(2, 1), Vector<double>.Build.Dense(2, 0));
             var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm( new LearningRateHandler(0.01, 0.7,1.05,1.04), 0.2, 1.05));
 
-            trainer.TrainNetwork(network, 100);
             network.ConsoleDisplay();
             Console.ReadLine();
             #region old demo

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,14 +29,13 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        private string learnFileName;
-        private string testFileName;
+        private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
+        private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
         private int inputsNumber;
         private int outputsNumber;
         private bool isBiasOn;
         private LayerCharacteristic[] layers;
-
         
         private double learningRate;
         private double reductionRate;
@@ -96,7 +96,20 @@ namespace NNApp
         {
             Window paramWindow = new TrainerParametersWindow();
             paramWindow.ShowDialog();
-
+            var dataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, OutputsNumber, isBiasOn);
+            var creator = new CompleteNetworkCreator()
+            {
+                DataProvider = dataProvider,
+                DesiredError = desiredMaxError,
+                ErrorCalculator = errorCalculator,
+                InputsNumber = inputsNumber,
+                IsBiasOn = isBiasOn,
+                Layers = layers,
+                LearningAlgorithm = learningAlgorithm,
+                MaxEpochs = maxEpochs,
+            };
+            var network = creator.CreateNetwork(TaskType.Approximation, 30);
+            Thread.Sleep(1000_000_000);
         }
     }
 }

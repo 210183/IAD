@@ -30,20 +30,20 @@ namespace NNApp
         {
 
 
-            ((MainWindow)Application.Current.MainWindow).LearningRate = Convert.ToInt32(LearningRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).ReductionRate = Convert.ToInt32(ReductionRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).IncreaseRate = Convert.ToInt32(IncreaseRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).MaxErrorIncreaseRate = Convert.ToInt32(MaxErrorIncreaseRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).Momentum = Convert.ToInt32(MomentumBox.Text);
-            ((MainWindow)Application.Current.MainWindow).ErrorIncreaseCoefficient = Convert.ToInt32(ErrorIncreaseCoefficientBox.Text);
+            ((MainWindow)Application.Current.MainWindow).LearningRate = Convert.ToDouble(LearningRateBox.Text);
+            ((MainWindow)Application.Current.MainWindow).ReductionRate = Convert.ToDouble(ReductionRateBox.Text);
+            ((MainWindow)Application.Current.MainWindow).IncreaseRate = Convert.ToDouble(IncreaseRateBox.Text);
+            ((MainWindow)Application.Current.MainWindow).MaxErrorIncreaseRate = Convert.ToDouble(MaxErrorIncreaseRateBox.Text);
+            ((MainWindow)Application.Current.MainWindow).Momentum = Convert.ToDouble(MomentumBox.Text);
+            ((MainWindow)Application.Current.MainWindow).ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
 
             ((MainWindow)Application.Current.MainWindow).MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
-            ((MainWindow)Application.Current.MainWindow).DesiredMaxError = Convert.ToInt32(DesiredMaxErrorBox.Text);
+            ((MainWindow)Application.Current.MainWindow).DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
 
-            LearningRateHandler tempHandler = new LearningRateHandler(Convert.ToInt32(LearningRateBox.Text), Convert.ToInt32(ReductionRateBox.Text), Convert.ToInt32(IncreaseRateBox.Text), Convert.ToInt32(MaxErrorIncreaseRateBox.Text));
+            LearningRateHandler tempHandler = new LearningRateHandler(Convert.ToDouble(LearningRateBox.Text), Convert.ToDouble(ReductionRateBox.Text), Convert.ToDouble(IncreaseRateBox.Text), Convert.ToDouble(MaxErrorIncreaseRateBox.Text));
 
             if (LearningAlgorithmComboBox.Text == "Back Propagation")
-                ((MainWindow)Application.Current.MainWindow).LearningAlgorithm = new BackPropagationAlgorithm(tempHandler, Convert.ToInt32(MomentumBox.Text), Convert.ToInt32(ErrorIncreaseCoefficientBox.Text));
+                ((MainWindow)Application.Current.MainWindow).LearningAlgorithm = new BackPropagationAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
             if (ErrorCalculatorComboBox.Text == "Mean Square Error")
                 ((MainWindow)Application.Current.MainWindow).ErrorCalculator = new MeanSquareErrorCalculator();
         }

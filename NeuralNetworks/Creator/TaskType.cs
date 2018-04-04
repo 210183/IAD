@@ -9,7 +9,7 @@ namespace NeuralNetworks
     /// <summary>
     /// Signalizes which type of task should network be able to solve
     /// </summary>
-    enum TaskType
+    public enum TaskType
     {
         Approximation,
         Classification,

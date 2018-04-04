@@ -18,13 +18,13 @@ namespace NNApp
         public MainViewModel()
         {
             #region create and train network
-            string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
-            string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
+            //string learningFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
+            //string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
 
-            string svgFileName = @"C:\Users\Jakub\Desktop\nowy.svg";
+            //string svgFileName = @"C:\Users\Jakub\Desktop\nowy.svg";
 
-            //string learningFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
-            //string testFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+            string learningFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+            string testFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
 
             int inputsNumber = 4;
 
@@ -55,11 +55,11 @@ namespace NNApp
             MyModel.Series.Add(series);
             MyModel.InvalidatePlot(true);
             #endregion
-            using (var stream = File.Create(svgFileName))
-            {
-                var exporter = new SvgExporter { Width = 600, Height = 400 };
-                exporter.Export(MyModel, stream);
-            }
+            //using (var stream = File.Create(svgFileName))
+            //{
+            //    var exporter = new SvgExporter { Width = 600, Height = 400 };
+            //    exporter.Export(MyModel, stream);
+            //}
         }
         public PlotModel MyModel { get; private set; }
     }

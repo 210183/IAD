@@ -14,7 +14,7 @@ namespace NeuralNetworks
     /// Constructs neural networks to solve given problem. Creates many networks and choose best.
     /// Stores building parameters and history, so that user can view them.
     /// </summary>
-    class CompleteNetworkCreator
+    public class CompleteNetworkCreator
     {
         #region properties to be set from outside
         public ILearningProvider DataProvider { get; set; }
