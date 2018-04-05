@@ -24,7 +24,7 @@ namespace NNApp
             //string svgFileName = @"C:\Users\Jakub\Desktop\nowy.svg";
 
             string learningFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
-            string testFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+            string testFileName = @"C:\Users\Lola\Desktop\classification_test.txt";
 
             int inputsNumber = 4;
 
@@ -40,15 +40,26 @@ namespace NNApp
             var trainer = new OnlineTrainer(new MeanSquareErrorCalculator(), dataProvider, new BackPropagationAlgorithm(new LearningRateHandler(0.001, 0.8, 1.1, 1.05), 0.02, 1.05));
 
             trainer.TrainNetwork(network, 100);
-
+            var creator = new CompleteNetworkCreator()
+            {
+                DataProvider = dataProvider,
+                DesiredError = 0,
+                ErrorCalculator = new MeanSquareErrorCalculator(),
+                InputsNumber = inputsNumber,
+                IsBiasOn = true,
+                Layers = layers,
+                LearningAlgorithm = new BackPropagationAlgorithm(new LearningRateHandler(0.001, 0.8, 1.1, 1.05), 0.02, 1.05),
+                MaxEpochs = 200,
+            };
+            var bestNetwork = creator.CreateNetwork(TaskType.Classification, 1);
             #endregion
 
             #region 
             MyModel = new PlotModel { Title = "Main Network" };
             var FirstLineSeriesPoints = new List<DataPoint>();
-            for (int i = 0; i < trainer.EpochErrorHistory.Count; i++) // adding data
+            for (int i = 0; i < creator.BestNetworkEpochHistory.Count; i++) // adding data
             {
-                FirstLineSeriesPoints.Add(new DataPoint(i, trainer.EpochErrorHistory[i]));
+                FirstLineSeriesPoints.Add(new DataPoint(i, creator.BestNetworkEpochHistory[i]));
             }
             var series = new LineSeries();
             series.ItemsSource = FirstLineSeriesPoints;

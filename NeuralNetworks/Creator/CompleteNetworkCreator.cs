@@ -109,8 +109,8 @@ namespace NeuralNetworks
         private void CreateResultMatrixForClassification(NeuralNetwork network)
         {
             var testSet = DataProvider.DataSet; //helper variable to shorten code and clarify;
-            int numberOfClasses = network.Layers[Layers.Length].Weights.ColumnCount; //neurons in last layer
-            Matrix<double> ClassificationFullResults = Matrix<double>.Build.Dense(numberOfClasses, numberOfClasses);
+            int numberOfClasses = network.Layers[Layers.Length - 1].Weights.ColumnCount; //neurons in last layer
+            ClassificationFullResults = Matrix<double>.Build.Dense(numberOfClasses, numberOfClasses);
             for (int dataIndex = 0; dataIndex < testSet.Length; dataIndex++)
             {
                 var output = network.CalculateOutput(testSet[dataIndex].X, CalculateMode.NetworkOutput);

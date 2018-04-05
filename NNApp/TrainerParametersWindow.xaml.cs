@@ -66,7 +66,7 @@ namespace NNApp
                         LearningAlgorithm = ((MainWindow)Application.Current.MainWindow).LearningAlgorithm,
                         MaxEpochs = ((MainWindow)Application.Current.MainWindow).MaxEpochs,
                     };
-                    var network = creator.CreateNetwork(TaskType.Approximation, 30);
+                    var network = creator.CreateNetwork(GetChosenTaskType(), 1);
                     ((MainWindow)Application.Current.MainWindow).Creator = creator;
                     ((MainWindow)Application.Current.MainWindow).CurrentNetwork = network;
                 }
@@ -78,6 +78,26 @@ namespace NNApp
             else
             {
                 MessageBox.Show("Specify network layers first.");
+            }
+        }
+        private TaskType GetChosenTaskType()
+        {
+            var window = ((MainWindow)Application.Current.MainWindow);
+            if (window.TaskChooseComboBox.SelectedItem == window.Approximation)
+            {
+                return TaskType.Approximation;
+            }
+            else if (window.TaskChooseComboBox.SelectedItem == window.Classification)
+            {
+                return TaskType.Classification;
+            }
+            else if (window.TaskChooseComboBox.SelectedItem == window.Transformation)
+            {
+                return TaskType.Transformation;
+            }
+            else
+            {
+                return TaskType.None;
             }
         }
     }

@@ -11,6 +11,7 @@ namespace NeuralNetworks
     /// </summary>
     public enum TaskType
     {
+        None = 0,
         Approximation,
         Classification,
         Transformation
