@@ -39,7 +39,7 @@ namespace NeuralNetworks.Data
                 singleOutputData.Clear();
 
                 tempLine = tempInputOutputSet[i].Split(delimiter);
-                if (tempLine.Count() == inputsNumber + outputsNumber)
+                if (tempLine.Count() == inputsNumber + 1) //1 for outputs column
                 {
                     if (isBiasOn)
                         singleInputData[0] = 1;
@@ -48,11 +48,10 @@ namespace NeuralNetworks.Data
                     {
                         singleInputData[j] = Convert.ToDouble(tempLine[j - biasModifier]);
                     }
-                    for (int j = 0; j < outputsNumber; j++)
-                    {
-                       int classNumber  = Convert.ToInt16(tempLine[inputsNumber + j]);
-                        singleOutputData[classNumber - 1] = 1;
-                    }
+
+                    int classNumber  = Convert.ToInt16(tempLine[inputsNumber]);
+                    singleOutputData[classNumber - 1] = 1;
+
                 }
                 tempData[i] = new Datum(Vector<double>.Build.DenseOfVector(singleInputData), Vector<double>.Build.DenseOfVector(singleOutputData));
             }

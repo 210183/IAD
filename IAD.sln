@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralTest", "NeuralTest\Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NNApp", "NNApp\NNApp.csproj", "{B2419AD0-3EEA-46A1-BF79-D963B1761CDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworksTests", "NeuralNetworksTests\NeuralNetworksTests.csproj", "{A33243A8-6BC3-4F8A-9D17-9CC9583F4D63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B2419AD0-3EEA-46A1-BF79-D963B1761CDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2419AD0-3EEA-46A1-BF79-D963B1761CDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2419AD0-3EEA-46A1-BF79-D963B1761CDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A33243A8-6BC3-4F8A-9D17-9CC9583F4D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A33243A8-6BC3-4F8A-9D17-9CC9583F4D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A33243A8-6BC3-4F8A-9D17-9CC9583F4D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A33243A8-6BC3-4F8A-9D17-9CC9583F4D63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
