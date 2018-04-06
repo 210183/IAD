@@ -1,13 +1,13 @@
 ﻿TODO:
 	- V zapisyswanie historii błedu 
-	- testowanie na zbiorze testwoym
+	- ~V testowanie na zbiorze testwoym
 	- debugging (poprawa) algorytm uczenia
 	- offline trainer
 	UI: 
-		- wybór zadania
-			- wybór plików
-			- wybór parametrów uczenia
-			-  uczenie sieci
+		V - wybór zadania
+			V - wybór plików
+			V - wybór parametrów uczenia
+			~V -  uczenie sieci
 		- POSTPONED wybór algorytmu 
 		- testowanie sieci
 			- na wczytanych danych testowych

@@ -30,8 +30,8 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        private string learnFileName = @"C:\Users\Jakub\Desktop\approximation_train_1.txt";
-        private string testFileName = @"C:\Users\Jakub\Desktop\approximation_test.txt";
+        private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
+        private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
         private int inputsNumber;
         private int outputsNumber;
@@ -104,11 +104,11 @@ namespace NNApp
             {
                 if (File.Exists(learnFileName) && File.Exists(testFileName))
                 {
-                    if (TaskChooseComboBox.SelectedItem == Approximation || TaskChooseComboBox.SelectedItem == Transformation) // the same provider ffor both
+                    if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
                     {
                         DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
                     }
-                    else if (TaskChooseComboBox.SelectedItem == Classification)
+                    else if (GetCurrentTaskType() == TaskType.Classification)
                     {
                         DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
                     }
@@ -117,11 +117,11 @@ namespace NNApp
                 } //create learning provdier
                 else if (File.Exists(testFileName))
                 {
-                    if (TaskChooseComboBox.SelectedItem == Approximation || TaskChooseComboBox.SelectedItem == Transformation) // the same provider ffor both
+                    if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
                     {
                         DataProvider = new ApproximationDataProvider(learnFileName , inputsNumber, outputsNumber, isBiasOn);
                     }
-                    else if (TaskChooseComboBox.SelectedItem == Classification)
+                    else if (GetCurrentTaskType() == TaskType.Classification)
                     {
                         DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
                     }
@@ -139,5 +139,41 @@ namespace NNApp
             }
  
         }
+
+        private void NetworkResults_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentNetwork != null)
+            {
+                if (Creator != null)
+                {
+                    Window networkWindow = new NetworkStatsWindow(GetCurrentTaskType());
+                    networkWindow.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("You need to use some network creater first");
+                }
+            }
+            else
+            {
+                MessageBox.Show("You need to train some network first");
+            }
+        }
+
+        #region helper methods
+
+        private TaskType GetCurrentTaskType()
+        {
+            if (TaskChooseComboBox.SelectedItem == Approximation)
+                return TaskType.Approximation;
+            else if (TaskChooseComboBox.SelectedItem == Classification)
+                return TaskType.Classification;
+            else if (TaskChooseComboBox.SelectedItem == Transformation)
+                return TaskType.Transformation;
+            else
+                return TaskType.None;
+        }
+
+        #endregion
     }
 }

@@ -25,6 +25,7 @@ namespace NeuralNetworks
         public IErrorCalculator ErrorCalculator { get; set; }
         public int MaxEpochs { get; set; }
         public double DesiredError { get; set; }
+        public int NumberOfPointForApproximationFunction { get; set; } = 1000;
         #endregion
 
         public NeuralNetwork BestNetwork { get; set; }
@@ -36,7 +37,14 @@ namespace NeuralNetworks
         /// Best network result on test set can be seen here after CreateNetwork.
         /// </summary>
         public double BestTestError { get; set; } = 0;
+        /// <summary>
+        /// Matrix representing which class was recognized as which
+        /// </summary>
         public Matrix<double> ClassificationFullResults { get; set; }
+        /// <summary>
+        /// Set of point generated to visualize approximation function built by best network
+        /// </summary>
+        public Vector<double> ApproximationFunctionPoints { get; set; }
 
         /// <summary>
         /// Creates new networks with randomized initial weights, learns and tests them. Chooses best of all created. 
@@ -55,7 +63,9 @@ namespace NeuralNetworks
                 if (isUpdated)
                     BestNetworkEpochHistory = trainer.CurrentEpochErrorVector; // save learning history of best network
             }
-            if (taskType == TaskType.Classification)
+            if (taskType == TaskType.Approximation)
+                CreateApproximationFunctionPoints(BestNetwork); //generate approximation function visualization
+            else if (taskType == TaskType.Classification)
                 CreateResultMatrixForClassification(BestNetwork); //generate full results (divided by classes)
             return BestNetwork;
         }
@@ -117,6 +127,44 @@ namespace NeuralNetworks
                 int chosenClassNumber = output.MaximumIndex();
                 int properClassNumber = testSet[dataIndex].D.MaximumIndex();
                 ClassificationFullResults[chosenClassNumber, properClassNumber] += 1;
+            }
+        }
+
+        /// <summary>
+        /// Works correctly for approximation with single value output.
+        /// Otherwise will just take first value from network output as function value.
+        /// </summary>
+        /// <param name="network"></param>
+        private void CreateApproximationFunctionPoints(NeuralNetwork network)
+        {
+            ApproximationFunctionPoints = Vector<double>.Build.Dense(NumberOfPointForApproximationFunction);
+            double maximum = 0, minimum = 0;
+            foreach (var data in DataProvider.DataSet) // choose max and min
+            {
+                if(data.X.Max() > maximum)
+                {
+                    maximum = data.X.Max();
+                }
+                if (data.X.Min() > minimum)
+                {
+                    minimum = data.X.Min();
+                }
+            }
+            double step = maximum - minimum / NumberOfPointForApproximationFunction;
+            double xValue = minimum;
+            var output = Vector<double>.Build.Dense(1);
+            for (int index = 0; index < NumberOfPointForApproximationFunction; index++)
+            {
+                if (network.IsBiasExisting)
+                {
+                    output = network.CalculateOutput( Vector<double>.Build.Dense(new double[2] {1, xValue }) );
+                }
+                else
+                {
+                    output = network.CalculateOutput( Vector<double>.Build.Dense(new double[1] {xValue}) );
+                }
+                ApproximationFunctionPoints[index] = output[0]; //Assumed approximation will have only single output
+                xValue += step;
             }
         }
     }
