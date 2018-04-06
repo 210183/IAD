@@ -82,25 +82,37 @@ namespace NNApp
             }
             else if (taskType == TaskType.Classification)
             {
+                var newBorder = new Border();
+                newBorder.BorderThickness = new Thickness(3);
+                newBorder.BorderBrush = Brushes.Black;
+
+               
+
+
                 var classGrid = new UniformGrid
                 {
                     Rows = Creator.ClassificationFullResults.RowCount + 1,
-                    Columns = Creator.ClassificationFullResults.ColumnCount + 1,                   
+                    Columns = Creator.ClassificationFullResults.ColumnCount + 1,
                     
                 };
-                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center});
+
+                //No way to set Border on textblock defined in code behind; changing for TextBox is a way to make border but still it doesn't look like a table
+
+                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center});
                 for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++) //ceate column names as class number bolded
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center });
+                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center });
                 }
                 for (int rowIndex = 0; rowIndex < Creator.ClassificationFullResults.RowCount; rowIndex++)
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center }); //add row name = class number bolded
+                    classGrid.Children.Add( new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center }); //add row name = class number bolded
                     for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++)
                     {
-                        classGrid.Children.Add(new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), VerticalAlignment = System.Windows.VerticalAlignment.Center });
+                        classGrid.Children.Add( new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center });
+                        
                     }
                 }
+                
                 NetworkStatsMainGrid.Children.Add(classGrid);
                 Grid.SetColumn(classGrid, 4);
                 Grid.SetColumnSpan(classGrid, 4);
