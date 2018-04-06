@@ -132,6 +132,11 @@ namespace NNApp
         }
 
         #region helper methods
+        /// <summary>
+        /// Calculates whole classifier accuracy (all proper / all)
+        /// </summary>
+        /// <param name="classificationResults"></param>
+        /// <returns></returns>
         private double CalculateAccuracy(Matrix<int> classificationResults)
         {
             int properlyClassified = 0;
@@ -196,30 +201,40 @@ namespace NNApp
                 classSensitivity = classTruePositive / classAll;
                 sumaricSensitivity += classSensitivity;
             }
-            double meanPrecision = sumaricSensitivity / classificationResults.ColumnCount;
-            return meanPrecision;
+            double meanSensitivity = sumaricSensitivity / classificationResults.ColumnCount;
+            return meanSensitivity;
         }
 
-        private double CalculateSensitivity(Matrix<int> classificationResults)
+        /// <summary>
+        /// Calculates arithmetic mean Specificity
+        /// </summary>
+        /// <param name="classificationResults"></param>
+        /// <returns></returns>
+        private double CalculateSpecificity(Matrix<int> classificationResults)
         {
             if (classificationResults.RowCount != classificationResults.ColumnCount)
                 throw new ArgumentException("Matrix has to be square");
 
-            double sumaricSensitivity = 0;
-            for (int classNumber = 0; classNumber < classificationResults.ColumnCount; classNumber++) //here classes are enumerated from 0
+            double sumaricSpecificity = 0;
+            for (int classNumber = 0; classNumber < classificationResults.RowCount; classNumber++) //here classes are enumerated from 0
             {
-                double classSensitivity = 0;
-                int classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
-                int classAll = 0;
-                for (int columnIndex = 0; columnIndex < classificationResults.ColumnCount; columnIndex++)
+                double classSpecificity = 0;
+                int classTrueNegative = 0;
+                for (int diagonalIndex = 0; diagonalIndex < classificationResults.RowCount; diagonalIndex++)
                 {
-                    classAll += classificationResults[classNumber, columnIndex];
+                    if (diagonalIndex != classNumber) // all positives other than current class 
+                        classTrueNegative += classificationResults[diagonalIndex, diagonalIndex]; 
                 }
-                classSensitivity = classTruePositive / classAll;
-                sumaricSensitivity += classSensitivity;
+                int classAll = classTrueNegative; //first ingredient, second added below in parts
+                for (int rowIndex = 0; rowIndex < classificationResults.ColumnCount; rowIndex++) // False Positive
+                {
+                    classAll += classificationResults[rowIndex, classNumber];
+                }
+                classSpecificity = classTrueNegative / classAll;
+                sumaricSpecificity += classSpecificity;
             }
-            double meanPrecision = sumaricSensitivity / classificationResults.ColumnCount;
-            return meanPrecision;
+            double meanSpecificity = sumaricSpecificity / classificationResults.ColumnCount;
+            return meanSpecificity;
         }
         #endregion
     }
