@@ -85,7 +85,8 @@ namespace NNApp
                 var classGrid = new UniformGrid
                 {
                     Rows = Creator.ClassificationFullResults.RowCount + 1,
-                    Columns = Creator.ClassificationFullResults.ColumnCount + 1
+                    Columns = Creator.ClassificationFullResults.ColumnCount + 1,                   
+                    
                 };
                 classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center});
                 for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++) //ceate column names as class number bolded

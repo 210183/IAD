@@ -49,37 +49,37 @@
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <!--#region Error and other metrics-->
-        <DataGridCell Grid.Column="0" Grid.Row="0" Background="SteelBlue"></DataGridCell>
+        <DataGridCell Grid.Column="0" Grid.Row="0" Background="SteelBlue" BorderThickness="0"></DataGridCell>
         <TextBlock Grid.Column="0" Grid.Row="0" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Test error: </TextBlock>
-        <DataGridCell Grid.Column="1" Grid.Row="0" Background="Gainsboro"></DataGridCell>
+        <DataGridCell Grid.Column="1" Grid.Row="0" Background="Gainsboro" BorderThickness="0"></DataGridCell>
         <TextBlock Name="TestErrorTextBlock" Grid.Column="1" Grid.Row="0" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
-        <DataGridCell Grid.Column="0" Grid.Row="1" Background="SteelBlue"></DataGridCell>
+        <DataGridCell Grid.Column="0" Grid.Row="1" Background="SteelBlue" BorderThickness="0"></DataGridCell>
         <TextBlock Grid.Column="0" Grid.Row="1" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Accuracy:</TextBlock>
-        <DataGridCell Grid.Column="1" Grid.Row="1" Background="Gainsboro"></DataGridCell>
+        <DataGridCell Grid.Column="1" Grid.Row="1" Background="Gainsboro" BorderThickness="0"></DataGridCell>
         <TextBlock Name="AccuracyValueTextBlock" Grid.Column="1" Grid.Row="1" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
-        <DataGridCell Grid.Column="2" Grid.Row="1" Background="SteelBlue"></DataGridCell>
+        <DataGridCell Grid.Column="2" Grid.Row="1" Background="SteelBlue" BorderThickness="0"></DataGridCell>
         <TextBlock Grid.Column="2" Grid.Row="1" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Precision:</TextBlock>
-        <DataGridCell Grid.Column="3" Grid.Row="1" Background="Gainsboro"></DataGridCell>
+        <DataGridCell Grid.Column="3" Grid.Row="1" Background="Gainsboro" BorderThickness="0"></DataGridCell>
         <TextBlock Name="PrecisionValueTextBlock" Grid.Column="3" Grid.Row="1" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
-        <DataGridCell Grid.Column="0" Grid.Row="2" Background="SteelBlue"></DataGridCell>
+        <DataGridCell Grid.Column="0" Grid.Row="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
         <TextBlock Grid.Column="0" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Sensitivity:</TextBlock>
-        <DataGridCell Grid.Column="1" Grid.Row="2" Background="Gainsboro"></DataGridCell>
+        <DataGridCell Grid.Column="1" Grid.Row="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
         <TextBlock Name="SensitivityValueTextBlock" Grid.Column="1" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
-        <DataGridCell Grid.Column="2" Grid.Row="2" Background="SteelBlue"></DataGridCell>
+        <DataGridCell Grid.Column="2" Grid.Row="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
         <TextBlock Grid.Column="2" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Specificity:</TextBlock>
-        <DataGridCell Grid.Column="3" Grid.Row="2" Background="Gainsboro"></DataGridCell>
+        <DataGridCell Grid.Column="3" Grid.Row="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
         <TextBlock Name="SpecificityValueTextBlock" Grid.Column="3" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
         <!--#endregion-->
-        
-        <DataGridRow Background="SteelBlue" Grid.Row="3" Margin="0,0,0,0" Grid.ColumnSpan="8" BorderBrush="Aquamarine"></DataGridRow>
-        <DataGridRow Background="LightBlue" Grid.Row="4" Margin="0,0,0,0" Grid.ColumnSpan="3" BorderBrush="Aquamarine"></DataGridRow>
-        <DataGridRow Background="LightBlue" Grid.Row="4" Margin="0,0,0,0" Grid.Column="5" Grid.ColumnSpan="3" BorderBrush="Aquamarine"></DataGridRow>
 
-        <DataGridCell Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="2" Background="SteelBlue"></DataGridCell>
+        <DataGridCell Background="SteelBlue" Grid.Row="3" Margin="0,0,0,0" Grid.ColumnSpan="8" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
+        <DataGridCell Background="SteelBlue" Grid.Row="4" Margin="0,0,0,0" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
+        <DataGridCell Background="SteelBlue" Grid.Row="4" Margin="0,0,0,0" Grid.Column="5" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
+
+        <DataGridCell Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
         <Button Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="3" Grid.Row="4" >Previous</Button>
         <Button Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="4">Next</Button>
         <oxy:PlotView Name="NetworkStatsMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="3" Grid.Row="5"/>
