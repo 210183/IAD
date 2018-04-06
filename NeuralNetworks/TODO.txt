@@ -16,3 +16,4 @@
 				- wartości błędów itp
 				- jeżeli odpowiednie do zadania
 					-wyświetlenie np postaci otrzymanej funkcji aproksymacji
+!!!!!!!!! Naprawić wykres błędu uczenia !!!!!!!!!!!!!!!!!!!

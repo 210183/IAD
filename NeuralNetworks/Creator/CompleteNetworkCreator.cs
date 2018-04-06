@@ -61,7 +61,7 @@ namespace NeuralNetworks
                 trainer.TrainNetwork(currentNetwork, MaxEpochs, DesiredError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
                 if (isUpdated)
-                    BestNetworkEpochHistory = trainer.CurrentEpochErrorVector; // save learning history of best network
+                    BestNetworkEpochHistory = trainer.EpochErrorHistory; // save learning history of best network
             }
             if (taskType == TaskType.Approximation)
                 CreateApproximationFunctionPoints(BestNetwork); //generate approximation function visualization
@@ -164,7 +164,7 @@ namespace NeuralNetworks
                     output = network.CalculateOutput( Vector<double>.Build.Dense(new double[1] {xValue}) );
                 }
                 ApproximationFunctionPoints[index] = output[0]; //Assumed approximation will have only single output
-                xValue += step;
+                xValue += step; 
             }
         }
     }

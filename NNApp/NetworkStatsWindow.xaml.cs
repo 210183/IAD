@@ -112,6 +112,13 @@ namespace NNApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
+            if(Creator.ClassificationFullResults != null)
+            {
+                PrecisionValueTextBlock.Text = Math.Round( CalculatePrecision(Creator.ClassificationFullResults), 4 ).ToString();
+                AccuracyValueTextBlock.Text = Math.Round(CalculateAccuracy(Creator.ClassificationFullResults), 4).ToString();
+                SpecificityValueTextBlock.Text = Math.Round(CalculateSpecificity(Creator.ClassificationFullResults), 4).ToString();
+                SensitivityValueTextBlock.Text = Math.Round(CalculateSensitivity(Creator.ClassificationFullResults), 4).ToString();
+            }
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
@@ -138,9 +145,9 @@ namespace NNApp
         /// </summary>
         /// <param name="classificationResults"></param>
         /// <returns></returns>
-        private double CalculateAccuracy(Matrix<int> classificationResults)
+        private double CalculateAccuracy(Matrix<double> classificationResults)
         {
-            int properlyClassified = 0;
+            double properlyClassified = 0;
             for (int i = 0; i < classificationResults.RowCount; i++)
             {
                 for (int j = 0; j < classificationResults.ColumnCount; j++)
@@ -157,7 +164,7 @@ namespace NNApp
         /// </summary>
         /// <param name="classificationResults"></param>
         /// <returns></returns>
-        private double CalculatePrecision(Matrix<int> classificationResults)
+        private double CalculatePrecision(Matrix<double> classificationResults)
         {
             if (classificationResults.RowCount != classificationResults.ColumnCount)
                 throw new ArgumentException("Matrix has to be square");
@@ -166,8 +173,8 @@ namespace NNApp
             for (int classNumber = 0; classNumber < classificationResults.RowCount; classNumber++) //here classes are enumerated from 0
             {
                 double classPrecision = 0;
-                int classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
-                int classAll = 0;
+                double classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
+                double classAll = 0;
                 for (int rowIndex = 0; rowIndex < classificationResults.RowCount; rowIndex++) 
                 {
                     classAll += classificationResults[rowIndex, classNumber];
@@ -184,7 +191,7 @@ namespace NNApp
         /// </summary>
         /// <param name="classificationResults"></param>
         /// <returns></returns>
-        private double CalculateSensitivity(Matrix<int> classificationResults)
+        private double CalculateSensitivity(Matrix<double> classificationResults)
         {
             if (classificationResults.RowCount != classificationResults.ColumnCount)
                 throw new ArgumentException("Matrix has to be square");
@@ -193,8 +200,8 @@ namespace NNApp
             for (int classNumber = 0; classNumber < classificationResults.ColumnCount; classNumber++) //here classes are enumerated from 0
             {
                 double classSensitivity = 0;
-                int classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
-                int classAll = 0;
+                double classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
+                double classAll = 0;
                 for (int columnIndex = 0; columnIndex < classificationResults.ColumnCount; columnIndex++)
                 {
                     classAll += classificationResults[classNumber, columnIndex];
@@ -211,7 +218,7 @@ namespace NNApp
         /// </summary>
         /// <param name="classificationResults"></param>
         /// <returns></returns>
-        private double CalculateSpecificity(Matrix<int> classificationResults)
+        private double CalculateSpecificity(Matrix<double> classificationResults)
         {
             if (classificationResults.RowCount != classificationResults.ColumnCount)
                 throw new ArgumentException("Matrix has to be square");
@@ -220,13 +227,13 @@ namespace NNApp
             for (int classNumber = 0; classNumber < classificationResults.RowCount; classNumber++) //here classes are enumerated from 0
             {
                 double classSpecificity = 0;
-                int classTrueNegative = 0;
+                double classTrueNegative = 0;
                 for (int diagonalIndex = 0; diagonalIndex < classificationResults.RowCount; diagonalIndex++)
                 {
                     if (diagonalIndex != classNumber) // all positives other than current class 
                         classTrueNegative += classificationResults[diagonalIndex, diagonalIndex]; 
                 }
-                int classAll = classTrueNegative; //first ingredient, second added below in parts
+                double classAll = classTrueNegative; //first ingredient, second added below in parts
                 for (int rowIndex = 0; rowIndex < classificationResults.ColumnCount; rowIndex++) // False Positive
                 {
                     classAll += classificationResults[rowIndex, classNumber];
