@@ -21,8 +21,8 @@
             <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
             <Setter Property="BorderBrush" Value="DarkOliveGreen" />
             <Setter Property="Width" Value="80" />
-            <Setter Property="MaxWidth" Value="120" />
-            <Setter Property="MaxHeight" Value="40" />
+            <Setter Property="MaxWidth" Value="240" />
+            <Setter Property="MaxHeight" Value="80" />
             <Setter Property="Margin" Value="5" />
         </Style>
     </Window.Resources>
@@ -34,23 +34,22 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="0*" />
+            <RowDefinition Height="0*" />
         </Grid.RowDefinitions>
         <!--  -->
-        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" Text="Choose type of task" Margin="10,10,10,10"/>
-        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="10,10,10,10" SelectedIndex="0">
-            <ComboBoxItem Name="Approximation">Approximation</ComboBoxItem>
+        <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="0" TextWrapping="Wrap" FontSize="18" TextAlignment="Center" Text="Choose type of task" Margin="10,10,10,10"/>
+        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" Margin="10,10,10,10" SelectedIndex="1" FontSize="24" VerticalAlignment="Center">
+            <ComboBoxItem Name="Approximation" >Approximation</ComboBoxItem>
             <ComboBoxItem Name="Classification">Classification</ComboBoxItem>
             <ComboBoxItem Name="Transformation">Transformation</ComboBoxItem>
         </ComboBox>
         <!-- Buttons -->
-        <Button Name="DataFilesButton" Grid.Column="0" Grid.Row="1" Click="DataFilesButton_Click"> Choose data files</Button>
+        <Button Name="DataFilesButton" Grid.Column="0" Grid.Row="1" Click="DataFilesButton_Click" HorizontalAlignment="Center"> Choose data files</Button>
         <Button Name="SetParameters" Grid.Column="1" Grid.Row="1" Click="SetParameters_Click">Set parameters</Button>
         <Button Name="Learn" Grid.Column="2" Grid.Row="1" Click="Learn_Click">Learn</Button>
         <Button Name="NetworkResults" Grid.Column="3" Grid.Row="1" Click="NetworkResults_Click">Network Results</Button>
-        <oxy:PlotView Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="2" Model="{Binding MyModel}"/>
     </Grid>
 </Window>

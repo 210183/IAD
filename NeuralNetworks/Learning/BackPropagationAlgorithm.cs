@@ -63,7 +63,7 @@ namespace NeuralNetworks
             {
                 for (int neuronIndex = 0; neuronIndex < layers[layerIndex].Weights.ColumnCount; neuronIndex++)
                 {
-                    for(int weightIndex=0; weightIndex < layers[layerIndex].Weights.RowCount; weightIndex++)
+                    for(int weightIndex = 0; weightIndex < layers[layerIndex].Weights.RowCount; weightIndex++)
                     {
                         var derivative = network.LastDerivatives[layerIndex][neuronIndex];
                         var signal = network.LastOutputs[layerIndex][weightIndex];

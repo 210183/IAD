@@ -78,20 +78,22 @@ namespace NNApp
             }
             else if (taskType == TaskType.Classification)
             {
-                var classGrid = new UniformGrid();
-                classGrid.Rows = Creator.ClassificationFullResults.RowCount + 1;
-                classGrid.Columns = Creator.ClassificationFullResults.ColumnCount + 1;
-                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold });
+                var classGrid = new UniformGrid
+                {
+                    Rows = Creator.ClassificationFullResults.RowCount + 1,
+                    Columns = Creator.ClassificationFullResults.ColumnCount + 1
+                };
+                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, TextAlignment=TextAlignment.Center });
                 for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++) //ceate column names as class number bolded
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold });
+                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, TextAlignment = TextAlignment.Center });
                 }
                 for (int rowIndex = 0; rowIndex < Creator.ClassificationFullResults.RowCount; rowIndex++)
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold }); //add row name = class number bolded
+                    classGrid.Children.Add(new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, TextAlignment = TextAlignment.Center }); //add row name = class number bolded
                     for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++)
                     {
-                        classGrid.Children.Add(new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString() });
+                        classGrid.Children.Add(new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), TextAlignment = TextAlignment.Center });
                     }
                 }
                 NetworkStatsMainGrid.Children.Add(classGrid);
