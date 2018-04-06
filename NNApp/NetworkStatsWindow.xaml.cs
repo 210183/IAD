@@ -98,17 +98,17 @@ namespace NNApp
 
                 //No way to set Border on textblock defined in code behind; changing for TextBox is a way to make border but still it doesn't look like a table
 
-                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center});
+                classGrid.Children.Add(new TextBox() { BorderThickness = new Thickness(1), Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center, MinHeight = 50});
                 for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++) //ceate column names as class number bolded
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center });
+                    classGrid.Children.Add(new TextBox() { BorderThickness = new Thickness(1), Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center, MinHeight = 50 });
                 }
                 for (int rowIndex = 0; rowIndex < Creator.ClassificationFullResults.RowCount; rowIndex++)
                 {
-                    classGrid.Children.Add( new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center }); //add row name = class number bolded
+                    classGrid.Children.Add( new TextBox() { BorderThickness = new Thickness(1), Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center, MinHeight = 50 }); //add row name = class number bolded
                     for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++)
                     {
-                        classGrid.Children.Add( new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center });
+                        classGrid.Children.Add( new TextBox() { BorderThickness = new Thickness(1), Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), VerticalAlignment = System.Windows.VerticalAlignment.Center, TextAlignment = System.Windows.TextAlignment.Center, MinHeight = 50 });
                         
                     }
                 }
