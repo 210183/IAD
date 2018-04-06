@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using OxyPlot;
 using OxyPlot.Series;
 using System.Windows.Controls.Primitives;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace NNApp
 {
@@ -32,9 +33,12 @@ namespace NNApp
         {
             InitializeComponent();
             ChosenTask = taskType;
-            TestErrorTextBlock.Text = Creator.BestTestError.ToString();
+            TestErrorTextBlock.Text = Math.Round(Creator.BestTestError).ToString();
 
-            PlotModels = new PlotModel[2]; // TODO: How big sohuld that be ?
+            if (taskType == TaskType.Approximation)
+                PlotModels = new PlotModel[2];
+            else
+                PlotModels = new PlotModel[1];
             #region Epoch error plot (set on 0 index of PlotModels)
             var epochErrorPlotModel = new PlotModel
             {
@@ -83,22 +87,22 @@ namespace NNApp
                     Rows = Creator.ClassificationFullResults.RowCount + 1,
                     Columns = Creator.ClassificationFullResults.ColumnCount + 1
                 };
-                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, TextAlignment=TextAlignment.Center });
+                classGrid.Children.Add(new TextBlock() { Text = "Class number", FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center});
                 for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++) //ceate column names as class number bolded
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, TextAlignment = TextAlignment.Center });
+                    classGrid.Children.Add(new TextBlock() { Text = columnIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center });
                 }
                 for (int rowIndex = 0; rowIndex < Creator.ClassificationFullResults.RowCount; rowIndex++)
                 {
-                    classGrid.Children.Add(new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, TextAlignment = TextAlignment.Center }); //add row name = class number bolded
+                    classGrid.Children.Add(new TextBlock() { Text = rowIndex.ToString(), FontWeight = System.Windows.FontWeights.Bold, VerticalAlignment = System.Windows.VerticalAlignment.Center }); //add row name = class number bolded
                     for (int columnIndex = 0; columnIndex < Creator.ClassificationFullResults.ColumnCount; columnIndex++)
                     {
-                        classGrid.Children.Add(new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), TextAlignment = TextAlignment.Center });
+                        classGrid.Children.Add(new TextBlock() { Text = Creator.ClassificationFullResults[rowIndex, columnIndex].ToString(), VerticalAlignment = System.Windows.VerticalAlignment.Center });
                     }
                 }
                 NetworkStatsMainGrid.Children.Add(classGrid);
-                Grid.SetColumn(classGrid, 3);
-                Grid.SetColumnSpan(classGrid, 3);
+                Grid.SetColumn(classGrid, 4);
+                Grid.SetColumnSpan(classGrid, 4);
                 Grid.SetRow(classGrid, 0);
                 Grid.SetRowSpan(classGrid, 3);
             }
@@ -126,5 +130,97 @@ namespace NNApp
                 NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
             }
         }
+
+        #region helper methods
+        private double CalculateAccuracy(Matrix<int> classificationResults)
+        {
+            int properlyClassified = 0;
+            for (int i = 0; i < classificationResults.RowCount; i++)
+            {
+                for (int j = 0; j < classificationResults.ColumnCount; j++)
+                {
+                    properlyClassified += classificationResults[i, j];
+                }
+            }
+            double accuracy = properlyClassified / classificationResults.RowSums().Sum(); //TODO: Test that 
+            return accuracy;
+        }
+
+        /// <summary>
+        /// Calculates mean precision for all classes
+        /// </summary>
+        /// <param name="classificationResults"></param>
+        /// <returns></returns>
+        private double CalculatePrecision(Matrix<int> classificationResults)
+        {
+            if (classificationResults.RowCount != classificationResults.ColumnCount)
+                throw new ArgumentException("Matrix has to be square");
+
+            double sumaricPrecision = 0;
+            for (int classNumber = 0; classNumber < classificationResults.RowCount; classNumber++) //here classes are enumerated from 0
+            {
+                double classPrecision = 0;
+                int classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
+                int classAll = 0;
+                for (int rowIndex = 0; rowIndex < classificationResults.RowCount; rowIndex++) 
+                {
+                    classAll += classificationResults[rowIndex, classNumber];
+                }
+                classPrecision = classTruePositive / classAll;
+                sumaricPrecision += classPrecision;
+            }
+            double meanPrecision = sumaricPrecision / classificationResults.RowCount;
+            return meanPrecision;
+        }
+
+        /// <summary>
+        /// Calculates arithmetic mean sensitivity
+        /// </summary>
+        /// <param name="classificationResults"></param>
+        /// <returns></returns>
+        private double CalculateSensitivity(Matrix<int> classificationResults)
+        {
+            if (classificationResults.RowCount != classificationResults.ColumnCount)
+                throw new ArgumentException("Matrix has to be square");
+
+            double sumaricSensitivity = 0;
+            for (int classNumber = 0; classNumber < classificationResults.ColumnCount; classNumber++) //here classes are enumerated from 0
+            {
+                double classSensitivity = 0;
+                int classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
+                int classAll = 0;
+                for (int columnIndex = 0; columnIndex < classificationResults.ColumnCount; columnIndex++)
+                {
+                    classAll += classificationResults[classNumber, columnIndex];
+                }
+                classSensitivity = classTruePositive / classAll;
+                sumaricSensitivity += classSensitivity;
+            }
+            double meanPrecision = sumaricSensitivity / classificationResults.ColumnCount;
+            return meanPrecision;
+        }
+
+        private double CalculateSensitivity(Matrix<int> classificationResults)
+        {
+            if (classificationResults.RowCount != classificationResults.ColumnCount)
+                throw new ArgumentException("Matrix has to be square");
+
+            double sumaricSensitivity = 0;
+            for (int classNumber = 0; classNumber < classificationResults.ColumnCount; classNumber++) //here classes are enumerated from 0
+            {
+                double classSensitivity = 0;
+                int classTruePositive = classificationResults[classNumber, classNumber]; //on diagonal
+                int classAll = 0;
+                for (int columnIndex = 0; columnIndex < classificationResults.ColumnCount; columnIndex++)
+                {
+                    classAll += classificationResults[classNumber, columnIndex];
+                }
+                classSensitivity = classTruePositive / classAll;
+                sumaricSensitivity += classSensitivity;
+            }
+            double meanPrecision = sumaricSensitivity / classificationResults.ColumnCount;
+            return meanPrecision;
+        }
+        #endregion
     }
 }
