@@ -48,7 +48,7 @@ namespace NeuralNetworks
         /// <summary>
         /// Set of point generated to visualize approximation function built by best network
         /// </summary>
-        public Vector<double> ApproximationFunctionPoints { get; set; }
+        public double[,] ApproximationFunctionPoints { get; set; }
 
         /// <summary>
         /// Creates new networks with randomized initial weights, learns and tests them. Chooses best of all created. 
@@ -126,7 +126,7 @@ namespace NeuralNetworks
         /// <param name="network"></param>
         private void CreateApproximationFunctionPoints(NeuralNetwork network)
         {
-            ApproximationFunctionPoints = Vector<double>.Build.Dense(NumberOfPointForApproximationFunction);
+            ApproximationFunctionPoints = new Double[NumberOfPointForApproximationFunction, 2];
             double maximum = 0, minimum = 0;
             foreach (var data in DataProvider.DataSet) // choose max and min
             {
@@ -152,7 +152,8 @@ namespace NeuralNetworks
                 {
                     output = network.CalculateOutput( Vector<double>.Build.Dense(new double[1] {xValue}) );
                 }
-                ApproximationFunctionPoints[index] = output[0]; //Assumed approximation will have only single output
+                ApproximationFunctionPoints[index, 0] = xValue;
+                ApproximationFunctionPoints[index, 1] = output[0]; //Assumed approximation will have only single output
                 xValue += step; 
             }
         }

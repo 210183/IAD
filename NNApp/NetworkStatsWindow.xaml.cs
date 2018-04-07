@@ -94,9 +94,9 @@ namespace NNApp
                     IsLegendVisible = true
                 };
                 var ApproximationFunctionDataPoints = new List<DataPoint>();
-                for (int i = 0; i < Creator.ApproximationFunctionPoints.Count; i++) // adding data
+                for (int i = 0; i < Creator.ApproximationFunctionPoints.Length/2; i++) // adding data
                 {
-                    ApproximationFunctionDataPoints.Add(new DataPoint(i, Creator.ApproximationFunctionPoints[i]));
+                    ApproximationFunctionDataPoints.Add(new DataPoint(Creator.ApproximationFunctionPoints[i, 0], Creator.ApproximationFunctionPoints[i, 1]));
                 }
                 var ApproximationSeries = new OxyPlot.Series.LineSeries()
                 {
