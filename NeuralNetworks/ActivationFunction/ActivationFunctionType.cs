@@ -8,8 +8,9 @@ namespace NeuralNetworks
 {
     public enum ActivationFunctionType
     {
-        Identity,
-        SigmoidUnipolar,
-        SigmoidBipolar
+        Identity = 1,
+        SigmoidUnipolar = 2,
+        SigmoidBipolar = 4,
+        AnySigmoid = SigmoidUnipolar | SigmoidBipolar
     }
 }

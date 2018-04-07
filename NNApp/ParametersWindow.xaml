@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NNApp"
         mc:Ignorable="d"
-        Title="ParametersWindow" Height="250" Width="600">
+        Title="ParametersWindow" Height="250" Width="700">
     <Window.Resources>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="Gainsboro" Offset="0" />
@@ -13,7 +13,7 @@
             <GradientStop Color="DarkGray" Offset="2" />
         </LinearGradientBrush>
         <Style TargetType="{x:Type Button}">
-            <Setter Property="FontSize" Value="10" />
+            <Setter Property="FontSize" Value="14" />
             <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
             <Setter Property="Width" Value="80" />
             <Setter Property="MaxWidth" Value="120" />
@@ -22,11 +22,22 @@
         </Style>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="18" />
             <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="MinWidth" Value="100" />
         </Style>
-
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinWidth" Value="180" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
     </Window.Resources>
     <Grid Background="OliveDrab">
         <Grid.ColumnDefinitions>
