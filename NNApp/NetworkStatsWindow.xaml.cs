@@ -19,6 +19,8 @@ using MathNet.Numerics.LinearAlgebra;
 using NeuralNetworks.Error.Extensions;
 using OxyPlot.Wpf;
 using Microsoft.Win32;
+using NeuralNetworks.Data;
+using System.IO;
 
 namespace NNApp
 {
@@ -32,6 +34,7 @@ namespace NNApp
         public TaskType ChosenTask { get; set; }
         public int SelectedPlotIndex { get; set; } = 0;
         public PlotModel[] PlotModels { get; set; }
+
         public NetworkStatsWindow(TaskType taskType)
         {
             InitializeComponent();
@@ -110,9 +113,6 @@ namespace NNApp
                 newBorder.BorderThickness = new Thickness(3);
                 newBorder.BorderBrush = Brushes.Black;
 
-               
-
-
                 var classGrid = new UniformGrid
                 {
                     Rows = Creator.ClassificationFullResults.RowCount + 1,
@@ -184,11 +184,71 @@ namespace NNApp
 
         private void Testbutton_Click(object sender, RoutedEventArgs e)
         {
+            
+            string testFileName = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.Title = "Learn file";
             if (openFileDialog.ShowDialog() == true)
-               string learnFileName = openFileDialog.FileName;
+               testFileName = openFileDialog.FileName;
+            if (File.Exists(testFileName))
+            {
+                try
+                {
+                    int numberOfOutputs = Creator.BestNetwork.Layers[Creator.BestNetwork.Layers.Length-1].Weights.ColumnCount;
+                    IDataProvider dataProvider;
+
+                    if (ChosenTask == TaskType.Classification)
+                        dataProvider = new ClassificationDataProvider(testFileName, Creator.InputsNumber, numberOfOutputs, Creator.IsBiasOn);
+                    else if (ChosenTask == TaskType.Approximation || ChosenTask == TaskType.Transformation)
+                        dataProvider = new ApproximationDataProvider(testFileName, Creator.InputsNumber, numberOfOutputs, Creator.IsBiasOn);
+                    else
+                    {
+                        MessageBox.Show("Choose task type!");
+                        return;
+                    }
+
+                    string pathToLogFile = Directory.GetCurrentDirectory() + @"\OutputFile.txt";
+
+                    if (!File.Exists(pathToLogFile))
+                    {
+                        using (var loggerFile = File.Create(pathToLogFile))
+                        {
+                            //Do nothing
+                        }
+                    }
+
+                    using (StreamWriter writer = new StreamWriter(pathToLogFile))
+                    {
+                        var dataSet = dataProvider.DataSet;
+                        var output = Vector<double>.Build.Dense(dataSet.Length);
+
+                        for (int dataIndex = 0; dataIndex < dataSet.Length; dataIndex++)
+                        {
+                            output = CurrentNetwork.CalculateOutput(dataSet[dataIndex].X);
+                            writer.WriteLine(output.ToString());
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Incorrect file path!");
+                return;
+            }
+        }
+
+        private void DebugButton_Click(object sender, RoutedEventArgs e)
+        {
+            int debug = 1;
+            if(debug==1)
+            {
+                debug++;
+            }
         }
     }
 }

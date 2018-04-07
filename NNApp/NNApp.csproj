@@ -129,9 +129,14 @@
       <Name>NeuralNetworks</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\screenshot.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\education-chart.ico" />
+    <Resource Include="Resources\file.ico" />
+    <Resource Include="Resources\learning.ico" />
+    <Resource Include="Resources\settings.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

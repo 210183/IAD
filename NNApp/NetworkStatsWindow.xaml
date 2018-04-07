@@ -124,13 +124,13 @@
         <Button Style="{StaticResource BlueGradientButton}" Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="4">Next</Button>
         <oxy:PlotView Name="NetworkStatsMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="3" Grid.Row="5"/>
 
-        <Button Style="{StaticResource ImageButton}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="4" Click="ScreenShotbutton_Click" >
+        <Button Style="{StaticResource ImageButton32x32}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="4" Click="ScreenShotbutton_Click" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                 <Image Source="Resources/screenshot.ico" Width="32" Height="32"/>
             </Border>
         </Button>
 
         <Button Style="{StaticResource BlueGradientButton}" Name="Testbutton" Grid.Column="0" Grid.Row="4" Click="Testbutton_Click">Input</Button>
-        
+        <Button Style="{StaticResource BlueGradientButton}" Name="DebugButton" Grid.Column="0" Grid.Row="3" Click="DebugButton_Click" >Input</Button>
     </Grid>
 </Window>

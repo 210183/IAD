@@ -47,16 +47,19 @@
         <TextBox Name="MaxErrorIncreaseRateBox" Grid.Column="3" Grid.Row="0" Margin="12,22,10.2,10.2" >1.05</TextBox>
 
 
-        <TextBlock Name="LearningAlgorithmText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Learning Algorithm</TextBlock>
-        <ComboBox Name="LearningAlgorithmComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
+        <TextBlock Name="LearningAlgorithmText" Grid.Column="0" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Learning Algorithm</TextBlock>
+        <ComboBox Name="LearningAlgorithmComboBox" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
             <ComboBoxItem Name="BackPropagation">Back Propagation</ComboBoxItem>
         </ComboBox>
 
-        <TextBlock Name="ErrorCalculatorText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Error Calculator</TextBlock>
-        <ComboBox Name="ErrorCalculatorComboBox" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
+        <TextBlock Name="ErrorCalculatorText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Error Calculator</TextBlock>
+        <ComboBox Name="ErrorCalculatorComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
             <ComboBoxItem Name="MeanSquareError">Mean Square Error</ComboBoxItem>
         </ComboBox>
 
+        <TextBlock Name="NumberOfNetworksText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Networks number</TextBlock>
+        <TextBox Name="NumberOfNetworksBox" Grid.Column="2" Grid.Row="1" Margin="12,22,10.2,10.2" >5</TextBox>
+        
         <TextBlock Name="MomentumText" Grid.Column="0" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Momentum</TextBlock>
         <TextBox Name="MomentumBox" Grid.Column="0" Grid.Row="2" Margin="12,22,10.2,10.2">0.2</TextBox>
 
