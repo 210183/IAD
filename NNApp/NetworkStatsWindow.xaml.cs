@@ -17,6 +17,8 @@ using OxyPlot.Series;
 using System.Windows.Controls.Primitives;
 using MathNet.Numerics.LinearAlgebra;
 using NeuralNetworks.Error.Extensions;
+using OxyPlot.Wpf;
+using Microsoft.Win32;
 
 namespace NNApp
 {
@@ -52,7 +54,7 @@ namespace NNApp
             {
                 learningEpochErrorDataPoints.Add(new DataPoint(i, Creator.BestNetworkEpochHistory[i]));
             }
-            var learningSeries = new LineSeries()
+            var learningSeries = new OxyPlot.Series.LineSeries()
             {
                 Title = "Learning set error",
                 Smooth = false,
@@ -68,7 +70,7 @@ namespace NNApp
                 {
                     testEpochErrorDataPoints.Add(new DataPoint(i, Creator.BestNetworkTestHistory[i]));
                 }
-                var testSeries = new LineSeries()
+                var testSeries = new OxyPlot.Series.LineSeries()
                 {
                     Title = "Test set error",
                     Smooth = false,
@@ -93,7 +95,7 @@ namespace NNApp
                 {
                     ApproximationFunctionDataPoints.Add(new DataPoint(i, Creator.ApproximationFunctionPoints[i]));
                 }
-                var ApproximationSeries = new LineSeries()
+                var ApproximationSeries = new OxyPlot.Series.LineSeries()
                 {
                     Smooth = true,
                     LineJoin = LineJoin.Miter,
@@ -173,5 +175,20 @@ namespace NNApp
             }
         }
 
+        private void ScreenShotbutton_Click(object sender, RoutedEventArgs e)
+        {
+            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
+            var bitmap = pngExporter.ExportToBitmap(PlotModels[0]);
+            Clipboard.SetImage(bitmap);
+        }
+
+        private void Testbutton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.Title = "Learn file";
+            if (openFileDialog.ShowDialog() == true)
+               string learnFileName = openFileDialog.FileName;
+        }
     }
 }

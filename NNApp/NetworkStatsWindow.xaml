@@ -34,7 +34,7 @@
             <GradientStop Color="LightBlue" Offset="0.2" />
             <GradientStop Color="Transparent" Offset="2.5" />
         </LinearGradientBrush>
-        <Style TargetType="{x:Type Button}">
+        <Style TargetType="{x:Type Button}" x:Key="BlueGradientButton">
             <Setter Property="FontSize" Value="12"></Setter>
             <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
             <Setter Property="BorderBrush" Value="DarkOliveGreen" />
@@ -43,6 +43,26 @@
             <Setter Property="MaxHeight" Value="40" />
             <Setter Property="Margin" Value="5" />
         </Style>
+        <Style TargetType="{x:Type Button}" x:Key="NoneButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="80" />
+            <Setter Property="MaxWidth" Value="120" />
+            <Setter Property="MaxHeight" Value="40" />
+            <Setter Property="Margin" Value="5" />
+
+            <Style.Triggers>
+                <!--<EventTrigger RoutedEvent="StackPanel.MouseEnter">
+                    <EventTrigger.Actions>
+                    <Trigger Property="" Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Trigger>
+                </EventTrigger>
+             </EventTrigger.Actions>-->
+            </Style.Triggers>
+        </Style>
+       
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="14"></Setter>
         </Style>
@@ -70,7 +90,7 @@
         </Grid.RowDefinitions>
         <!--#region Error and other metrics-->
         <DataGridCell Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <TextBlock Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Test error </TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Test error</TextBlock>
         <DataGridCell Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
         <TextBlock Name="TestErrorTextBlock" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
@@ -100,8 +120,17 @@
         <DataGridCell Background="SteelBlue" Grid.Row="4" Margin="0,0,0,0" Grid.Column="5" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
 
         <DataGridCell Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <Button Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="3" Grid.Row="4" >Previous</Button>
-        <Button Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="4">Next</Button>
+        <Button Style="{StaticResource BlueGradientButton}" Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="3" Grid.Row="4" >Previous</Button>
+        <Button Style="{StaticResource BlueGradientButton}" Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="4">Next</Button>
         <oxy:PlotView Name="NetworkStatsMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="3" Grid.Row="5"/>
+
+        <Button Style="{StaticResource ImageButton}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="4" Click="ScreenShotbutton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/screenshot.ico" Width="32" Height="32"/>
+            </Border>
+        </Button>
+
+        <Button Style="{StaticResource BlueGradientButton}" Name="Testbutton" Grid.Column="0" Grid.Row="4" Click="Testbutton_Click">Input</Button>
+        
     </Grid>
 </Window>

@@ -47,9 +47,17 @@
             <ComboBoxItem Name="Transformation">Transformation</ComboBoxItem>
         </ComboBox>
         <!-- Buttons -->
-        <Button Name="DataFilesButton" Grid.Column="0" Grid.Row="1" Click="DataFilesButton_Click" HorizontalAlignment="Center"> Choose data files</Button>
-        <Button Name="SetParameters" Grid.Column="1" Grid.Row="1" Click="SetParameters_Click">Set parameters</Button>
-        <Button Name="Learn" Grid.Column="2" Grid.Row="1" Click="Learn_Click">Learn</Button>
-        <Button Name="NetworkResults" Grid.Column="3" Grid.Row="1" Click="NetworkResults_Click">Network Results</Button>
+        <Button Name="DataFilesButton" Grid.Column="0" Grid.Row="1" Click="DataFilesButton_Click" HorizontalAlignment="Center"> 
+            Choose data files
+        </Button>
+        <Button Name="SetParameters" Grid.Column="1" Grid.Row="1" Click="SetParameters_Click">
+            Set parameters
+        </Button>
+        <Button Name="Learn" Grid.Column="2" Grid.Row="1" Click="Learn_Click">
+            Learn
+        </Button>
+        <Button Name="NetworkResults" Grid.Column="3" Grid.Row="1" Click="NetworkResults_Click">
+            Network Results
+        </Button>
     </Grid>
 </Window>
