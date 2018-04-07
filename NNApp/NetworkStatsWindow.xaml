@@ -12,6 +12,23 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <!--<Style x:Key="notCalledBorder" TargetType="{x:Type Border}">
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderBrush" Value="Black" />
+        </Style>-->
+        <!-- <Style TargetType="{x:Type UniformGrid}" x:Key="UniformGridStyle">
+            <Style.Resources>
+
+                <Style TargetType="TextBlock" BasedOn="{StaticResource notCalledBorder}">
+                     <Setter Property="Style" Value="{StaticResource notCalledBorder}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                </Style>
+            </Style.Resources>
+        </Style>-->
+        <!--<Style x:Key="Cell" TargetType="TextBlock" BasedOn="{StaticResource notCalledBorder}">
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>-->
+
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="AliceBlue" Offset="0" />
             <GradientStop Color="LightBlue" Offset="0.2" />
