@@ -36,6 +36,9 @@ namespace NNApp
         //private string learnFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
         //private string testFileName = @"C:\Users\Lola\Desktop\classification_test.txt";
 
+        //private string learnFileName = @"C:\Users\Lola\Desktop\transformation.txt";
+        //private string testFileName = @"C:\Users\Lola\Desktop\transformation.txt";
+
         private int inputsNumber;
         private int outputsNumber;
         private bool isBiasOn;

@@ -16,5 +16,13 @@ namespace NeuralNetworks
             Weights = weights;
             ActivationFunction = activationFunction;
         }
+
+        public Layer DeepCopy()
+        {
+            var copyWeights = Matrix<double>.Build.DenseOfMatrix(Weights);
+            var actFunc = ActivationFunction;
+            var copyLayer = new Layer(copyWeights, actFunc);
+            return copyLayer;
+        }
     }
 }

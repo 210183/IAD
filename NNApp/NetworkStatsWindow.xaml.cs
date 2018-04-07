@@ -39,7 +39,6 @@ namespace NNApp
         {
             InitializeComponent();
             ChosenTask = taskType;
-            TestErrorTextBlock.Text = Math.Round(Creator.BestTestError).ToString();
 
             if (taskType == TaskType.Approximation) // number of plots is dependent on type of task
                 PlotModels = new PlotModel[2];
@@ -165,7 +164,8 @@ namespace NNApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
-            if(Creator.ClassificationFullResults != null)
+            TestErrorTextBlock.Text = Math.Round(Creator.BestTestError).ToString();
+            if (Creator.ClassificationFullResults != null)
             {
                 PrecisionValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculatePrecision(), 4 ).ToString();
                 AccuracyValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateAccuracy(), 4).ToString();

@@ -27,8 +27,10 @@ namespace NeuralNetworks
         public Vector<double> TestErrorHistory { get; set; }
         public Vector<double> EpochErrorHistory { get; set; } = Vector<double>.Build.Dense(1);
         public Vector<double> CurrentEpochErrorVector { get; set; }
+        public double BestError { get; set; } = Double.MaxValue;
+        public NeuralNetwork BestNetworkState { get; set; }
 
-        public void TrainNetwork(NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate = 0)
+        public void TrainNetwork(ref NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate = 0)
         {
             var learnSet = DataProvider.LearnSet; //shorter
             int currentEpochIndex = 1; // epochs are counted starting from 1
@@ -76,6 +78,13 @@ namespace NeuralNetworks
                 var testError = tester.TestNetwork(networkToTrain, DataProvider);
                 TempTestErrorHistory[currentEpochIndex] = testError;
                 #endregion
+                #region update best network state
+                if (TempTestErrorHistory[currentEpochIndex] < BestError)
+                {
+                    BestNetworkState = networkToTrain.DeepCopy();
+                    BestError = TempTestErrorHistory[currentEpochIndex];
+                }
+                #endregion
 
                 currentEpochIndex++;
             }
@@ -85,6 +94,14 @@ namespace NeuralNetworks
             TemporaryEpochErrorHistory.CopySubVectorTo(EpochErrorHistory, 0, 0, currentEpochIndex);
             TempTestErrorHistory.CopySubVectorTo(TestErrorHistory, 0, 0, currentEpochIndex);
             #endregion
+            //restore best network state ( on set for verifying)
+            networkToTrain = BestNetworkState;
+        }
+
+        public NeuralNetwork DeepCopy()
+        {
+
+            throw new NotImplementedException();
         }
         ///// <summary>
         ///// Simple helper method that returns 0 if current index is 0 or less
