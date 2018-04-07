@@ -25,6 +25,7 @@ namespace NNApp
         public string Test{ get; set; }
         private int currentLayer = 0;
         private LayerCharacteristic[] layers;
+        private bool isLayersCreated = false;
 
 
         public ParametersWindow()
@@ -51,6 +52,24 @@ namespace NNApp
 
         private void AddLayer_Click(object sender, RoutedEventArgs e)
         {
+            if(isLayersCreated == false) // first create Layers Vector, if incorrect layers number: return
+            {
+                if(Int32.TryParse((NumberOfLayersBox.Text), out _))
+                {
+                    int numberOfLayers = Convert.ToInt32(NumberOfLayersBox.Text);
+                    if (numberOfLayers <= 0)
+                    {
+                        MessageBox.Show("Incorrect layers number.");
+                        return;
+                    }
+                    else
+                    {
+                        NumberOfLayersBox.IsEnabled = false;
+                        layers = new LayerCharacteristic[numberOfLayers];
+                        isLayersCreated = true;
+                    }
+                }  
+            }
             if (currentLayer < layers.Length)
             {
                 if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidUnipolar")
@@ -70,10 +89,7 @@ namespace NNApp
         private void AddLayerBase_Click(object sender, RoutedEventArgs e)
         {
 
-            int numberOfLayers = Convert.ToInt32(NumberOfLayersBox.Text);
-            NumberOfLayersBox.IsEnabled = false;
-
-            layers = new LayerCharacteristic[numberOfLayers];
+           
         }
 
         private void CurrentLayerNeuronsBox_TextChanged(object sender, TextChangedEventArgs e)
