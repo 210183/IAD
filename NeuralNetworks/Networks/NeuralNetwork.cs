@@ -28,6 +28,28 @@ namespace NeuralNetworks
         public Vector<double>[] LastDerivatives { get; set; } = new Vector<double>[1];
 
         /// <summary>
+        /// To be used for copy purposes
+        /// </summary>
+        /// <param name="numberOfInputs"></param>
+        /// <param name="layers"></param>
+        /// <param name="isBiasOn"></param>
+        public NeuralNetwork(int numberOfInputs, Layer[] layers, bool isBiasOn = true)
+        {
+            this.NumberOfLayers = layers.Length;
+            this.Layers = layers;
+            this.NumberOfInputs = numberOfInputs;
+            this.IsBiasExisting = isBiasOn;
+            //create place to store outputs
+            LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
+            //create place to store derivatives
+            LastDerivatives = new Vector<double>[NumberOfLayers];
+            for (int layerIndex = 0; layerIndex < NumberOfLayers; layerIndex++)
+            {
+                LastDerivatives[layerIndex] = Vector<double>.Build.Dense(Layers[layerIndex].Weights.ColumnCount);
+            }
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="numberOfInputs">Size of input vector that network will take.</param>
@@ -116,6 +138,27 @@ namespace NeuralNetworks
                 Console.Write(layer.Weights);
                 Console.WriteLine("---------------------------------");
             }
+        }
+
+        public NeuralNetwork DeepCopy()
+        {
+            var copyLayers = new Layer[Layers.Length];
+            for (int i = 0; i < Layers.Length; i++)
+            {
+                copyLayers[i] = Layers[i].DeepCopy();
+            }
+            var copyNetwork = new NeuralNetwork(NumberOfInputs, copyLayers, IsBiasExisting);
+            copyNetwork.LastOutputs = new Vector<double>[LastOutputs.Length];
+            for (int i = 0; i < LastOutputs.Length; i++)
+            {
+                copyNetwork.LastOutputs[i] = Vector<double>.Build.DenseOfVector(LastOutputs[i]);
+            }
+            copyNetwork.LastDerivatives = new Vector<double>[LastDerivatives.Length];
+            for (int i = 0; i < LastDerivatives.Length; i++)
+            {
+                copyNetwork.LastDerivatives[i] = Vector<double>.Build.DenseOfVector(LastDerivatives[i]);
+            }
+            return copyNetwork;
         }
     }
 }

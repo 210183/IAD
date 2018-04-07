@@ -62,7 +62,7 @@ namespace NeuralNetworks
             for (int networkIndex = 0; networkIndex < numberOfNetworksToTry; networkIndex++)
             {  
                 var currentNetwork = new NeuralNetwork(InputsNumber, Layers, IsBiasOn);
-                trainer.TrainNetwork(currentNetwork, MaxEpochs, DesiredError);
+                trainer.TrainNetwork(ref currentNetwork, MaxEpochs, DesiredError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
                 if (isUpdated) // save learning history of best network
                 {
