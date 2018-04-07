@@ -88,24 +88,41 @@ namespace NNApp
 
             if (taskType == TaskType.Approximation)
             {
-                var ApproximationFunctionPlotModel = new PlotModel
+                var approximationFunctionPlotModel = new PlotModel 
                 {
                     Title = "Network approximation function",
-                    IsLegendVisible = true
+                    IsLegendVisible = true,
                 };
-                var ApproximationFunctionDataPoints = new List<DataPoint>();
+                var approximationFunctionDataPoints = new List<DataPoint>(1000);    //network outputs approximation
                 for (int i = 0; i < Creator.ApproximationFunctionPoints.Length/2; i++) // adding data
                 {
-                    ApproximationFunctionDataPoints.Add(new DataPoint(Creator.ApproximationFunctionPoints[i, 0], Creator.ApproximationFunctionPoints[i, 1]));
+                    approximationFunctionDataPoints.Add(new DataPoint(Creator.ApproximationFunctionPoints[i, 0], Creator.ApproximationFunctionPoints[i, 1]));
                 }
-                var ApproximationSeries = new OxyPlot.Series.LineSeries()
+                var approximationSeries = new OxyPlot.Series.LineSeries()
                 {
-                    Smooth = true,
-                    LineJoin = LineJoin.Miter,
+                    Title = "Network approximation",
+                    Selectable = false
                 };
-                ApproximationSeries.ItemsSource = ApproximationFunctionDataPoints;
-                ApproximationFunctionPlotModel.Series.Add(ApproximationSeries);
-                PlotModels[1] = ApproximationFunctionPlotModel;
+                approximationSeries.ItemsSource = approximationFunctionDataPoints;
+                approximationFunctionPlotModel.Series.Add(approximationSeries);
+                //set of 'real' points
+                var testSet = Creator.DataProvider.DataSet;
+                var testPoints = new List<ScatterPoint>(testSet.Length);    //network outputs approximation
+                for (int i = 0; i < testSet.Length / 2; i++) // adding data
+                {
+                    if (CurrentNetwork.IsBiasExisting)
+                        testPoints.Add(new ScatterPoint(testSet[i].X[1], testSet[i].D[0]));
+                    else
+                        testPoints.Add(new ScatterPoint(testSet[i].X[0], testSet[i].D[0]));
+                }
+                var testSeries = new OxyPlot.Series.ScatterSeries()
+                {
+                    Title = "Test points",
+                };
+                testSeries.ItemsSource = testPoints;
+                approximationFunctionPlotModel.Series.Add(testSeries);
+                //save created plot to plot models 
+                PlotModels[1] = approximationFunctionPlotModel;
             }
             else if (taskType == TaskType.Classification)
             {

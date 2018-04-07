@@ -134,12 +134,12 @@ namespace NeuralNetworks
                 {
                     maximum = data.X.Max();
                 }
-                if (data.X.Min() > minimum)
+                if (data.X.Min() < minimum)
                 {
                     minimum = data.X.Min();
                 }
             }
-            double step = maximum - minimum / NumberOfPointForApproximationFunction;
+            double step = (maximum - minimum) / NumberOfPointForApproximationFunction;
             double xValue = minimum;
             var output = Vector<double>.Build.Dense(1);
             for (int index = 0; index < NumberOfPointForApproximationFunction; index++)
