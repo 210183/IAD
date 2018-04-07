@@ -21,14 +21,7 @@ namespace NeuralNetworks.Error.Extensions
             double dataCount = classificationResults.RowSums().Sum();
             if (dataCount <= 0) // no elements in calssification history
                 return -1;
-            double properlyClassified = 0;
-            for (int i = 0; i < classificationResults.RowCount; i++)
-            {
-                for (int j = 0; j < classificationResults.ColumnCount; j++)
-                {
-                    properlyClassified += classificationResults[i, j];
-                }
-            }
+            double properlyClassified = classificationResults.Diagonal().Sum();
             double accuracy = properlyClassified / dataCount; //TODO: Test that 
             return accuracy;
         }
@@ -105,7 +98,35 @@ namespace NeuralNetworks.Error.Extensions
         {
             if (classificationResults.RowCount != classificationResults.ColumnCount)
                 throw new ArgumentException("Matrix has to be square");
-
+            Matrix<double> tempClassMatrix;
+            #region check for empty rows. If happens, remove them temporary for calculating
+            var emptyRowFlags = Vector<double>.Build.Dense(classificationResults.RowCount, 0);
+            for (int rowIndex = 0; rowIndex < classificationResults.RowCount; rowIndex++)
+            {
+                if (classificationResults.Row(rowIndex).Sum() == 0)
+                    emptyRowFlags[rowIndex] = 1;
+            }
+            if (emptyRowFlags.Sum() != 0) //empty rows existing
+            {
+                tempClassMatrix = Matrix<double>.Build.Dense((int)(classificationResults.RowCount - emptyRowFlags.Sum()), classificationResults.ColumnCount);
+                int tempMatrixRowIndex = 0;
+                for (int resultsMatrixRowIndex = 0; resultsMatrixRowIndex < classificationResults.RowCount; resultsMatrixRowIndex++)
+                {
+                    if (emptyRowFlags[resultsMatrixRowIndex] == 1 )
+                    {
+                        tempMatrixRowIndex++;
+                        break;
+                    }
+                    for (int columnIndex = 0; columnIndex < classificationResults.ColumnCount; columnIndex++) //copy column
+                    {
+                        tempClassMatrix[tempMatrixRowIndex, columnIndex] = tempClassMatrix[resultsMatrixRowIndex, columnIndex];
+                    }
+                    tempMatrixRowIndex++;
+                }
+            }
+            else
+                tempClassMatrix = classificationResults;
+            #endregion
             double sumaricSpecificity = 0;
             for (int classNumber = 0; classNumber < classificationResults.RowCount; classNumber++) //here classes are enumerated from 0
             {
@@ -117,9 +138,15 @@ namespace NeuralNetworks.Error.Extensions
                         classTrueNegative += classificationResults[diagonalIndex, diagonalIndex];
                 }
                 double classAll = classTrueNegative; //first ingredient, second added below in parts
-                for (int rowIndex = 0; rowIndex < classificationResults.ColumnCount; rowIndex++) // False Positive
+                for (int rowIndex = 0; rowIndex < classificationResults.RowCount; rowIndex++) // False Positive
                 {
-                    classAll += classificationResults[rowIndex, classNumber];
+                    if(rowIndex != classNumber)
+                        classAll += classificationResults[rowIndex, classNumber];
+                }
+                for (int columnIndex = 0; columnIndex < classificationResults.ColumnCount; columnIndex++) // False Negative
+                {
+                    if (columnIndex != classNumber)
+                        classAll += classificationResults[classNumber, columnIndex];
                 }
                 classSpecificity = classTrueNegative / classAll;
                 sumaricSpecificity += classSpecificity;
