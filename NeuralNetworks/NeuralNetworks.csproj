@@ -58,10 +58,12 @@
     <Compile Include="Data\ILearningProvider.cs" />
     <Compile Include="Data\LearningApproximationDataProvider.cs" />
     <Compile Include="Data\LearningClassificationDataProvider.cs" />
+    <Compile Include="Error\ClassificationMetrics.cs" />
     <Compile Include="Learning\BackPropagationAlgorithm.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="Data\Datum.cs" />
     <Compile Include="Error\IErrorCalculator.cs" />
+    <Compile Include="NetworkTester.cs" />
     <Compile Include="Trainer\ITrainer.cs" />
     <Compile Include="Learning\IWithMomentum.cs" />
     <Compile Include="Learning\LearningRateHandler.cs" />

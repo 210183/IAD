@@ -13,7 +13,7 @@ namespace NeuralNetworks
         Vector<double> CalculateErrorVector(Vector<double> output, Vector<double> desiredOutput);
 
         /// <summary>
-        /// That method will store calculate sum of error from given vectors.
+        /// Returns sum of single value errors (appropriate to specific calculator, it may be e.g. sum of squared errors)
         /// </summary>
         /// <param name="output"></param>
         /// <param name="desiredOutput"></param>

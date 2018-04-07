@@ -34,6 +34,10 @@ namespace NeuralNetworks
         /// </summary>
         public Vector<double> BestNetworkEpochHistory { get; set; }
         /// <summary>
+        /// Best network results on test set during learning can be seen here after CreateNetwork.
+        /// </summary>
+        public Vector<double> BestNetworkTestHistory { get; set; }
+        /// <summary>
         /// Best network result on test set can be seen here after CreateNetwork.
         /// </summary>
         public double BestTestError { get; set; } = 0;
@@ -60,8 +64,11 @@ namespace NeuralNetworks
                 var currentNetwork = new NeuralNetwork(InputsNumber, Layers, IsBiasOn);
                 trainer.TrainNetwork(currentNetwork, MaxEpochs, DesiredError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
-                if (isUpdated)
-                    BestNetworkEpochHistory = trainer.EpochErrorHistory; // save learning history of best network
+                if (isUpdated) // save learning history of best network
+                {
+                    BestNetworkEpochHistory = trainer.EpochErrorHistory; 
+                    BestNetworkTestHistory = trainer.TestErrorHistory;
+                }
             }
             if (taskType == TaskType.Approximation)
                 CreateApproximationFunctionPoints(BestNetwork); //generate approximation function visualization
@@ -77,15 +84,16 @@ namespace NeuralNetworks
         /// <returns>True if best network was changed. Otherwise, false</returns>
         private bool UpdateBestNetwork(NeuralNetwork newNetwork)
         {
+            var tester = new NetworkTester(ErrorCalculator);
             if(BestNetwork is null) //save new network as best
             {
                 BestNetwork = newNetwork;
-                BestTestError = TestNetwork(BestNetwork);
+                BestTestError = tester.TestNetwork(BestNetwork, DataProvider);
                 return true;
             }
             else // test new network and compare
             {
-                var newNetworkError = TestNetwork(newNetwork);
+                var newNetworkError = tester.TestNetwork(newNetwork, DataProvider);
                 if (newNetworkError < BestTestError)
                 {
                     BestNetwork = newNetwork;
@@ -95,25 +103,6 @@ namespace NeuralNetworks
                 else
                     return false;
             }
-        }
-
-        /// <summary>
-        /// Uses network on every data from test set and uses error calc to calc aggregated error
-        /// </summary>
-        /// <param name="network"></param>
-        /// <returns></returns>
-        private double TestNetwork(NeuralNetwork network)
-        {
-            var testSet = DataProvider.DataSet; //helper variable to shorten code and clarify;
-            Vector<double> errors = Vector<double>.Build.Dense( testSet.Length );
-            for (int dataIndex = 0; dataIndex < testSet.Length; dataIndex++)
-            {
-                var output = network.CalculateOutput(testSet[dataIndex].X, CalculateMode.NetworkOutput);
-                var error = ErrorCalculator.CalculateErrorSum(output, testSet[dataIndex].D);
-                errors[dataIndex] = error;
-            }
-            var errorSum = ErrorCalculator.CalculateEpochError(errors);
-            return errorSum;
         }
 
         private void CreateResultMatrixForClassification(NeuralNetwork network)
@@ -126,7 +115,7 @@ namespace NeuralNetworks
                 var output = network.CalculateOutput(testSet[dataIndex].X, CalculateMode.NetworkOutput);
                 int chosenClassNumber = output.MaximumIndex();
                 int properClassNumber = testSet[dataIndex].D.MaximumIndex();
-                ClassificationFullResults[chosenClassNumber, properClassNumber] += 1;
+                ClassificationFullResults[properClassNumber,chosenClassNumber] += 1;
             }
         }
 

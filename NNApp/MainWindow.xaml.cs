@@ -102,44 +102,52 @@ namespace NNApp
 
         private void Learn_Click(object sender, RoutedEventArgs e)
         {
-            //create data provider before moving further
-            if (TaskChooseComboBox.SelectedIndex > -1) // if any item was chosen 
+            try
             {
-                if (File.Exists(learnFileName) && File.Exists(testFileName))
+                //create data provider before moving further
+                if (TaskChooseComboBox.SelectedIndex > -1) // if any item was chosen 
                 {
-                    if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
+                    if (File.Exists(learnFileName) && File.Exists(testFileName))
                     {
-                        DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
-                    }
-                    else if (GetCurrentTaskType() == TaskType.Classification)
+                        if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
+                        {
+                            DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+                        }
+                        else if (GetCurrentTaskType() == TaskType.Classification)
+                        {
+                            DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+                        }
+                        Window paramWindow = new TrainerParametersWindow();
+                        paramWindow.ShowDialog();
+                    } //create learning provdier
+                    else if (File.Exists(testFileName))
                     {
-                        DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
-                    }
-                    Window paramWindow = new TrainerParametersWindow();
-                    paramWindow.ShowDialog();
-                } //create learning provdier
-                else if (File.Exists(testFileName))
-                {
-                    if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
+                        if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
+                        {
+                            DataProvider = new ApproximationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+                        }
+                        else if (GetCurrentTaskType() == TaskType.Classification)
+                        {
+                            DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+                        }
+                        Window paramWindow = new TrainerParametersWindow();
+                        paramWindow.ShowDialog();
+                    }   //create provider for test only purposes
+                    else
                     {
-                        DataProvider = new ApproximationDataProvider(learnFileName , inputsNumber, outputsNumber, isBiasOn);
+                        MessageBox.Show("Could not find any files under specified paths.");
                     }
-                    else if (GetCurrentTaskType() == TaskType.Classification)
-                    {
-                        DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
-                    }
-                    Window paramWindow = new TrainerParametersWindow();
-                    paramWindow.ShowDialog();
-                }   //create provider for test only purposes
+                }
                 else
                 {
-                    MessageBox.Show("Could not find any files under specified paths.");
+                    MessageBox.Show("You have to choose the type of the task first.");
                 }
             }
-            else
+            catch(Exception ex)
             {
-                MessageBox.Show("You have to choose the type of the task first.");
+                MessageBox.Show(ex.Message);
             }
+           
  
         }
 

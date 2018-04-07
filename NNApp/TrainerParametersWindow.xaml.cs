@@ -66,7 +66,7 @@ namespace NNApp
                         LearningAlgorithm = ((MainWindow)Application.Current.MainWindow).LearningAlgorithm,
                         MaxEpochs = ((MainWindow)Application.Current.MainWindow).MaxEpochs,
                     };
-                    var network = creator.CreateNetwork(GetChosenTaskType(), 1);
+                    var network = creator.CreateNetwork(GetChosenTaskType(), 10);
                     ((MainWindow)Application.Current.MainWindow).Creator = creator;
                     ((MainWindow)Application.Current.MainWindow).CurrentNetwork = network;
                 }
