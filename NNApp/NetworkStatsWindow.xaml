@@ -131,6 +131,5 @@
         </Button>
 
         <Button Style="{StaticResource BlueGradientButton}" Name="Testbutton" Grid.Column="0" Grid.Row="4" Click="Testbutton_Click">Input</Button>
-        <Button Style="{StaticResource BlueGradientButton}" Name="DebugButton" Grid.Column="0" Grid.Row="3" Click="DebugButton_Click" >Input</Button>
     </Grid>
 </Window>

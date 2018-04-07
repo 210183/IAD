@@ -47,6 +47,7 @@ namespace NNApp
 
             ((MainWindow)Application.Current.MainWindow).Layers = layers;
 
+            this.Close();
 
         }
 

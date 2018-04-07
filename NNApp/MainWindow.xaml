@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NNApp"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="310" Width="600">
+        Title="Neural Networks" Height="310" Width="600">
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>

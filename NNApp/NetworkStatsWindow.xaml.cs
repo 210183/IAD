@@ -93,8 +93,8 @@ namespace NNApp
                     Title = "Network approximation function",
                     IsLegendVisible = true,
                 };
-                var approximationFunctionDataPoints = new List<DataPoint>(1000);    //network outputs approximation
-                for (int i = 0; i < Creator.ApproximationFunctionPoints.Length/2; i++) // adding data
+                var approximationFunctionDataPoints = new List<DataPoint>();    //network outputs approximation
+                for (int i = 0; i < Creator.ApproximationFunctionPoints.GetLength(0); i++) // adding data
                 {
                     approximationFunctionDataPoints.Add(new DataPoint(Creator.ApproximationFunctionPoints[i, 0], Creator.ApproximationFunctionPoints[i, 1]));
                 }
@@ -107,8 +107,8 @@ namespace NNApp
                 approximationFunctionPlotModel.Series.Add(approximationSeries);
                 //set of 'real' points
                 var testSet = Creator.DataProvider.DataSet;
-                var testPoints = new List<ScatterPoint>(testSet.Length);    //network outputs approximation
-                for (int i = 0; i < testSet.Length / 2; i++) // adding data
+                var testPoints = new List<ScatterPoint>();    //network outputs approximation
+                for (int i = 0; i < testSet.GetLength(0); i++) // adding data
                 {
                     if (CurrentNetwork.IsBiasExisting)
                         testPoints.Add(new ScatterPoint(testSet[i].X[1], testSet[i].D[0]));
@@ -205,7 +205,7 @@ namespace NNApp
             string testFileName = "";
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            openFileDialog.Title = "Learn file";
+            openFileDialog.Title = "Test input file";
             if (openFileDialog.ShowDialog() == true)
                testFileName = openFileDialog.FileName;
             if (File.Exists(testFileName))
@@ -259,13 +259,5 @@ namespace NNApp
             }
         }
 
-        private void DebugButton_Click(object sender, RoutedEventArgs e)
-        {
-            int debug = 1;
-            if(debug==1)
-            {
-                debug++;
-            }
-        }
     }
 }

@@ -79,6 +79,7 @@ namespace NNApp
             {
                 MessageBox.Show("Specify network layers first.");
             }
+            this.Close();
         }
         private TaskType GetChosenTaskType()
         {
