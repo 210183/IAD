@@ -116,5 +116,10 @@ namespace NNApp
             this.WindowState = WindowState.Minimized;
             ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
         }
+
+        private void NumberOfNetworksBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
