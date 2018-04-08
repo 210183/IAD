@@ -144,7 +144,7 @@
         <Button Style="{StaticResource BlueGradientButton}" Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="5">Next</Button>
         <oxy:PlotView Name="NetworkStatsMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="3" Grid.Row="6"/>
 
-        <Button Style="{StaticResource ImageButton32x32}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="5" Click="ScreenShotbutton_Click" >
+        <Button Style="{StaticResource ImageButton32x32}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="5" Click="ScreenShotbutton_Click" MouseDoubleClick="ScreenShotbutton_MouseDoubleClick" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                 <Image Source="Resources/screenshot.ico" Width="32" Height="32"/>
             </Border>

@@ -239,7 +239,7 @@ namespace NNApp
 
                     if (!File.Exists(pathToLogFile))
                     {
-                        using (var loggerFile = File.Create(pathToLogFile))
+                        using (var outputFile = File.Create(pathToLogFile))
                         {
                             //Do nothing
                         }
@@ -282,5 +282,46 @@ namespace NNApp
         {
             this.WindowState = WindowState.Minimized;
         }
+
+        private void ScreenShotbutton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
+            string newFolder = "Plots";
+            string pathToDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            string pathToImageFolder = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), newFolder);
+            if (!System.IO.Directory.Exists(pathToImageFolder))
+            {
+                try
+                {
+                    System.IO.Directory.CreateDirectory(pathToImageFolder);
+                }
+                catch (IOException ie)
+                {
+                    MessageBox.Show("IO Error: " + ie.Message);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("General Error: " + ex.Message);
+                }
+            }
+
+
+            for (int plotIndex = 0; plotIndex<PlotModels.Length; plotIndex++ )
+            {
+                var tempTime = DateTime.Now;
+                string imageFileName = tempTime.Hour.ToString()+"_"+ tempTime.Minute.ToString() + "_plot_" + (plotIndex + 1) + "_" + ChosenTask.ToString() + ".png";
+                string pathToImageFile = System.IO.Path.Combine(pathToImageFolder, imageFileName);
+
+                using (var imageFile = File.Create(pathToImageFile))
+                {
+                    //Do nothing
+                }
+
+                pngExporter.ExportToFile(PlotModels[plotIndex], pathToImageFile);
+            }
+
+        }
+        
     }
 }
