@@ -317,7 +317,7 @@ namespace NNApp
                 {
                     //Do nothing
                 }
-
+                
                 pngExporter.ExportToFile(PlotModels[plotIndex], pathToImageFile);
             }
 
