@@ -114,6 +114,7 @@ namespace NNApp
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+            ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
         }
     }
 }
