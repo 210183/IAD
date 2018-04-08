@@ -281,11 +281,12 @@ namespace NNApp
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+            ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
         }
 
         private void ScreenShotbutton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
+            var pngExporter = new PngExporter { Width = 1080, Height = 720, Background = OxyColors.White, Resolution=100 };
             string newFolder = "Plots";
             string pathToDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
@@ -317,7 +318,9 @@ namespace NNApp
                 {
                     //Do nothing
                 }
-
+                PlotModels[plotIndex].LegendFontSize = 18;
+                PlotModels[plotIndex].SubtitleFontSize = 18;
+                PlotModels[plotIndex].DefaultFontSize = 18;
                 pngExporter.ExportToFile(PlotModels[plotIndex], pathToImageFile);
             }
 
