@@ -174,7 +174,7 @@ namespace NNApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
-            TestErrorTextBlock.Text = Math.Round(Creator.BestTestError).ToString();
+            TestErrorTextBlock.Text = Math.Round(Creator.BestTestError, 4).ToString();
             if (Creator.ClassificationFullResults != null)
             {
                 PrecisionValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculatePrecision(), 4 ).ToString();
