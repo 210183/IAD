@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NNApp"
         mc:Ignorable="d"
-        Title="TrainerParametersWindow" Height="300" Width="500">
+        Style="{StaticResource MetroWindowStyle}"
+        Title="TrainerParametersWindow" Height="300" Width="600">
     <Window.Resources>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="Gainsboro" Offset="0" />
@@ -29,51 +30,68 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="34" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-        <TextBlock Name="LearningRateText" Grid.Column="0" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Learning Rate</TextBlock>
-        <TextBox Name="LearningRateBox" Grid.Column="0" Grid.Row="0" Margin="12,22,10.2,10.2">0.1</TextBox>
+        <TextBlock  Text="Parameters" TextAlignment="Center" FontSize="20" Foreground="White" Name="TopBox2" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" Background="Black" MouseLeftButtonDown="TopBox_MouseLeftButtonDown" />
 
-        <TextBlock Name="ReductionRateText" Grid.Column="1" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Reduction Rate</TextBlock>
-        <TextBox Name="ReductionRateBox" Grid.Column="1" Grid.Row="0" Margin="12,22,10.2,10.2" >0.7</TextBox>
+        <Button Margin="0,0,10,0" HorizontalAlignment="Right" Style="{StaticResource ImageButton24x24}" Name="CloseButton" Grid.Column="3" Grid.Row="0"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="CloseButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/close.ico"/>
+            </Border>
+        </Button>
 
-        <TextBlock Name="IncreaseRateText" Grid.Column="2" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Increase Rate</TextBlock>
-        <TextBox Name="IncreaseRateBox" Grid.Column="2" Grid.Row="0" Margin="12,22,10.2,10.2" >1.05</TextBox>
+        <Button Margin="40,0,0,0" HorizontalAlignment="Center" Style="{StaticResource ImageButton24x24}" Name="MinimizeButton" Grid.Column="3" Grid.Row="0"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="MinimizeButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/minimize.ico"/>
+            </Border>
+        </Button>
 
-        <TextBlock Name="MaxErrorIncreaseRateText" Grid.Column="3" Grid.Row="0" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Err Incr Rate</TextBlock>
-        <TextBox Name="MaxErrorIncreaseRateBox" Grid.Column="3" Grid.Row="0" Margin="12,22,10.2,10.2" >1.03</TextBox>
+        <TextBlock Name="LearningRateText" Grid.Column="0" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Learning Rate</TextBlock>
+        <TextBox Name="LearningRateBox" Grid.Column="0" Grid.Row="1" Margin="12,22,10.2,10.2">0.1</TextBox>
+
+        <TextBlock Name="ReductionRateText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Reduction Rate</TextBlock>
+        <TextBox Name="ReductionRateBox" Grid.Column="1" Grid.Row="1" Margin="12,22,10.2,10.2" >0.7</TextBox>
+
+        <TextBlock Name="IncreaseRateText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Increase Rate</TextBlock>
+        <TextBox Name="IncreaseRateBox" Grid.Column="2" Grid.Row="1" Margin="12,22,10.2,10.2" >1.05</TextBox>
+
+        <TextBlock Name="MaxErrorIncreaseRateText" Grid.Column="3" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Err Incr Rate</TextBlock>
+        <TextBox Name="MaxErrorIncreaseRateBox" Grid.Column="3" Grid.Row="1" Margin="12,22,10.2,10.2" >1.03</TextBox>
 
 
-        <TextBlock Name="LearningAlgorithmText" Grid.Column="0" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Learning Algorithm</TextBlock>
-        <ComboBox Name="LearningAlgorithmComboBox" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
+        <TextBlock Name="LearningAlgorithmText" Grid.Column="0" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center" >Learning Algorithm</TextBlock>
+        <ComboBox Name="LearningAlgorithmComboBox" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
             <ComboBoxItem Name="BackPropagation">Back Propagation</ComboBoxItem>
         </ComboBox>
 
-        <TextBlock Name="ErrorCalculatorText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center" >Error Calculator</TextBlock>
-        <ComboBox Name="ErrorCalculatorComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
+        <TextBlock Name="ErrorCalculatorText" Grid.Column="1" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center" >Error Calculator</TextBlock>
+        <ComboBox Name="ErrorCalculatorComboBox" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="0">
             <ComboBoxItem Name="MeanSquareError">Mean Square Error</ComboBoxItem>
         </ComboBox>
 
-        <TextBlock Name="NumberOfNetworksText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Networks number</TextBlock>
-        <TextBox Name="NumberOfNetworksBox" Grid.Column="2" Grid.Row="1" Margin="12,22,10.2,10.2" >10</TextBox>
+        <TextBlock Name="NumberOfNetworksText" Grid.Column="2" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Networks number</TextBlock>
+        <TextBox Name="NumberOfNetworksBox" Grid.Column="2" Grid.Row="2" Margin="12,22,10.2,10.2" >10</TextBox>
         
-        <TextBlock Name="MomentumText" Grid.Column="0" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Momentum</TextBlock>
-        <TextBox Name="MomentumBox" Grid.Column="0" Grid.Row="2" Margin="12,22,10.2,10.2">0.2</TextBox>
+        <TextBlock Name="MomentumText" Grid.Column="0" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Momentum</TextBlock>
+        <TextBox Name="MomentumBox" Grid.Column="0" Grid.Row="3" Margin="12,22,10.2,10.2">0.2</TextBox>
 
-        <TextBlock Name="ErrorIncreaseCoefficientText" Grid.Column="1" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Error Incr Coef</TextBlock>
-        <TextBox Name="ErrorIncreaseCoefficientBox" Grid.Column="1" Grid.Row="2" Margin="12,22,10.2,10.2" >1.03</TextBox>
+        <TextBlock Name="ErrorIncreaseCoefficientText" Grid.Column="1" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Error Incr Coef</TextBlock>
+        <TextBox Name="ErrorIncreaseCoefficientBox" Grid.Column="1" Grid.Row="3" Margin="12,22,10.2,10.2" >1.03</TextBox>
 
-        <TextBlock Name="MaxEpochsText" Grid.Column="2" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Epochs</TextBlock>
-        <TextBox Name="MaxEpochsBox" Grid.Column="2" Grid.Row="2" Margin="12,22,10.2,10.2" >50</TextBox>
+        <TextBlock Name="MaxEpochsText" Grid.Column="2" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Epochs</TextBlock>
+        <TextBox Name="MaxEpochsBox" Grid.Column="2" Grid.Row="3" Margin="12,22,10.2,10.2" >50</TextBox>
 
-        <TextBlock Name="DesiredMaxErrorText" Grid.Column="3" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Desired Max Error</TextBlock>
-        <TextBox Name="DesiredMaxErrorBox" Grid.Column="3" Grid.Row="2" Margin="12,22,10.2,10.2" >0</TextBox>
+        <TextBlock Name="DesiredMaxErrorText" Grid.Column="3" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Desired Max Error</TextBlock>
+        <TextBox Name="DesiredMaxErrorBox" Grid.Column="3" Grid.Row="3" Margin="12,22,10.2,10.2" >0</TextBox>
 
-        <Button Name="SaveButton" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Click="SaveButton_Click">Save All</Button>
-        <Button Name="TrainButton" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="1" Click="TrainButton_Click">Create Network!</Button>
+        <Button Name="SaveButton" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="1" Click="SaveButton_Click">Save All</Button>
+        <Button Name="TrainButton" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Click="TrainButton_Click">Create Network!</Button>
     </Grid>
 </Window>
 

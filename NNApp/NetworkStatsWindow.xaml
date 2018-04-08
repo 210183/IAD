@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:NNApp"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
+        Style="{StaticResource MetroWindowStyle}"
         Title="NetworkStatsWindow" Height="600" Width="600"
         Loaded="Window_Loaded">
     <Window.DataContext>
@@ -79,6 +80,7 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="34" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
@@ -88,48 +90,66 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
+      
+        <TextBlock Text="Parameters" TextAlignment="Center" FontSize="20" Foreground="White" Name="TopBox2" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="8" Background="SteelBlue" MouseLeftButtonDown="TopBox_MouseLeftButtonDown" />
+
+        <Button Margin="0,0,10,0" HorizontalAlignment="Right" Style="{StaticResource ImageButton24x24blue}" Name="CloseButton" Grid.Column="8" Grid.Row="0"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="CloseButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/close.ico"/>
+            </Border>
+        </Button>
+
+        <Button Margin="7,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ImageButton24x24blue}" Name="MinimizeButton" Grid.Column="8" Grid.Row="0"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="MinimizeButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/minimize.ico"/>
+            </Border>
+        </Button>
+        
+        
         <!--#region Error and other metrics-->
-        <DataGridCell Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <TextBlock Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Test error</TextBlock>
-        <DataGridCell Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
-        <TextBlock Name="TestErrorTextBlock" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
-
-        <DataGridCell Grid.Column="0" Grid.Row="1" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <TextBlock Grid.Column="0" Grid.Row="1"  TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Accuracy</TextBlock>
-        <DataGridCell Grid.Column="1" Grid.Row="1" Background="Gainsboro" BorderThickness="0"></DataGridCell>
-        <TextBlock Name="AccuracyValueTextBlock" Grid.Column="1" Grid.Row="1" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
-
-        <DataGridCell Grid.Column="2" Grid.Row="1" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <TextBlock Grid.Column="2" Grid.Row="1" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Precision</TextBlock>
-        <DataGridCell Grid.Column="3" Grid.Row="1" Background="Gainsboro" BorderThickness="0"></DataGridCell>
-        <TextBlock Name="PrecisionValueTextBlock" Grid.Column="3" Grid.Row="1" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
+        <DataGridCell Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
+        <TextBlock Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Test error</TextBlock>
+        <DataGridCell Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
+        <TextBlock Name="TestErrorTextBlock" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
         <DataGridCell Grid.Column="0" Grid.Row="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <TextBlock Grid.Column="0" Grid.Row="2"  TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Sensitivity</TextBlock>
+        <TextBlock Grid.Column="0" Grid.Row="2"  TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Accuracy</TextBlock>
         <DataGridCell Grid.Column="1" Grid.Row="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
-        <TextBlock Name="SensitivityValueTextBlock" Grid.Column="1" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
+        <TextBlock Name="AccuracyValueTextBlock" Grid.Column="1" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
 
         <DataGridCell Grid.Column="2" Grid.Row="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <TextBlock Grid.Column="2" Grid.Row="2"  TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Specificity</TextBlock>
+        <TextBlock Grid.Column="2" Grid.Row="2" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Precision</TextBlock>
         <DataGridCell Grid.Column="3" Grid.Row="2" Background="Gainsboro" BorderThickness="0"></DataGridCell>
-        <TextBlock Name="SpecificityValueTextBlock" Grid.Column="3" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
+        <TextBlock Name="PrecisionValueTextBlock" Grid.Column="3" Grid.Row="2" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
+
+        <DataGridCell Grid.Column="0" Grid.Row="3" Background="SteelBlue" BorderThickness="0"></DataGridCell>
+        <TextBlock Grid.Column="0" Grid.Row="3"  TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Sensitivity</TextBlock>
+        <DataGridCell Grid.Column="1" Grid.Row="3" Background="Gainsboro" BorderThickness="0"></DataGridCell>
+        <TextBlock Name="SensitivityValueTextBlock" Grid.Column="1" Grid.Row="3" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
+
+        <DataGridCell Grid.Column="2" Grid.Row="3" Background="SteelBlue" BorderThickness="0"></DataGridCell>
+        <TextBlock Grid.Column="2" Grid.Row="3"  TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Specificity</TextBlock>
+        <DataGridCell Grid.Column="3" Grid.Row="3" Background="Gainsboro" BorderThickness="0"></DataGridCell>
+        <TextBlock Name="SpecificityValueTextBlock" Grid.Column="3" Grid.Row="3" FontSize="20" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">0</TextBlock>
         <!--#endregion-->
 
-        <DataGridCell Background="SteelBlue" Grid.Row="3" Margin="0,0,0,0" Grid.ColumnSpan="8" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
-        <DataGridCell Background="SteelBlue" Grid.Row="4" Margin="0,0,0,0" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
-        <DataGridCell Background="SteelBlue" Grid.Row="4" Margin="0,0,0,0" Grid.Column="5" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
+        <DataGridCell Background="SteelBlue" Grid.Row="4" Margin="0,0,0,0" Grid.ColumnSpan="8" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
+        <DataGridCell Background="SteelBlue" Grid.Row="5" Margin="0,0,0,0" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
+        <DataGridCell Background="SteelBlue" Grid.Row="5" Margin="0,0,0,0" Grid.Column="5" Grid.ColumnSpan="3" BorderBrush="Aquamarine" BorderThickness="0"></DataGridCell>
 
-        <DataGridCell Grid.Column="3" Grid.Row="4" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
-        <Button Style="{StaticResource BlueGradientButton}" Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="3" Grid.Row="4" >Previous</Button>
-        <Button Style="{StaticResource BlueGradientButton}" Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="4">Next</Button>
-        <oxy:PlotView Name="NetworkStatsMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="3" Grid.Row="5"/>
+        <DataGridCell Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" Background="SteelBlue" BorderThickness="0"></DataGridCell>
+        <Button Style="{StaticResource BlueGradientButton}" Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="3" Grid.Row="5" >Previous</Button>
+        <Button Style="{StaticResource BlueGradientButton}" Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="5">Next</Button>
+        <oxy:PlotView Name="NetworkStatsMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="8" Grid.RowSpan="3" Grid.Row="6"/>
 
-        <Button Style="{StaticResource ImageButton32x32}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="4" Click="ScreenShotbutton_Click" >
+        <Button Style="{StaticResource ImageButton32x32}" Name="ScreenShotbutton" Grid.Column="7" Grid.Row="5" Click="ScreenShotbutton_Click" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
                 <Image Source="Resources/screenshot.ico" Width="32" Height="32"/>
             </Border>
         </Button>
 
-        <Button Style="{StaticResource BlueGradientButton}" Name="Testbutton" Grid.Column="0" Grid.Row="4" Click="Testbutton_Click">Input</Button>
+        <Button Style="{StaticResource BlueGradientButton}" Name="Testbutton" Grid.Column="0" Grid.Row="5" Click="Testbutton_Click">Input</Button>
     </Grid>
 </Window>

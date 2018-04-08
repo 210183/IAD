@@ -122,12 +122,22 @@ namespace NNApp
                 approximationFunctionPlotModel.Series.Add(testSeries);
                 //save created plot to plot models 
                 PlotModels[1] = approximationFunctionPlotModel;
+
+                var colorBox = new TextBox
+                {
+                    Background = new SolidColorBrush(Colors.SteelBlue),
+                    BorderThickness = new Thickness(0)
+                    
+                };
+
+                NetworkStatsMainGrid.Children.Add(colorBox);
+                Grid.SetColumn(colorBox, 4);
+                Grid.SetColumnSpan(colorBox, 4);
+                Grid.SetRow(colorBox, 1);
+                Grid.SetRowSpan(colorBox, 3);
             }
             else if (taskType == TaskType.Classification)
             {
-                var newBorder = new Border();
-                newBorder.BorderThickness = new Thickness(3);
-                newBorder.BorderBrush = Brushes.Black;
 
                 var classGrid = new UniformGrid
                 {
@@ -156,7 +166,7 @@ namespace NNApp
                 NetworkStatsMainGrid.Children.Add(classGrid);
                 Grid.SetColumn(classGrid, 4);
                 Grid.SetColumnSpan(classGrid, 4);
-                Grid.SetRow(classGrid, 0);
+                Grid.SetRow(classGrid, 1);
                 Grid.SetRowSpan(classGrid, 3);
             }
         }
@@ -258,6 +268,19 @@ namespace NNApp
                 return;
             }
         }
+        private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
 
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

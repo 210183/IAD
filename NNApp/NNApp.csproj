@@ -138,5 +138,14 @@
     <Resource Include="Resources\learning.ico" />
     <Resource Include="Resources\settings.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\power-button-off.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\minimize.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\close.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
