@@ -4,6 +4,7 @@ using NeuralNetworks.Learning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -79,6 +80,7 @@ namespace NNApp
             {
                 MessageBox.Show("Specify network layers first.");
             }
+            SystemSounds.Beep.Play();
             this.Close();
         }
         private TaskType GetChosenTaskType()
