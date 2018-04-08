@@ -120,6 +120,23 @@ namespace NNApp
                 };
                 testSeries.ItemsSource = testPoints;
                 approximationFunctionPlotModel.Series.Add(testSeries);
+
+                //set of learning points
+                var learningSet = Creator.DataProvider.LearnSet;
+                var learningPoints = new List<ScatterPoint>();    //network outputs approximation
+                for (int i = 0; i < learningSet.GetLength(0); i++) // adding data
+                {
+                    if (CurrentNetwork.IsBiasExisting)
+                        learningPoints.Add(new ScatterPoint(learningSet[i].X[1], learningSet[i].D[0], 3));
+                    else
+                        learningPoints.Add(new ScatterPoint(learningSet[i].X[0], learningSet[i].D[0], 3));
+                }
+                var learningPointSeries = new OxyPlot.Series.ScatterSeries()
+                {
+                    Title = "Learning points",
+                };
+                learningPointSeries.ItemsSource = learningPoints;
+                approximationFunctionPlotModel.Series.Add(learningPointSeries);
                 //save created plot to plot models 
                 PlotModels[1] = approximationFunctionPlotModel;
 

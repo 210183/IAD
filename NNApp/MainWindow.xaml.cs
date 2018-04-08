@@ -30,7 +30,7 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
+        private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_2.txt";
         private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
         //private string learnFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
@@ -121,7 +121,7 @@ namespace NNApp
                             DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
                         }
                         Window paramWindow = new TrainerParametersWindow();
-                        paramWindow.ShowDialog();
+                        paramWindow.Show();
                     } //create learning provdier
                     else if (File.Exists(testFileName))
                     {
@@ -134,7 +134,7 @@ namespace NNApp
                             DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
                         }
                         Window paramWindow = new TrainerParametersWindow();
-                        paramWindow.ShowDialog();
+                        paramWindow.Show();
                     }   //create provider for test only purposes
                     else
                     {

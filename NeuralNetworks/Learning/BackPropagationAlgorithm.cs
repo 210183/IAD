@@ -77,8 +77,8 @@ namespace NeuralNetworks
                         }
                         else // ignore momentum
                         {
-                            layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact;
-                            LastWeightsChange[layerIndex][weightIndex, neuronIndex] = backPropagationImpact;
+                        layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact;
+                        LastWeightsChange[layerIndex][weightIndex, neuronIndex] = backPropagationImpact;
                         }
                     }
                 }

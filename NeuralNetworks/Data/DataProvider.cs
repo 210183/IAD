@@ -34,7 +34,11 @@ namespace NeuralNetworks.Data
             int setLength = set.Length;
             for (int i = 0; i < shuffleNumber; i++)
             {
-                set[randomizer.Next(setLength)] = set[randomizer.Next(setLength)];
+                int firstIndex = randomizer.Next(setLength);
+                int secondIndex = randomizer.Next(setLength);
+                var temp = set[firstIndex];
+                set[firstIndex] = set[secondIndex];
+                set[secondIndex] = temp;
             }
         }
     }

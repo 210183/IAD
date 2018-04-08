@@ -53,16 +53,16 @@
         </Button>
 
         <TextBlock Name="LearningRateText" Grid.Column="0" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Learning Rate</TextBlock>
-        <TextBox Name="LearningRateBox" Grid.Column="0" Grid.Row="1" Margin="12,22,10.2,10.2">0.1</TextBox>
+        <TextBox Name="LearningRateBox" Grid.Column="0" Grid.Row="1" Margin="12,22,10.2,10.2">0.01</TextBox>
 
         <TextBlock Name="ReductionRateText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Reduction Rate</TextBlock>
-        <TextBox Name="ReductionRateBox" Grid.Column="1" Grid.Row="1" Margin="12,22,10.2,10.2" >0.8</TextBox>
+        <TextBox Name="ReductionRateBox" Grid.Column="1" Grid.Row="1" Margin="12,22,10.2,10.2" >1</TextBox>
 
         <TextBlock Name="IncreaseRateText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Increase Rate</TextBlock>
-        <TextBox Name="IncreaseRateBox" Grid.Column="2" Grid.Row="1" Margin="12,22,10.2,10.2" >1.04</TextBox>
+        <TextBox Name="IncreaseRateBox" Grid.Column="2" Grid.Row="1" Margin="12,22,10.2,10.2" >1</TextBox>
 
         <TextBlock Name="MaxErrorIncreaseRateText" Grid.Column="3" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Err Incr Rate</TextBlock>
-        <TextBox Name="MaxErrorIncreaseRateBox" Grid.Column="3" Grid.Row="1" Margin="12,22,10.2,10.2" >1.04</TextBox>
+        <TextBox Name="MaxErrorIncreaseRateBox" Grid.Column="3" Grid.Row="1" Margin="12,22,10.2,10.2" >1</TextBox>
 
 
         <TextBlock Name="LearningAlgorithmText" Grid.Column="0" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center" >Learning Algorithm</TextBlock>
@@ -76,13 +76,13 @@
         </ComboBox>
 
         <TextBlock Name="NumberOfNetworksText" Grid.Column="2" Grid.Row="2" Margin="11,3,11.2,28.2" TextAlignment="Center">Networks number</TextBlock>
-        <TextBox Name="NumberOfNetworksBox" Grid.Column="2" Grid.Row="2" Margin="12,22,10.2,10.2" >200</TextBox>
+        <TextBox Name="NumberOfNetworksBox" Grid.Column="2" Grid.Row="2" Margin="12,22,10.2,10.2" >30</TextBox>
         
         <TextBlock Name="MomentumText" Grid.Column="0" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Momentum</TextBlock>
-        <TextBox Name="MomentumBox" Grid.Column="0" Grid.Row="3" Margin="12,22,10.2,10.2">0.2</TextBox>
+        <TextBox Name="MomentumBox" Grid.Column="0" Grid.Row="3" Margin="12,22,10.2,10.2">0.6</TextBox>
 
         <TextBlock Name="ErrorIncreaseCoefficientText" Grid.Column="1" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Error Incr Coef</TextBlock>
-        <TextBox Name="ErrorIncreaseCoefficientBox" Grid.Column="1" Grid.Row="3" Margin="12,22,10.2,10.2" >1.04</TextBox>
+        <TextBox Name="ErrorIncreaseCoefficientBox" Grid.Column="1" Grid.Row="3" Margin="12,22,10.2,10.2" >1.1</TextBox>
 
         <TextBlock Name="MaxEpochsText" Grid.Column="2" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Max Epochs</TextBlock>
         <TextBox Name="MaxEpochsBox" Grid.Column="2" Grid.Row="3" Margin="12,22,10.2,10.2" >80</TextBox>
