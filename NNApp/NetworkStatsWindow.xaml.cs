@@ -311,7 +311,7 @@ namespace NNApp
             for (int plotIndex = 0; plotIndex<PlotModels.Length; plotIndex++ )
             {
                 var tempTime = DateTime.Now;
-                string imageFileName = tempTime.Hour.ToString()+"_"+ tempTime.Minute.ToString() + "_plot_" + (plotIndex + 1) + "_" + ChosenTask.ToString() + ".png";
+                string imageFileName = tempTime.Hour.ToString()+"_"+ tempTime.Minute.ToString() + tempTime.Second.ToString() + "_plot_" + (plotIndex + 1) + "_" + ChosenTask.ToString() + ".png";
                 string pathToImageFile = System.IO.Path.Combine(pathToImageFolder, imageFileName);
 
                 using (var imageFile = File.Create(pathToImageFile))
