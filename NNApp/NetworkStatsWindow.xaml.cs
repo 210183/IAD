@@ -110,9 +110,9 @@ namespace NNApp
                 for (int i = 0; i < testSet.GetLength(0); i++) // adding data
                 {
                     if (CurrentNetwork.IsBiasExisting)
-                        testPoints.Add(new ScatterPoint(testSet[i].X[1], testSet[i].D[0]));
+                        testPoints.Add(new ScatterPoint(testSet[i].X[1], testSet[i].D[0], 1.5));
                     else
-                        testPoints.Add(new ScatterPoint(testSet[i].X[0], testSet[i].D[0]));
+                        testPoints.Add(new ScatterPoint(testSet[i].X[0], testSet[i].D[0], 1.5));
                 }
                 var testSeries = new OxyPlot.Series.ScatterSeries()
                 {
