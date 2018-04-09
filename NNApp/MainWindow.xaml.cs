@@ -30,11 +30,11 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_2.txt";
-        private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
+        //private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_2.txt";
+        //private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
-        //private string learnFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
-        //private string testFileName = @"C:\Users\Lola\Desktop\classification_test.txt";
+        private string learnFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+        private string testFileName = @"C:\Users\Lola\Desktop\classification_test.txt";
 
         //private string learnFileName = @"C:\Users\Lola\Desktop\transformation.txt";
         //private string testFileName = @"C:\Users\Lola\Desktop\transformation.txt";

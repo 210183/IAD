@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Learning;
 using System;
 using System.Collections.Generic;
@@ -65,9 +66,10 @@ namespace NeuralNetworks
                 {
                     for(int weightIndex = 0; weightIndex < layers[layerIndex].Weights.RowCount; weightIndex++)
                     {
-                        var derivative = network.LastDerivatives[layerIndex][neuronIndex];
                         var signal = network.LastOutputs[layerIndex][weightIndex];
                         var currentError = propagatedErrors[layerIndex][neuronIndex];
+                        var activationFunc = network.Layers[layerIndex].ActivationFunction as IDifferentiable;
+                        var derivative = activationFunc.CalculateDerivative(currentDataError);   //network.LastDerivatives[layerIndex][neuronIndex];
                         var backPropagationImpact = derivative * signal * currentError * LearningRateHandler.LearningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {

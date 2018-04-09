@@ -64,7 +64,7 @@ namespace NeuralNetworks
             {
                 meanSquaredError += errors[i];
             }
-            meanSquaredError = Math.Sqrt(meanSquaredError) / 2;
+            meanSquaredError = meanSquaredError / 2;
             return meanSquaredError;
         }
 

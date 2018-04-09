@@ -70,10 +70,10 @@
         </Button>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="NumberOfInputsText" Grid.Column="0" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Number of inputs</TextBlock>
-        <TextBox Name="NumberOfInputsBox" Grid.Column="0" Grid.Row="1" Margin="12,22,10.2,10.2">1</TextBox>
+        <TextBox Name="NumberOfInputsBox" Grid.Column="0" Grid.Row="1" Margin="12,22,10.2,10.2">4</TextBox>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="NumberOfOutputsText" Grid.Column="1" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Number of outputs</TextBlock>
-        <TextBox Name="NumberOfOutputsBox" Grid.Column="1" Grid.Row="1" Margin="12,22,10.2,10.2" >1</TextBox>
+        <TextBox Name="NumberOfOutputsBox" Grid.Column="1" Grid.Row="1" Margin="12,22,10.2,10.2" >3</TextBox>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="NumberOfLayersText" Grid.Column="2" Grid.Row="1" Margin="11,3,11.2,28.2" TextAlignment="Center">Number of layers</TextBlock>
         <TextBox Name="NumberOfLayersBox" Grid.Column="2" Grid.Row="1" Margin="12,22,10.2,10.2" >2</TextBox>
@@ -88,7 +88,7 @@
 
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentLayerNeuronsText" Grid.Column="0" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center">Neurons in layer</TextBlock>
-        <TextBox Name="CurrentLayerNeuronsBox" Grid.Column="0" Grid.Row="3" Margin="12,22,10.2,10.2" >15</TextBox>
+        <TextBox Name="CurrentLayerNeuronsBox" Grid.Column="0" Grid.Row="3" Margin="12,22,10.2,10.2" >4</TextBox>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="ActivationFunctionText" Grid.Column="1" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center" >Activation Function</TextBlock>
         <ComboBox Name="ActivationFunctionComboBox" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="1">

@@ -30,7 +30,7 @@ namespace NeuralNetworks.Data
             var singleOutputData = Vector<double>.Build.Dense(outputsNumber, 0);
 
             string[] tempLine;
-
+            int numberOfAttributesInLine;
             var delimiter = ' ';
 
             for (int i = 0; i < tempInputOutputSet.Count(); i++)
@@ -39,7 +39,8 @@ namespace NeuralNetworks.Data
                 singleOutputData.Clear();
 
                 tempLine = tempInputOutputSet[i].Split(delimiter);
-                if (tempLine.Count() == inputsNumber + 1) //1 for outputs column
+                numberOfAttributesInLine = tempLine.Length - 1;
+                if (tempLine.Count() >= inputsNumber + 1) //1 for outputs column
                 {
                     if (isBiasOn)
                         singleInputData[0] = 1;
@@ -48,8 +49,8 @@ namespace NeuralNetworks.Data
                     {
                         singleInputData[j] = Convert.ToDouble(tempLine[j - biasModifier]);
                     }
-
-                    int classNumber  = Convert.ToInt16(tempLine[inputsNumber]);
+                    
+                    int classNumber  = Convert.ToInt16(tempLine[inputsNumber + (numberOfAttributesInLine - inputsNumber)]); //skip unused attribute
                     singleOutputData[classNumber - 1] = 1;
 
                 }
