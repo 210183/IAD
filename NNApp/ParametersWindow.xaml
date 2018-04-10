@@ -91,7 +91,7 @@
         <TextBox Name="CurrentLayerNeuronsBox" Grid.Column="0" Grid.Row="3" Margin="12,22,10.2,10.2" >4</TextBox>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="ActivationFunctionText" Grid.Column="1" Grid.Row="3" Margin="11,3,11.2,28.2" TextAlignment="Center" >Activation Function</TextBlock>
-        <ComboBox Name="ActivationFunctionComboBox" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="1">
+        <ComboBox Name="ActivationFunctionComboBox" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" Margin="12,22,10.2,10.2" SelectedIndex="2">
             <ComboBoxItem Name="IdentityFunction">IdentityFunction</ComboBoxItem>
             <ComboBoxItem Name="SigmoidUnipolar">SigmoidUnipolar</ComboBoxItem>
             <ComboBoxItem Name="SigmoidBipolar">SigmoidBipolar</ComboBoxItem>
