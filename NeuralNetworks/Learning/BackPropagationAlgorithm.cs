@@ -26,6 +26,7 @@ namespace NeuralNetworks
             #region helper variables
             int numberOfLayers = network.Layers.Count();
             var layers = network.Layers;
+            int biasModifier = network.IsBiasExisting ? 1 : 0; // TODO: check THat
             #endregion
             if(LastWeightsChange is null) // then initialize it with proper size
             {
@@ -52,7 +53,7 @@ namespace NeuralNetworks
                         double propagatedError = 0;
                         for (int weightIndex = 0; weightIndex < layers[layerIndex +1].Weights.ColumnCount; weightIndex++)
                         {
-                            propagatedError += layers[layerIndex +1].Weights[neuronIndex, weightIndex] * propagatedErrors[layerIndex +1][weightIndex]; //weight * propagated error
+                            propagatedError += layers[layerIndex +1].Weights[neuronIndex+biasModifier,weightIndex] * propagatedErrors[layerIndex +1][weightIndex]; //weight * propagated error
                         }
                         propagatedErrors[layerIndex][neuronIndex] = propagatedError;
                     }
@@ -60,7 +61,7 @@ namespace NeuralNetworks
             }
             #endregion
             #region adapt weights using propagated error, outputs and derivatives
-            for (int layerIndex= numberOfLayers-1; layerIndex >=0; layerIndex--) // begin with the lastlayer
+            for (int layerIndex = numberOfLayers-1; layerIndex >=0; layerIndex--) // begin with the lastlayer
             {
                 for (int neuronIndex = 0; neuronIndex < layers[layerIndex].Weights.ColumnCount; neuronIndex++)
                 {
@@ -69,7 +70,7 @@ namespace NeuralNetworks
                         var signal = network.LastOutputs[layerIndex][weightIndex];
                         var currentError = propagatedErrors[layerIndex][neuronIndex];
                         var activationFunc = network.Layers[layerIndex].ActivationFunction as IDifferentiable;
-                        var derivative = activationFunc.CalculateDerivative(currentDataError);   //network.LastDerivatives[layerIndex][neuronIndex];
+                        var derivative = activationFunc.CalculateDerivative(currentDataError);  
                         var backPropagationImpact = derivative * signal * currentError * LearningRateHandler.LearningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {

@@ -30,36 +30,40 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        //private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_2.txt";
+        //private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
         //private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
-        private string learnFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
-        private string testFileName = @"C:\Users\Lola\Desktop\classification_test.txt";
+        //private string learnFileName = @"C:\Users\Lola\Desktop\classification_train.txt";
+        //private string testFileName = @"C:\Users\Lola\Desktop\classification_test.txt";
 
-        //private string learnFileName = @"C:\Users\Lola\Desktop\transformation.txt";
-        //private string testFileName = @"C:\Users\Lola\Desktop\transformation.txt";
+        private string learnFileName = @"C:\Users\Lola\Desktop\transformation.txt";
+        private string testFileName = @"C:\Users\Lola\Desktop\transformation.txt";
 
-        private int inputsNumber;
-        private int outputsNumber;
-        private bool isBiasOn;
+        private int inputsNumber = 4;
+        private int outputsNumber = 4;
+        private bool isBiasOn = true;
         private LayerCharacteristic[] layers;
         
-        private double learningRate;
-        private double reductionRate;
-        private double increaseRate;
-        private double maxErrorIncreaseRate;
-        private double momentum;
-        private double errorIncreaseCoefficient;
+        private double learningRate = 0.01;
+        private double reductionRate = 0.8;
+        private double increaseRate = 1.1;
+        private double maxErrorIncreaseRate = 1.04;
+        private double momentum = 0.7;
+        private double errorIncreaseCoefficient = 1.04;
         private IErrorCalculator errorCalculator;
-        private int maxEpochs;
-        private double desiredMaxError;
+        private int maxEpochs = 1000;
+        private double desiredMaxError = 0;
         private LearningAlgorithm learningAlgorithm;
 
         public IDataProvider DataProvider { get; set; }
 
+        public TaskType? ChosenTaskType { get; set; }
+        public bool IsTaskTypeSaved { get; set; } = false;
+
         public int InputsNumber { get => inputsNumber; set => inputsNumber = value; }
         public int OutputsNumber { get => outputsNumber; set => outputsNumber = value; }
         public bool IsBiasOn { get => isBiasOn; set => isBiasOn = value; }
+        public int NumberOfLayers { get; set; } = 2;
 
         public LayerCharacteristic[] Layers { get => layers; set => layers = value; }
         public double LearningRate { get => learningRate; set => learningRate = value; }
@@ -74,6 +78,7 @@ namespace NNApp
         public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
         public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }
 
+        public int NumberOfNetworksToTry { get; set; } = 1;
         public CompleteNetworkCreator Creator { get; set; }
         public NeuralNetwork CurrentNetwork { get; set; }
         #endregion
@@ -86,7 +91,6 @@ namespace NNApp
 
         private void DataFilesButton_Click(object sender, RoutedEventArgs e)
         {
-
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.Title = "Learn file";
@@ -95,47 +99,38 @@ namespace NNApp
             openFileDialog.Title = "Test file";
             if (openFileDialog.ShowDialog() == true)
                 testFileName = openFileDialog.FileName;
+
+            UnlockParameters();
         }
 
         private void SetParameters_Click(object sender, RoutedEventArgs e)
         {
+            SaveParameters();
             Window paramWindow = new ParametersWindow();
             paramWindow.ShowDialog();
+            LearnButton.IsEnabled = true;
         }
 
         private void Learn_Click(object sender, RoutedEventArgs e)
         {
+            SaveParameters();
             try
             {
                 //create data provider before moving further
-                if (TaskChooseComboBox.SelectedIndex > -1) // if any item was chosen 
+                if (ChosenTaskType != null) // if any item was chosen 
                 {
-                    if (File.Exists(learnFileName) && File.Exists(testFileName))
+                    if (File.Exists(learnFileName) && File.Exists(testFileName)) //create learning provdier
                     {
-                        if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
-                        {
-                            DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
-                        }
-                        else if (GetCurrentTaskType() == TaskType.Classification)
-                        {
-                            DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
-                        }
+                        CreateLearningDataProvider();
                         Window paramWindow = new TrainerParametersWindow();
                         paramWindow.Show();
-                    } //create learning provdier
+                    } 
                     else if (File.Exists(testFileName))
                     {
-                        if (GetCurrentTaskType() == TaskType.Approximation || GetCurrentTaskType() == TaskType.Transformation) // the same provider ffor both
-                        {
-                            DataProvider = new ApproximationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
-                        }
-                        else if (GetCurrentTaskType() == TaskType.Classification)
-                        {
-                            DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
-                        }
-                        Window paramWindow = new TrainerParametersWindow();
+                        CreateTestDataProvider();
+                        Window paramWindow = new TrainerParametersWindow(); //create provider for test only purposes
                         paramWindow.Show();
-                    }   //create provider for test only purposes
+                    }   
                     else
                     {
                         MessageBox.Show("Could not find any files under specified paths.");
@@ -150,8 +145,7 @@ namespace NNApp
             {
                 MessageBox.Show(ex.Message);
             }
-           
- 
+            NetworkResultsButton.IsEnabled = true;
         }
 
         private void NetworkResults_Click(object sender, RoutedEventArgs e)
@@ -160,7 +154,7 @@ namespace NNApp
             {
                 if (Creator != null)
                 {
-                    Window networkWindow = new NetworkStatsWindow(GetCurrentTaskType());
+                    Window networkWindow = new NetworkStatsWindow();
                     networkWindow.ShowDialog();
                 }
                 else
@@ -176,6 +170,28 @@ namespace NNApp
 
         #region helper methods
 
+        private void SaveParameters()
+        {
+            if(! IsTaskTypeSaved)
+            {
+                ChosenTaskType = GetCurrentTaskType();
+                IsTaskTypeSaved = true;
+                TaskChooseComboBox.IsEnabled = false;
+            }
+        }
+
+        private void UnlockParameters()
+        {
+            if (IsTaskTypeSaved)
+            {
+                ChosenTaskType = null;
+                IsTaskTypeSaved = false;
+                TaskChooseComboBox.IsEnabled = true;
+                LearnButton.IsEnabled = false;
+                NetworkResultsButton.IsEnabled = false;
+            }
+        }
+
         private TaskType GetCurrentTaskType()
         {
             if (TaskChooseComboBox.SelectedItem == Approximation)
@@ -186,6 +202,51 @@ namespace NNApp
                 return TaskType.Transformation;
             else
                 return TaskType.None;
+        }
+        
+        private void CreateLearningDataProvider()
+        {
+            if (ShouldCreateApproximationDataProvider()) // the same provider ffor both
+            {
+                DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+            }
+            else if (ShouldCreateClassificationDataProvider())
+            {
+                DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+            }
+        }
+        private void CreateTestDataProvider()
+        {
+            if (ShouldCreateApproximationDataProvider()) // the same provider ffor both
+            {
+                DataProvider = new ApproximationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+            }
+            else if (ShouldCreateClassificationDataProvider())
+            {
+                DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+            }
+        }
+        private bool ShouldCreateApproximationDataProvider()
+        {
+            if(ChosenTaskType == TaskType.Approximation || ChosenTaskType == TaskType.Transformation)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private bool ShouldCreateClassificationDataProvider( )
+        {
+            if (ChosenTaskType == TaskType.Classification)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion
@@ -203,6 +264,12 @@ namespace NNApp
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+           LearnButton.IsEnabled = false;
+           NetworkResultsButton.IsEnabled = false;
         }
     }
 }

@@ -15,7 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
 namespace NNApp
 {
     /// <summary>
@@ -23,53 +22,69 @@ namespace NNApp
     /// </summary>
     public partial class TrainerParametersWindow : Window
     {
+        public MainWindow MainWindow { get; set; } = ((MainWindow)Application.Current.MainWindow);
+
         public TrainerParametersWindow()
         {
             InitializeComponent();
+            LearningRateBox.Text = MainWindow.LearningRate.ToString();
+            ReductionRateBox.Text = MainWindow.ReductionRate.ToString();
+            IncreaseRateBox.Text = MainWindow.IncreaseRate.ToString();
+            MaxErrorIncreaseRateBox.Text = MainWindow.MaxErrorIncreaseRate.ToString();
+            LearningRateBox.Text = MainWindow.LearningRate.ToString();
+            NumberOfNetworksBox.Text = MainWindow.NumberOfNetworksToTry.ToString();
+            MomentumBox.Text = MainWindow.Momentum.ToString();
+            ErrorIncreaseCoefficientBox.Text = MainWindow.ErrorIncreaseCoefficient.ToString();
+            MaxEpochsBox.Text = MainWindow.MaxEpochs.ToString();
+            NumberOfNetworksBox.Text = MainWindow.NumberOfNetworksToTry.ToString();
+            DesiredMaxErrorBox.Text = MainWindow.DesiredMaxError.ToString();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
-
-            ((MainWindow)Application.Current.MainWindow).LearningRate = Convert.ToDouble(LearningRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).ReductionRate = Convert.ToDouble(ReductionRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).IncreaseRate = Convert.ToDouble(IncreaseRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).MaxErrorIncreaseRate = Convert.ToDouble(MaxErrorIncreaseRateBox.Text);
-            ((MainWindow)Application.Current.MainWindow).Momentum = Convert.ToDouble(MomentumBox.Text);
-            ((MainWindow)Application.Current.MainWindow).ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
-
-            ((MainWindow)Application.Current.MainWindow).MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
-            ((MainWindow)Application.Current.MainWindow).DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
+            MainWindow.LearningRate = Convert.ToDouble(LearningRateBox.Text);
+            MainWindow.LearningRate = Convert.ToDouble(LearningRateBox.Text);
+            MainWindow.ReductionRate = Convert.ToDouble(ReductionRateBox.Text);
+            MainWindow.IncreaseRate = Convert.ToDouble(IncreaseRateBox.Text);
+            MainWindow.MaxErrorIncreaseRate = Convert.ToDouble(MaxErrorIncreaseRateBox.Text);
+            MainWindow.Momentum = Convert.ToDouble(MomentumBox.Text);
+            MainWindow.ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
+            MainWindow.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
+            MainWindow.MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
+            MainWindow.DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
 
             LearningRateHandler tempHandler = new LearningRateHandler(Convert.ToDouble(LearningRateBox.Text), Convert.ToDouble(ReductionRateBox.Text), Convert.ToDouble(IncreaseRateBox.Text), Convert.ToDouble(MaxErrorIncreaseRateBox.Text));
 
             if (LearningAlgorithmComboBox.Text == "Back Propagation")
-                ((MainWindow)Application.Current.MainWindow).LearningAlgorithm = new BackPropagationAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
+            {
+                MainWindow.LearningAlgorithm = new BackPropagationAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
+            }
             if (ErrorCalculatorComboBox.Text == "Mean Square Error")
-                ((MainWindow)Application.Current.MainWindow).ErrorCalculator = new MeanSquareErrorCalculator();
+            {
+                MainWindow.ErrorCalculator = new MeanSquareErrorCalculator();
+            }
         }
 
         private void TrainButton_Click(object sender, RoutedEventArgs e)
         {
-            if ( ((MainWindow)Application.Current.MainWindow).Layers != null)
+            if (MainWindow.Layers != null)
             {
-                if (((MainWindow)Application.Current.MainWindow).DataProvider is ILearningProvider)
+                if (MainWindow.DataProvider is ILearningProvider)
                 {
                     var creator = new CompleteNetworkCreator()
                     {
-                        DataProvider = ((MainWindow)Application.Current.MainWindow).DataProvider as ILearningProvider,
-                        DesiredError = ((MainWindow)Application.Current.MainWindow).DesiredMaxError,
-                        ErrorCalculator = ((MainWindow)Application.Current.MainWindow).ErrorCalculator,
-                        InputsNumber = ((MainWindow)Application.Current.MainWindow).InputsNumber,
-                        IsBiasOn = ((MainWindow)Application.Current.MainWindow).IsBiasOn,
-                        Layers = ((MainWindow)Application.Current.MainWindow).Layers,
-                        LearningAlgorithm = ((MainWindow)Application.Current.MainWindow).LearningAlgorithm,
-                        MaxEpochs = ((MainWindow)Application.Current.MainWindow).MaxEpochs,
+                        DataProvider = MainWindow.DataProvider as ILearningProvider,
+                        DesiredError = MainWindow.DesiredMaxError,
+                        ErrorCalculator = MainWindow.ErrorCalculator,
+                        InputsNumber = MainWindow.InputsNumber,
+                        IsBiasOn = MainWindow.IsBiasOn,
+                        Layers = MainWindow.Layers,
+                        LearningAlgorithm = MainWindow.LearningAlgorithm,
+                        MaxEpochs = MainWindow.MaxEpochs,
                     };
-                    var network = creator.CreateNetwork(GetChosenTaskType(), Convert.ToInt32(NumberOfNetworksBox.Text));
-                    ((MainWindow)Application.Current.MainWindow).Creator = creator;
-                    ((MainWindow)Application.Current.MainWindow).CurrentNetwork = network;
+                    var network = creator.CreateNetwork( (TaskType)MainWindow.ChosenTaskType, MainWindow.NumberOfNetworksToTry);
+                    MainWindow.Creator = creator;
+                    MainWindow.CurrentNetwork = network;
                 }
                 else
                 {
@@ -83,26 +98,7 @@ namespace NNApp
             SystemSounds.Beep.Play();
             this.Close();
         }
-        private TaskType GetChosenTaskType()
-        {
-            var window = ((MainWindow)Application.Current.MainWindow);
-            if (window.TaskChooseComboBox.SelectedItem == window.Approximation)
-            {
-                return TaskType.Approximation;
-            }
-            else if (window.TaskChooseComboBox.SelectedItem == window.Classification)
-            {
-                return TaskType.Classification;
-            }
-            else if (window.TaskChooseComboBox.SelectedItem == window.Transformation)
-            {
-                return TaskType.Transformation;
-            }
-            else
-            {
-                return TaskType.None;
-            }
-        }
+
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -116,7 +112,7 @@ namespace NNApp
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
-            ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+            MainWindow.WindowState = WindowState.Minimized;
         }
 
         private void NumberOfNetworksBox_TextChanged(object sender, TextChangedEventArgs e)

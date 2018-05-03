@@ -59,6 +59,7 @@
     <Compile Include="Data\LearningApproximationDataProvider.cs" />
     <Compile Include="Data\LearningClassificationDataProvider.cs" />
     <Compile Include="Error\ClassificationMetrics.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Learning\BackPropagationAlgorithm.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="Data\Datum.cs" />

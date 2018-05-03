@@ -123,9 +123,12 @@ namespace NeuralNetworks
                         LastDerivatives[layerIndex][outputIndex - biasModifier] = differentiableFunction.CalculateDerivative(neuronSums[outputIndex - biasModifier]);
                     }
                 }
-                input = output;
+                
                 if (mode.HasFlag(CalculateMode.AllOutputs))
-                    LastOutputs[layerIndex +1 ] = Vector<double>.Build.DenseOfVector(output); //copy of, +1 because first place is occupied by input
+                {
+                    LastOutputs[layerIndex + 1] = Vector<double>.Build.DenseOfVector(output); //copy of, +1 because first place is occupied by input
+                }
+                input = output;
             }
             return output;
         }

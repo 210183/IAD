@@ -25,8 +25,7 @@ namespace NNApp
         public string Test{ get; set; }
         private int currentLayer = 0;
         private LayerCharacteristic[] layers;
-        private bool isLayersCreated = false;
-
+        private bool isLayersBaseCreated = false;
 
         public ParametersWindow()
         {
@@ -41,19 +40,17 @@ namespace NNApp
 
             if (BiasComboBox.SelectionBoxItem.ToString().Equals("true"))
                 ((MainWindow)Application.Current.MainWindow).IsBiasOn = true;
-            else 
-                if (BiasComboBox.SelectionBoxItem.ToString().Equals("false"))
-                    ((MainWindow)Application.Current.MainWindow).IsBiasOn = false;
+            else if (BiasComboBox.SelectionBoxItem.ToString().Equals("false"))
+                ((MainWindow)Application.Current.MainWindow).IsBiasOn = false;
 
             ((MainWindow)Application.Current.MainWindow).Layers = layers;
 
             this.Close();
-
         }
 
         private void AddLayer_Click(object sender, RoutedEventArgs e)
         {
-            if(isLayersCreated == false) // first create Layers Vector, if incorrect layers number: return
+            if(isLayersBaseCreated == false) // first create Layers Vector, if incorrect layers number: return
             {
                 if(Int32.TryParse((NumberOfLayersBox.Text), out _))
                 {
@@ -67,7 +64,8 @@ namespace NNApp
                     {
                         NumberOfLayersBox.IsEnabled = false;
                         layers = new LayerCharacteristic[numberOfLayers];
-                        isLayersCreated = true;
+                        isLayersBaseCreated = true;
+                        ((MainWindow)Application.Current.MainWindow).NumberOfLayers = numberOfLayers;
                     }
                 }  
             }
@@ -89,7 +87,6 @@ namespace NNApp
 
         private void AddLayerBase_Click(object sender, RoutedEventArgs e)
         {
-
            
         }
 
@@ -111,6 +108,17 @@ namespace NNApp
         {
             this.WindowState = WindowState.Minimized;
             ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            NumberOfInputsBox.Text = ((MainWindow)Application.Current.MainWindow).InputsNumber.ToString();
+            NumberOfOutputsBox.Text = ((MainWindow)Application.Current.MainWindow).OutputsNumber.ToString();
+            NumberOfLayersBox.Text = ((MainWindow)Application.Current.MainWindow).NumberOfLayers.ToString();
+            if (((MainWindow)Application.Current.MainWindow).IsBiasOn)
+                BiasComboBox.SelectedIndex = 0;
+            else
+                BiasComboBox.SelectedIndex = 1;
         }
     }
 }

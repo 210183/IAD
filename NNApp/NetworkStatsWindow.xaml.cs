@@ -31,16 +31,15 @@ namespace NNApp
     {
         public NeuralNetwork CurrentNetwork { get; set; } = ((MainWindow)Application.Current.MainWindow).CurrentNetwork;
         public CompleteNetworkCreator Creator { get; set; } = ((MainWindow)Application.Current.MainWindow).Creator;
-        public TaskType ChosenTask { get; set; }
+        public TaskType ChosenTask { get; set; } = (TaskType)((MainWindow)Application.Current.MainWindow).ChosenTaskType;
         public int SelectedPlotIndex { get; set; } = 0;
         public PlotModel[] PlotModels { get; set; }
 
-        public NetworkStatsWindow(TaskType taskType)
+        public NetworkStatsWindow()
         {
             InitializeComponent();
-            ChosenTask = taskType;
 
-            if (taskType == TaskType.Approximation) // number of plots is dependent on type of task
+            if (ChosenTask == TaskType.Approximation) // number of plots is dependent on type of task
                 PlotModels = new PlotModel[2];
             else
                 PlotModels = new PlotModel[1];
@@ -85,7 +84,7 @@ namespace NNApp
             PlotModels[0] = epochErrorPlotModel;
             #endregion 
 
-            if (taskType == TaskType.Approximation)
+            if (ChosenTask == TaskType.Approximation)
             {
                 var approximationFunctionPlotModel = new PlotModel 
                 {
@@ -124,12 +123,13 @@ namespace NNApp
                 //set of learning points
                 var learningSet = Creator.DataProvider.LearnSet;
                 var learningPoints = new List<ScatterPoint>();    //network outputs approximation
+                int pointSize = 2;
                 for (int i = 0; i < learningSet.GetLength(0); i++) // adding data
                 {
                     if (CurrentNetwork.IsBiasExisting)
-                        learningPoints.Add(new ScatterPoint(learningSet[i].X[1], learningSet[i].D[0], 3));
+                        learningPoints.Add(new ScatterPoint(learningSet[i].X[1], learningSet[i].D[0], pointSize));
                     else
-                        learningPoints.Add(new ScatterPoint(learningSet[i].X[0], learningSet[i].D[0], 3));
+                        learningPoints.Add(new ScatterPoint(learningSet[i].X[0], learningSet[i].D[0], pointSize));
                 }
                 var learningPointSeries = new OxyPlot.Series.ScatterSeries()
                 {
@@ -153,7 +153,7 @@ namespace NNApp
                 Grid.SetRow(colorBox, 1);
                 Grid.SetRowSpan(colorBox, 3);
             }
-            else if (taskType == TaskType.Classification)
+            else if (ChosenTask == TaskType.Classification)
             {
 
                 var classGrid = new UniformGrid
@@ -186,44 +186,6 @@ namespace NNApp
                 Grid.SetRow(classGrid, 1);
                 Grid.SetRowSpan(classGrid, 3);
             }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
-            TestErrorTextBlock.Text = Math.Round(Creator.BestTestError, 4).ToString();
-            if (Creator.ClassificationFullResults != null)
-            {
-                PrecisionValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculatePrecision(), 4 ).ToString();
-                AccuracyValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateAccuracy(), 4).ToString();
-                SpecificityValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateSpecificity(), 4).ToString();
-                SensitivityValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateSensitivity(), 4).ToString();
-            }
-        }
-
-        private void PreviousButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedPlotIndex > 0)
-            {
-                SelectedPlotIndex -= 1;
-                NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
-            }
-        }
-
-        private void Nextbutton_Click(object sender, RoutedEventArgs e)
-        {
-            if (SelectedPlotIndex < PlotModels.Length - 1)
-            {
-                SelectedPlotIndex += 1;
-                NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
-            }
-        }
-
-        private void ScreenShotbutton_Click(object sender, RoutedEventArgs e)
-        {
-            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
-            var bitmap = pngExporter.ExportToBitmap(PlotModels[0]);
-            Clipboard.SetImage(bitmap);
         }
 
         private void Testbutton_Click(object sender, RoutedEventArgs e)
@@ -285,25 +247,54 @@ namespace NNApp
                 return;
             }
         }
-        private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DragMove();
+            NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
+            if(Creator.BestTestError > 0.5)
+            {
+                TestErrorTextBlock.Text = Math.Round(Creator.BestTestError, 4).ToString();
+            }
+            else
+            {
+                TestErrorTextBlock.FontSize = AccuracyValueTextBlock.FontSize - 2;
+                TestErrorTextBlock.Text = Creator.BestTestError.ToString("e6");
+            }
+            if (Creator.ClassificationFullResults != null)
+            {
+                PrecisionValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculatePrecision(), 4 ).ToString();
+                AccuracyValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateAccuracy(), 4).ToString();
+                SpecificityValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateSpecificity(), 4).ToString();
+                SensitivityValueTextBlock.Text = Math.Round(Creator.ClassificationFullResults.CalculateSensitivity(), 4).ToString();
+            }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            if (SelectedPlotIndex > 0)
+            {
+                SelectedPlotIndex -= 1;
+                NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
+            }
+        }
+        private void Nextbutton_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedPlotIndex < PlotModels.Length - 1)
+            {
+                SelectedPlotIndex += 1;
+                NetworkStatsMainPlot.Model = PlotModels[SelectedPlotIndex];
+            }
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        private void ScreenShotbutton_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized;
-            ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+            var pngExporter = new PngExporter { Width = 600, Height = 400, Background = OxyColors.White };
+            var bitmap = pngExporter.ExportToBitmap(PlotModels[0]);
+            Clipboard.SetImage(bitmap);
         }
-
         private void ScreenShotbutton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var pngExporter = new PngExporter { Width = 1080, Height = 720, Background = OxyColors.White, Resolution=100 };
+            var pngExporter = new PngExporter { Width = 1080, Height = 720, Background = OxyColors.White, Resolution = 100 };
             string newFolder = "Plots";
             string pathToDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
@@ -325,10 +316,10 @@ namespace NNApp
             }
 
 
-            for (int plotIndex = 0; plotIndex<PlotModels.Length; plotIndex++ )
+            for (int plotIndex = 0; plotIndex < PlotModels.Length; plotIndex++)
             {
                 var tempTime = DateTime.Now;
-                string imageFileName = tempTime.Hour.ToString()+"_"+ tempTime.Minute.ToString() + tempTime.Second.ToString() + "_plot_" + (plotIndex + 1) + "_" + ChosenTask.ToString() + ".png";
+                string imageFileName = tempTime.Hour.ToString() + "_" + tempTime.Minute.ToString() + tempTime.Second.ToString() + "_plot_" + (plotIndex + 1) + "_" + ChosenTask.ToString() + ".png";
                 string pathToImageFile = System.IO.Path.Combine(pathToImageFolder, imageFileName);
 
                 using (var imageFile = File.Create(pathToImageFile))
@@ -343,5 +334,18 @@ namespace NNApp
 
         }
         
+        private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+            ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+        }
     }
 }
