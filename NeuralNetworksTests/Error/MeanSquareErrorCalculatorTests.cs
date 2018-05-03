@@ -49,7 +49,7 @@ namespace NeuralNetworks.Tests
             var desiredOutput = Vector<double>.Build.Dense(new Double[7] { 5, 1, -1, 2, -2, 1, -9 });
             var errors = desiredOutput - output;
             errors = errors.PointwisePower(2); 
-            double correctErrorSum = 4;
+            double correctErrorSum = 32;
             var calculatedErrorSum = ErrorCalculator.CalculateEpochError(errors);
             Assert.IsTrue(Math.Round(correctErrorSum, 6) == Math.Round(calculatedErrorSum, 6));
         }

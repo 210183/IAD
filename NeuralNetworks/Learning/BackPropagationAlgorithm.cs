@@ -68,10 +68,10 @@ namespace NeuralNetworks
                     for(int weightIndex = 0; weightIndex < layers[layerIndex].Weights.RowCount; weightIndex++)
                     {
                         var signal = network.LastOutputs[layerIndex][weightIndex];
-                        var currentError = propagatedErrors[layerIndex][neuronIndex];
+                        var currentNeuronError = propagatedErrors[layerIndex][neuronIndex];
                         var activationFunc = network.Layers[layerIndex].ActivationFunction as IDifferentiable;
-                        var derivative = activationFunc.CalculateDerivative(currentDataError);  
-                        var backPropagationImpact = derivative * signal * currentError * LearningRateHandler.LearningRate;
+                        var derivative = network.LastDerivatives[layerIndex][neuronIndex];  
+                        var backPropagationImpact = derivative * signal * currentNeuronError * LearningRateHandler.LearningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {
                             var momentumImpact = MomentumCoefficient * LastWeightsChange[layerIndex][weightIndex, neuronIndex];

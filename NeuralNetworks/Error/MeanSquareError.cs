@@ -42,7 +42,7 @@ namespace NeuralNetworks
             {
                 var errors = CalculateErrorVector(output, desiredOutput);
                 errors = errors.PointwisePower(2);
-                var resultError = errors.Sum();
+                var resultError = Math.Sqrt(errors.Sum() / errors.Count);
                 return resultError;
             }
             else
@@ -59,13 +59,13 @@ namespace NeuralNetworks
         /// <returns></returns>
         public double CalculateEpochError(Vector<double> errors)
         {
-            double meanSquaredError = 0;
-            for (int i = 0; i < errors.Count; i++) //sum already squared errors
-            {
-                meanSquaredError += errors[i];
-            }
-            meanSquaredError = meanSquaredError / 2;
-            return meanSquaredError;
+            //double meanSquaredError = 0;
+            //for (int i = 0; i < errors.Count; i++) //sum already squared errors
+            //{
+            //    meanSquaredError += errors[i];
+            //}
+            //meanSquaredError = meanSquaredError / (errors.Count);
+            return errors.Sum();
         }
 
     }
