@@ -10,33 +10,31 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Trainer
 {
-    class SONTrainer : IOnGoingTrainer
+    public class SONTrainer : IOnGoingTrainer
     {
         public SONLearningAlgorithm LearningAlgorithm { get; set; }
         public List<NeuralNetwork> NetworkStatesHistory { get; set; } = new List<NeuralNetwork>();
 
-        private Datum[] dataSet;
+        public Datum[] DataSet { get; }
+
         private int dataIndexInEpoch = 0;
         private int dataSetLength;  // helper variable to shorten code
 
-        public SONTrainer(SONLearningAlgorithm learningAlgorithm, IDataProvider dataProvider)
+        public SONTrainer(SONLearningAlgorithm learningAlgorithm, NeuralNetwork network, IDataProvider dataProvider)
         {
             LearningAlgorithm = learningAlgorithm;
-            dataSet = dataProvider.Points;
-            dataSetLength = dataSet.Length;
+            DataSet = dataProvider.Points;
+            dataSetLength = DataSet.Length;
+            NetworkStatesHistory.Add(network.DeepCopy());
         }
 
         public void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount)
         {
-            if(NetworkStatesHistory.Count() == 0) // assume network not yet trained, so store its first state
-            {
-                SaveNetworkState(networkToTrain);
-            }
             Vector<double> currentPoint;
             for (int trainCounter = 0; trainCounter < dataCount; trainCounter++)
             {
                 CheckForNewEpoch();
-                currentPoint = dataSet[dataIndexInEpoch].X; // get next point
+                currentPoint = DataSet[dataIndexInEpoch].X; // get next point
                 // learn with current point
                 LearningAlgorithm.AdaptWeights(networkToTrain,currentPoint);
                 //store network state
