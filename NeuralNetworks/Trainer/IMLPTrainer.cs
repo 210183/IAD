@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    interface ITrainer
+    interface IMLPTrainer
     {
         void TrainNetwork(ref NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate);
     }

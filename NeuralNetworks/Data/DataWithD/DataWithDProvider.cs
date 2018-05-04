@@ -10,8 +10,6 @@ namespace NeuralNetworks.Data
 {
     public abstract class DataWithDProvider : BasicDataProvider, IDataWithDProvider
     {
-
         public DatumWithD[] DataSet { get; set; }
-
     }
 }

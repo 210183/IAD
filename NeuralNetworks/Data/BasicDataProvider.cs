@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Globalization;
 using System.Threading;
@@ -10,6 +12,16 @@ namespace NeuralNetworks.Data
 {
     public class BasicDataProvider : IBasicDataProvider
     {
+        protected string[] LoadFileToStringTable(int inputsNumber, int outputsNumber, string fileName)
+        {
+            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
+            nonInvariantCulture.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
+
+            string[] tempSet = System.IO.File.ReadAllLines(fileName);
+
+            return tempSet;
+        }
         /// <summary>
         /// Shuffles given data set by swaping two random elements n times.
         /// </summary>

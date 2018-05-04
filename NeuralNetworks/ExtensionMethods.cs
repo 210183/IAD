@@ -14,7 +14,7 @@ namespace NeuralNetworks
         /// </summary>
         /// <param name="index"></param>
         /// <returns>index - 1 or 0</returns>
-        public static int Previous (this int index)
+        public static int SafePrevious (this int index)
         {
             return index > 0 ? index - 1 : 0;
         }

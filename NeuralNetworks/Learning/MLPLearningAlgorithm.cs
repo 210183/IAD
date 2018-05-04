@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    public abstract class LearningAlgorithm
+    public abstract class MLPLearningAlgorithm :  ILearningAlgorithm
     {
         public LearningRateHandler LearningRateHandler { get; set; }
 
-        public LearningAlgorithm(LearningRateHandler learningRateHandler)
+        public MLPLearningAlgorithm(LearningRateHandler learningRateHandler)
         {
             this.LearningRateHandler = learningRateHandler;
         }
