@@ -8,6 +8,6 @@ namespace NeuralNetworks.DataGenerators
 {
     interface IDataGenerator
     {
-        void GenerateData(int numberOfPoints, string fileToSaveData);
+        void GenerateData(string pathToSourceImage, string pathToSaveData, bool shouldReverseColors);
     }
 }

@@ -11,8 +11,8 @@ namespace NeuralNetworksTests.DataGenerator
         public void MakeBlackOrWhite()
         {
             var gen = new ImageDataGenerator();
-            gen.GenerateGrayData(123, "");
-            gen.GenerateData(123, "");
+            //gen.GenerateGrayData(123, "");
+            gen.GenerateData(@"C:\Users\Mateusz\Desktop\ImagesTests\test2.bmp", @"C:\Users\Mateusz\Desktop\ImagesTests\generatedData.txt");
         }
     }
 }
