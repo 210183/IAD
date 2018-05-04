@@ -8,9 +8,10 @@ using VectorD = MathNet.Numerics.LinearAlgebra.Vector<double>;
 
 namespace NeuralNetworks.DistanceMetrics
 {
-    interface IDistanceCalculator
+    public interface ILengthCalculator
     {
         double Distance(VectorD x, VectorD w);
+        double Length(VectorD x);
         VectorD DifferenceVector(VectorD x, VectorD w);
     }
 }

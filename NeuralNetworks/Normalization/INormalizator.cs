@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuralNetworks.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace NeuralNetworks.Normalization
 {
     interface INormalizator
     {
-        void Normalize(
+        void Normalize(IDataProvider dataProvider);
     }
 }

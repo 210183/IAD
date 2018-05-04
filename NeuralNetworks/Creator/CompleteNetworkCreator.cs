@@ -19,7 +19,7 @@ namespace NeuralNetworks
         #region properties to be set from outside
         public ILearningProvider DataProvider { get; set; }
         public LayerCharacteristic[] Layers { get; set; }
-        public LearningAlgorithm LearningAlgorithm { get; set; }
+        public MLPLearningAlgorithm LearningAlgorithm { get; set; }
         public int InputsNumber { get; set; }
         public bool IsBiasOn { get; set; }
         public IErrorCalculator ErrorCalculator { get; set; }

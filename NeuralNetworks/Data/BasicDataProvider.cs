@@ -1,19 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
     public class BasicDataProvider : IBasicDataProvider
     {
+        protected string[] LoadFileToStringTable(int inputsNumber, int outputsNumber, string fileName)
+        {
+            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
+            nonInvariantCulture.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
+
+            string[] tempSet = System.IO.File.ReadAllLines(fileName);
+
+            return tempSet;
+        }
         /// <summary>
         /// Shuffles given data set by swaping two random elements n times.
         /// </summary>
         /// <param name="set">data set to shuffle</param>
         /// <param name="shuffleNumber"> How many times should two random elements be swaped</param>
-        public void ShuffleDataSet(DatumWithD[] set, int shuffleNumber = 100)
+        public void ShuffleDataSet(Datum[] set, int shuffleNumber = 100)
         {
             var randomizer = new Random();
             int setLength = set.Length;

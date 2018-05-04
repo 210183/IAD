@@ -68,7 +68,7 @@ namespace NeuralNetworks.DataGenerators
                             {
                                 foreach (var p in points)
                                 {
-                                    writer.WriteLine(p.X.ToString() + " " + p.Y.ToString());
+                                    writer.WriteLine(p.X.ToString() + "," + p.Y.ToString());
                                 }
                             }
                         }

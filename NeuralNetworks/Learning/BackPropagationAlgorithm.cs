@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    public class BackPropagationAlgorithm : LearningAlgorithm, IWithMomentum
+    public class BackPropagationAlgorithm : MLPLearningAlgorithm, IWithMomentum
     {
         public BackPropagationAlgorithm( LearningRateHandler learningRateHandler, double momentum, double errorIncreaseCoefficient) : base(learningRateHandler)
         {

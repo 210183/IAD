@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    public class OnlineTrainer : ITrainer
+    public class OnlineTrainer : IMLPTrainer
     {
         public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
         public ILearningProvider DataProvider { get; set; }
-        public LearningAlgorithm LearningAlgorithm { get; set; }
+        public MLPLearningAlgorithm LearningAlgorithm { get; set; }
         /// <summary>
         /// Test error is not used in any way here for network training purposes. It is only to  compare how test error was changing vs learning error.
         /// </summary>
@@ -25,7 +25,7 @@ namespace NeuralNetworks
 
         private NetworkTester tester;
 
-        public OnlineTrainer(IErrorCalculator errorCalculator, ILearningProvider dataProvider, LearningAlgorithm learningAlgorithm)
+        public OnlineTrainer(IErrorCalculator errorCalculator, ILearningProvider dataProvider, MLPLearningAlgorithm learningAlgorithm)
         {
             ErrorCalculator = errorCalculator;
             DataProvider = dataProvider;
@@ -58,7 +58,7 @@ namespace NeuralNetworks
                     errorVector = ErrorCalculator.CalculateErrorVector(output, learnSet[dataIndex].D); 
                     CurrentEpochErrorVector[dataIndex] = ErrorCalculator.CalculateErrorSum(output, learnSet[dataIndex].D);
                     #region adapt weights
-                    LearningAlgorithm.AdaptWeights(networkToTrain,errorVector, CurrentEpochErrorVector[dataIndex], CurrentEpochErrorVector[dataIndex.Previous()] );
+                    LearningAlgorithm.AdaptWeights(networkToTrain,errorVector, CurrentEpochErrorVector[dataIndex], CurrentEpochErrorVector[dataIndex.SafePrevious()] );
                     #endregion
 
                 }
@@ -71,7 +71,7 @@ namespace NeuralNetworks
                 }
                 #endregion
                 #region Adapt Learning Rate
-                LearningAlgorithm.AdaptLearningRate(TemporaryEpochErrorHistory[EpochIndex], TemporaryEpochErrorHistory[EpochIndex.Previous()]);
+                LearningAlgorithm.AdaptLearningRate(TemporaryEpochErrorHistory[EpochIndex], TemporaryEpochErrorHistory[EpochIndex.SafePrevious()]);
                 #endregion
                 #region create and store test results
                 var testError = tester.TestNetwork(networkToTrain, DataProvider);

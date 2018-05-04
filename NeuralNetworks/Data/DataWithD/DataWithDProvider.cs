@@ -8,20 +8,8 @@ using System.Linq;
 
 namespace NeuralNetworks.Data
 {
-    public abstract class DataWithDProvider : IDataWithDProvider
+    public abstract class DataWithDProvider : BasicDataProvider, IDataWithDProvider
     {
-
         public DatumWithD[] DataSet { get; set; }
-
-        protected string[] LoadFileToStringTable(int inputsNumber, int outputsNumber, string fileName)
-        {
-            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
-            nonInvariantCulture.NumberFormat.NumberDecimalSeparator = ".";
-            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
-
-            string[] tempSet = System.IO.File.ReadAllLines(fileName);
-
-            return tempSet;
-        } 
     }
 }

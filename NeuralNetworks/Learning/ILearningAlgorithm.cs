@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeuralNetworks.Data
+namespace NeuralNetworks.Learning
 {
-    public interface IDataWithDProvider
+    public interface ILearningAlgorithm
     {
-       DatumWithD[] DataSet { get; set; }
     }
 }

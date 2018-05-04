@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    public interface IBasicDataProvider
+    public interface IDataWithDProvider : IBasicDataProvider
     {
-        void ShuffleDataSet(Datum[] set, int shuffleNumber = 100);
+       DatumWithD[] DataSet { get; set; }
     }
 }

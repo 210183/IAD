@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    public interface IDataProvider
+    public interface IDataProvider : IBasicDataProvider
     {
         Datum[] Points { get; set; }
     }

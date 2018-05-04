@@ -53,7 +53,7 @@ namespace NNApp
         private IErrorCalculator errorCalculator;
         private int maxEpochs = 1000;
         private double desiredMaxError = 0;
-        private LearningAlgorithm learningAlgorithm;
+        private MLPLearningAlgorithm learningAlgorithm;
 
         public IDataWithDProvider DataProvider { get; set; }
 
@@ -73,7 +73,7 @@ namespace NNApp
         public double Momentum { get => momentum; set => momentum = value; }
         public double ErrorIncreaseCoefficient { get => errorIncreaseCoefficient; set => errorIncreaseCoefficient = value; }
 
-        public LearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
+        public MLPLearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
         public IErrorCalculator ErrorCalculator { get => errorCalculator; set => errorCalculator = value; }
         public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
         public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }

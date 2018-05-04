@@ -64,6 +64,7 @@
     <Compile Include="Error\ClassificationMetricsTests.cs" />
     <Compile Include="Error\MeanSquareErrorCalculatorTests.cs" />
     <Compile Include="NetworkTests.cs" />
+    <Compile Include="NormalizationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorExtension.cs" />
   </ItemGroup>

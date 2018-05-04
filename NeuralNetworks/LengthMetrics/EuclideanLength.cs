@@ -7,11 +7,15 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace NeuralNetworks.DistanceMetrics
 {
-    class EuclideanDistance : BasicDistance
+    public class EuclideanLength : BasicLength
     {
         public override double Distance(Vector<double> x, Vector<double> w)
         {
             return Math.Sqrt((x - w).PointwisePower(2).Sum());
+        }
+        public override double Length(Vector<double> x)
+        {
+            return Math.Sqrt((x).PointwisePower(2).Sum());
         }
     }
 }
