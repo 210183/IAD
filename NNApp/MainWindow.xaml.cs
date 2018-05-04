@@ -2,7 +2,9 @@
 using NeuralNetworks;
 using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Data;
+using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Learning;
+using NeuralNetworks.Trainer;
 using OxyPlot;
 using OxyPlot.Series;
 using System;
@@ -30,14 +32,17 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        private string learnFileName = @"C:\Users\Mateusz\Desktop\approximation_train_1.txt";
-        private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
+        //private string learnFileName = @"C:\Users\Mateusz\Desktop\approximation_train_1.txt";
+        //private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\classification_train.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\classification_test.txt";
 
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
+
+        private string learnFileName = @"C:\Users\Mateusz\Desktop\ImagesTests\generatedData.txt";
+        private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
         private int inputsNumber = 4;
         private int outputsNumber = 4;
@@ -117,7 +122,9 @@ namespace NNApp
             SaveParameters();
             if(TaskType.AnySON.HasFlag(ChosenTaskType))
             {
+                CreateSONDataProvider();
                 //TODO: ADd WTA parameter Window
+                LearningAlgorithm = new WTAAlgorithm(0.1, new EuclideanLength());
             }
             else
             {
@@ -137,9 +144,12 @@ namespace NNApp
                 {
                     if(TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
-                        CreateSONDataProvider();
-                        //Window paramWindow = new SONTrainerWindow();
-                        //paramWindow.Show();
+                        var network = new NeuralNetwork(2, new LayerCharacteristic[1]{
+                            new LayerCharacteristic(100, new IdentityFunction())
+                        });
+                        SONTrainer trainer = new SONTrainer((SONLearningAlgorithm)LearningAlgorithm, network, (IDataProvider)DataProvider);
+                        Window paramWindow = new SONLearnWindow(trainer);
+                        paramWindow.Show();
                     }
                     else
                     {

@@ -4,11 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
+using NeuralNetworks.DistanceMetrics;
 
 namespace NeuralNetworks.Learning
 {
     public class WTAAlgorithm : SONLearningAlgorithm
     {
+        public WTAAlgorithm(double learningRate, ILengthCalculator lengthCalculator)
+        {
+            LearningRate = learningRate;
+            LengthCalculator = lengthCalculator;
+        }
+
         public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint)
         {
             var LC = LengthCalculator; // to shorten

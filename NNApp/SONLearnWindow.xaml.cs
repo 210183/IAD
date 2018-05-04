@@ -25,10 +25,11 @@ namespace NNApp
         public SONTrainer Trainer { get; set; }
         public List<PlotModel> PlotModels { get; set; } = new List<PlotModel>();
         public int PlotModelIndex { get; set; } = 0;
-        public SONLearnWindow()
+        public SONLearnWindow(SONTrainer trainer)
         {
             InitializeComponent();
-            AddPlotModel();
+            Trainer = trainer;
+            //AddPlotModel();
         }
 
         private void AddPlotModel()
@@ -77,6 +78,30 @@ namespace NNApp
             // add completed plot model
             PlotModels.Add(SONModel);
             PlotModelIndex++;
+        }
+
+        private void PreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void Nextbutton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }
