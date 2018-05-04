@@ -29,7 +29,7 @@ namespace NeuralNetworks.Data
             }
         }
 
-        protected string[] LoadFileToStringTable(int inputsNumber, int outputsNumber, string fileName)
+        protected string[] LoadFileToStringTable(string fileName)
         {
             CultureInfo nonInvariantCulture = new CultureInfo("en-US");
             nonInvariantCulture.NumberFormat.NumberDecimalSeparator = ".";

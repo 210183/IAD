@@ -23,7 +23,7 @@ namespace NeuralNetworks.Data
                 biasModifier = 1;
             }
 
-            var tempInputOutputSet = base.LoadFileToStringTable(inputsNumber, outputsNumber, fileName);
+            var tempInputOutputSet = base.LoadFileToStringTable( fileName);
             DatumWithD[] tempData = new DatumWithD[tempInputOutputSet.Length];
 
             var singleInputData = Vector<double>.Build.Dense(inputsNumber + biasModifier, 0);
