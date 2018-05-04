@@ -67,6 +67,9 @@
     <Compile Include="NetworkStatsWindow.xaml.cs">
       <DependentUpon>NetworkStatsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SONLearnWindow.xaml.cs">
+      <DependentUpon>SONLearnWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TrainerParametersWindow.xaml.cs">
       <DependentUpon>TrainerParametersWindow.xaml</DependentUpon>
     </Compile>
@@ -87,6 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ParametersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SONLearnWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

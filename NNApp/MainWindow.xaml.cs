@@ -138,8 +138,8 @@ namespace NNApp
                     if(TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
                         CreateSONDataProvider();
-                        Window paramWindow = new SONTrainerWindow();
-                        paramWindow.Show();
+                        //Window paramWindow = new SONTrainerWindow();
+                       //paramWindow.Show();
                     }
                     else
                     {
