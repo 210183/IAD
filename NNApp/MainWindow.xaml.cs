@@ -43,7 +43,7 @@ namespace NNApp
         private int outputsNumber = 4;
         private bool isBiasOn = true;
         private LayerCharacteristic[] layers;
-        
+
         private double learningRate = 0.01;
         private double reductionRate = 0.8;
         private double increaseRate = 1.1;
@@ -81,6 +81,11 @@ namespace NNApp
         public int NumberOfNetworksToTry { get; set; } = 1;
         public CompleteNetworkCreator Creator { get; set; }
         public NeuralNetwork CurrentNetwork { get; set; }
+
+        private int ComboBoxMinIndexWithTest { get; set; } = 0;
+        private int ComboBoxMaxIndexWithTest { get; set; } = 2;
+        
+
         #endregion
 
         public MainWindow()
@@ -89,17 +94,23 @@ namespace NNApp
 
         }
 
+        #region Buttons
         private void DataFilesButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            openFileDialog.Title = "Learn file";
-            if (openFileDialog.ShowDialog() == true)
-                learnFileName = openFileDialog.FileName;
-            openFileDialog.Title = "Test file";
-            if (openFileDialog.ShowDialog() == true)
-                testFileName = openFileDialog.FileName;
-
+            if (IsTestWindowNeeded())
+            {
+                learnFileName = ShowFileWindow("Learn File", "Text File", "*.txt");
+                testFileName =  ShowFileWindow("Test File", "Text File", "*.txt");
+            }
+            else
+            {
+                
+                learnFileName = ShowFileWindow("Learn File", "Bitmap", "*.bmp");
+                if(learnFileName == "")
+                {
+                    learnFileName = ShowFileWindow("Learn File", "Text File", "*.txt");
+                }
+            }
             UnlockParameters();
         }
 
@@ -167,9 +178,9 @@ namespace NNApp
                 MessageBox.Show("You need to train some network first");
             }
         }
+        #endregion
 
         #region helper methods
-
         private void SaveParameters()
         {
             if(! IsTaskTypeSaved)
@@ -249,8 +260,27 @@ namespace NNApp
             }
         }
 
+        private bool IsTestWindowNeeded()
+        {
+            if (TaskChooseComboBox.SelectedIndex >= ComboBoxMinIndexWithTest && TaskChooseComboBox.SelectedIndex <= ComboBoxMaxIndexWithTest)
+                return true;
+            else
+                return false;
+        }
+
+        private string ShowFileWindow(string WindowName, string ExtensionName, string Extension)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = ExtensionName + " ("+Extension+")" + "|" + Extension + "|All files (*.*)|*.*"; //"Text files (*.txt)|*.txt" "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.Title = WindowName;
+            if (openFileDialog.ShowDialog() == true)
+                return openFileDialog.FileName;
+            else
+                return "";
+        }
         #endregion
 
+        #region Window service
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -271,5 +301,6 @@ namespace NNApp
            LearnButton.IsEnabled = false;
            NetworkResultsButton.IsEnabled = false;
         }
+        #endregion
     }
 }
