@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Globalization;
+using System.Threading;
 
 namespace NeuralNetworks.Data
 {
@@ -38,5 +40,17 @@ namespace NeuralNetworks.Data
                 set[secondIndex] = temp;
             }
         }
+
+        protected string[] LoadFileToStringTable(string fileName)
+        {
+            CultureInfo nonInvariantCulture = new CultureInfo("en-US");
+            nonInvariantCulture.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = nonInvariantCulture;
+
+            string[] tempSet = System.IO.File.ReadAllLines(fileName);
+
+            return tempSet;
+        }
+
     }
 }
