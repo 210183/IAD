@@ -8,6 +8,6 @@ namespace NeuralNetworks.Normalization
 {
     interface INormalizator
     {
-        void Normalize(
+        void Normalize();
     }
 }
