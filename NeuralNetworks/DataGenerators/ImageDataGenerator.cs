@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,28 +13,69 @@ namespace NeuralNetworks.DataGenerators
 {
     public class ImageDataGenerator : ITwoDimensionalDataGenerator
     {
-        public void GenerateData(int numberOfPoints, string fileToSaveData)
+        public void GenerateData(string pathToSourceImage, string pathToSaveData, bool shouldReverseColors = false)
         {
             try
             {
-                // Retrieve the image.
-                var sourceImage = new Bitmap(@"C:\Users\Mateusz\Desktop\ImagesTests\newGrayImage2.bmp", true);
-                var destinationImage = new Bitmap(sourceImage.Width, sourceImage.Height);
-                int x, y;
-                Vector<double> points = Vector<double>.Build.Dense(sourceImage.Height * sourceImage.Width);
-                // Loop through the images pixels to reset color.
-                for (x = 0; x < sourceImage.Width; x++)
+                // Retrieve the image. TODO: ADD SOURCE VALIDATION HERE
+                using (var sourceImage = new Bitmap(pathToSourceImage, true))
                 {
-                    for (y = 0; y < sourceImage.Height; y++)
+                    using (var destinationImage = new Bitmap(sourceImage.Width, sourceImage.Height))
                     {
-                        Color pixelColor = sourceImage.GetPixel(x, y);
-                        Color newColor = MakeBlackOrWhite(pixelColor);
-                        destinationImage.SetPixel(x, y, newColor);
+                        int x, y;
+                        List<Point> points = new List<Point>();
+                        // Loop through the images pixels to reset color.
+                        for (x = 0; x < sourceImage.Width; x++)
+                        {
+                            for (y = 0; y < sourceImage.Height; y++)
+                            {
+                                Color pixelColor = sourceImage.GetPixel(x, y);
+                                Color newColor;
+                                if (shouldReverseColors)
+                                {
+                                    newColor = MakeReverseBlackOrWhiteFromMean(pixelColor);
+                                }
+                                else
+                                {
+                                    newColor = MakeBlackOrWhiteFromMean(pixelColor);
+                                }
+                                if(newColor.R == 0) //all color components should be the same so can take R
+                                {
+                                    points.Add(new Point()
+                                    {
+                                        X = x,
+                                        Y = y
+                                    });
+                                }
+                                destinationImage.SetPixel(x, y, newColor);
+                            }
+                        }
+                        #region save results
+                        if (!Directory.Exists(Path.GetDirectoryName(pathToSaveData)))
+                        {
+                            try
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(pathToSaveData));
+                            }
+                            catch (IOException)
+                            {
+                                throw;
+                            }
+                        }
+                        using(var file = File.Create(Path.ChangeExtension(pathToSaveData, ".txt"))) //to create file
+                        {
+                            using (var writer = new StreamWriter(file))
+                            {
+                                foreach (var p in points)
+                                {
+                                    writer.WriteLine(p.X.ToString() + " " + p.Y.ToString());
+                                }
+                            }
+                        }
+                        destinationImage.Save(Path.ChangeExtension(pathToSaveData, ".bmp"));
+                        #endregion
                     }
                 }
-                destinationImage.Save(@"C:\Users\Mateusz\Desktop\ImagesTests\newImage2.bmp");
-                destinationImage.Dispose();
-                sourceImage.Dispose();
             }
             catch (ArgumentException)
             {
@@ -82,11 +124,10 @@ namespace NeuralNetworks.DataGenerators
             var newColor = Color.FromArgb(mean, mean, mean);
             return newColor;
         }
-
-        private Color MakeBlackOrWhite(Color color)
+        private Color MakeBlackOrWhiteFromMax(Color color)
         {
             int max = MaxFromColor(color);
-            if(max > 116) //make white
+            if(max > 160) //make white
             {
                 var newColor = Color.FromArgb(255, 255, 255);
                 return newColor;
@@ -94,6 +135,34 @@ namespace NeuralNetworks.DataGenerators
             else // make dark
             {
                 var newColor = Color.FromArgb(0,0,0);
+                return newColor;
+            }
+        }
+        private Color MakeBlackOrWhiteFromMean(Color color)
+        {
+            int mean = MeanFromColor(color);
+            if (mean > 220) //make white
+            {
+                var newColor = Color.FromArgb(255, 255, 255);
+                return newColor;
+            }
+            else // make dark
+            {
+                var newColor = Color.FromArgb(0, 0, 0);
+                return newColor;
+            }
+        }
+        private Color MakeReverseBlackOrWhiteFromMean(Color color)
+        {
+            int mean = MeanFromColor(color);
+            if (mean < 112) //make white
+            {
+                var newColor = Color.FromArgb(255, 255, 255);
+                return newColor;
+            }
+            else // make dark
+            {
+                var newColor = Color.FromArgb(0, 0, 0);
                 return newColor;
             }
         }

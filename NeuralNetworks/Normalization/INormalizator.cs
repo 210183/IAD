@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NeuralNetworks.Data
+namespace NeuralNetworks.Normalization
 {
-    public interface ILearningProvider : IDataProvider
+    interface INormalizator
     {
-         Datum[] LearnSet { get ; set ; }
+
     }
 }
