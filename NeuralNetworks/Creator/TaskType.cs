@@ -19,6 +19,6 @@ namespace NeuralNetworks
         SONKohonen = 8,
         SONGas = 16,
         SONWTA = 32,
-        AnySON = SONKohonen | SONGas
+        AnySON = SONKohonen | SONGas | SONWTA
     }
 }
