@@ -139,7 +139,7 @@ namespace NNApp
                     {
                         CreateSONDataProvider();
                         //Window paramWindow = new SONTrainerWindow();
-                       //paramWindow.Show();
+                        //paramWindow.Show();
                     }
                     else
                     {
