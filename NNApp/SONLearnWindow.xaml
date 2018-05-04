@@ -4,9 +4,92 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NNApp"
+         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="SONLearnWindow" Height="450" Width="800">
-    <Grid>
-        
+        Style="{StaticResource MetroWindowStyle}"
+        Title="SONLearnWindow" Height="600" Width="700">
+    <Window.Resources>
+        <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="Gainsboro" Offset="0" />
+            <GradientStop Color="Gainsboro" Offset="0.5" />
+            <GradientStop Color="DarkGray" Offset="2" />
+        </LinearGradientBrush>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="MaxWidth" Value="120" />
+            <Setter Property="MaxHeight" Value="40" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="MinWidth" Value="100" />
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" x:Key="DescriptionText">
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinWidth" Value="180" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
+    <Grid Background="OliveDrab">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="34" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <TextBlock  Text="SON" TextAlignment="Center" FontSize="20" Foreground="White" Name="TopBox2" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" Background="Black" MouseLeftButtonDown="TopBox_MouseLeftButtonDown" />
+        <Button Margin="0,0,10,0" HorizontalAlignment="Right" Style="{StaticResource ImageButton24x24}" Name="CloseButton" Grid.Column="4" Grid.Row="0"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="CloseButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/close.ico"/>
+            </Border>
+        </Button>
+        <Button Margin="40,0,0,0" HorizontalAlignment="Center" Style="{StaticResource ImageButton24x24}" Name="MinimizeButton" Grid.Column="4" Grid.Row="0"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="MinimizeButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/minimize.ico"/>
+            </Border>
+        </Button>
+        <oxy:PlotView Name="SONMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" Grid.Row="3"/>
+
+        <Button  Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="1" Grid.Row="2" >Previous</Button>
+        <Button  Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="3" Grid.Row="2">Next</Button>
+
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="HowMuchDataInStepText" Grid.Column="0" Grid.Row="1" Margin="20,5.208,20.377,25.981" TextAlignment="Center">Data in one step</TextBlock>
+        <TextBox Name="HowMuchDataInStepBox" Grid.Column="0" Grid.Row="1" Margin="21,32.208,19.377,33.981" >2</TextBox>
+
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentEpochText" Grid.Column="4" Grid.Row="1" Margin="9.8,14.8,12.4,16.2" TextAlignment="Center">Current epoch</TextBlock>
+        <TextBlock Name="CurrentEpochNumber" Grid.Column="4" Grid.Row="1" Margin="9.302,39.208,12.075,1.981" TextAlignment="Center" FontSize="18">1</TextBlock>
+
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentDataText" Grid.Column="1" Grid.Row="1" Margin="100.623,14.585,84.226,16.604" TextAlignment="Center" Grid.ColumnSpan="2" RenderTransformOrigin="1.015,0.556" Width="95">Current data</TextBlock>
+        <TextBlock Name="CurrentDataNumber" Grid.Column="1" Grid.Row="1" Margin="21.623,38.585,138.698,2.604" TextAlignment="Center" FontSize="18" Grid.ColumnSpan="3">1</TextBlock>
+
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="EpochSizeText" Grid.Column="2" Grid.Row="1" Margin="80.151,40.585,114.698,83.792" TextAlignment="Center" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="85">Epoch size</TextBlock>
+        <TextBlock Name="EpochSizeNumber" Grid.Column="1" Grid.Row="1" Margin="130.623,58.585,29.698,76.792" TextAlignment="Center" FontSize="18" Grid.ColumnSpan="3" Grid.RowSpan="2">1</TextBlock>
+
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="Slash" Grid.Column="2" Grid.Row="1" Margin="9.8,14.8,12.4,16.2" TextAlignment="Center" FontSize="38" >/</TextBlock>
+
+
     </Grid>
 </Window>
