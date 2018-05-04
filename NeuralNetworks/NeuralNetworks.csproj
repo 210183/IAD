@@ -33,8 +33,11 @@
     <Reference Include="MathNet.Numerics, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.4.0\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +55,9 @@
     <Compile Include="ActivationFunction\SigmoidBipolarFunction.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
     <Compile Include="Creator\CompleteNetworkCreator.cs" />
+    <Compile Include="DataGenerators\IDataGenerator.cs" />
+    <Compile Include="DataGenerators\ImageDataGenerator.cs" />
+    <Compile Include="DataGenerators\ITwoDimensionalDataGenerator.cs" />
     <Compile Include="Data\ApproximationDataProvider.cs" />
     <Compile Include="Data\ClassificationDataProvider.cs" />
     <Compile Include="Data\IDataProvider.cs" />
@@ -83,6 +89,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DistanceMetrics\" />
+    <Folder Include="Normalization\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
