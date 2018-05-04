@@ -202,7 +202,7 @@ namespace NNApp
                 try
                 {
                     int numberOfOutputs = Creator.BestNetwork.Layers[Creator.BestNetwork.Layers.Length-1].Weights.ColumnCount;
-                    IDataProvider dataProvider;
+                    IDataWithDProvider dataProvider;
 
                     if (ChosenTask == TaskType.Classification)
                         dataProvider = new ClassificationDataProvider(testFileName, Creator.InputsNumber, numberOfOutputs, Creator.IsBiasOn);

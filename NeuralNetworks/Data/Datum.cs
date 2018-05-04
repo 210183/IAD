@@ -7,18 +7,13 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    /// <summary>
-    /// Single entry of data storing input vector X and matching correct output vector - D
-    /// </summary>
     public class Datum
     {
-        public Datum(Vector<double> x, Vector<double> d)
+        public Vector<double> X { get; set; }
+
+        public Datum(Vector<double> x)
         {
             X = x;
-            D = d;
         }
-
-        public Vector<double> X { get; set; }
-        public Vector<double> D { get; set; }
     }
 }

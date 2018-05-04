@@ -9,7 +9,7 @@ namespace NeuralNetworks.Data
     public class LearningApproximationDataProvider : ApproximationDataProvider, ILearningProvider
     {
 
-        public Datum[] LearnSet { get; set; }
+        public DatumWithD[] LearnSet { get; set; }
 
         public LearningApproximationDataProvider(string learnFileName, string testFileName, int inputsNumber, int outputsNumber, bool isBiasOn) : base(testFileName, inputsNumber, outputsNumber, isBiasOn)
         {

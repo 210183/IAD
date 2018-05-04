@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    public interface ILearningProvider : IDataProvider
+    public class PointsDataProvider : BasicDataProvider, IDataProvider
     {
-         Datum[] LearnSet { get ; set ; }
+        public Datum[] Points { get; set; }
     }
 }

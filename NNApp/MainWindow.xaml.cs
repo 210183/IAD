@@ -55,7 +55,7 @@ namespace NNApp
         private double desiredMaxError = 0;
         private LearningAlgorithm learningAlgorithm;
 
-        public IDataProvider DataProvider { get; set; }
+        public IDataWithDProvider DataProvider { get; set; }
 
         public TaskType? ChosenTaskType { get; set; }
         public bool IsTaskTypeSaved { get; set; } = false;

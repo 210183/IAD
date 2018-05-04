@@ -22,7 +22,7 @@ namespace NeuralNetworks
         /// </summary>
         /// <param name="network"></param>
         /// <returns></returns>
-        public double TestNetwork(NeuralNetwork network, IDataProvider dataProvider)
+        public double TestNetwork(NeuralNetwork network, IDataWithDProvider dataProvider)
         {
             var testSet = dataProvider.DataSet; //var to clarify and shorten 
             var errors = Vector<double>.Build.Dense(testSet.Length,0);

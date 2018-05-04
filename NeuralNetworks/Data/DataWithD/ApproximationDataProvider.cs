@@ -7,30 +7,30 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Data
 {
-    public class ClassificationDataProvider : DataProvider
+    public class ApproximationDataProvider : DataWithDProvider
     {
-
-        public ClassificationDataProvider(string fileName, int inputsNumber, int outputsNumber, bool isBiasOn) 
+        public ApproximationDataProvider(string fileName, int inputsNumber, int outputsNumber, bool isBiasOn)
         {
             DataSet = SetData(fileName, inputsNumber, outputsNumber, isBiasOn);
         }
 
-        protected Datum[] SetData(string fileName,int inputsNumber, int outputsNumber, bool isBiasOn)
+        protected DatumWithD[] SetData(string fileName, int inputsNumber, int outputsNumber, bool isBiasOn)
         {
             int biasModifier = 0;
+
             if (isBiasOn)
             {
                 biasModifier = 1;
             }
 
             var tempInputOutputSet = base.LoadFileToStringTable(inputsNumber, outputsNumber, fileName);
-            Datum[] tempData = new Datum[tempInputOutputSet.Length];
+            DatumWithD[] tempData = new DatumWithD[tempInputOutputSet.Length];
 
             var singleInputData = Vector<double>.Build.Dense(inputsNumber + biasModifier, 0);
             var singleOutputData = Vector<double>.Build.Dense(outputsNumber, 0);
 
             string[] tempLine;
-            int numberOfAttributesInLine;
+
             var delimiter = ' ';
 
             for (int i = 0; i < tempInputOutputSet.Count(); i++)
@@ -39,8 +39,7 @@ namespace NeuralNetworks.Data
                 singleOutputData.Clear();
 
                 tempLine = tempInputOutputSet[i].Split(delimiter);
-                numberOfAttributesInLine = tempLine.Length - 1;
-                if (tempLine.Count() >= inputsNumber + 1) //1 for outputs column
+                if (tempLine.Count() == inputsNumber + outputsNumber)
                 {
                     if (isBiasOn)
                         singleInputData[0] = 1;
@@ -49,12 +48,13 @@ namespace NeuralNetworks.Data
                     {
                         singleInputData[j] = Convert.ToDouble(tempLine[j - biasModifier]);
                     }
-                    
-                    int classNumber  = Convert.ToInt16(tempLine[inputsNumber + (numberOfAttributesInLine - inputsNumber)]); //skip unused attribute
-                    singleOutputData[classNumber - 1] = 1;
+                    for (int j = 0; j < outputsNumber; j++)
+                    {
+                        singleOutputData[j] = Convert.ToDouble(tempLine[inputsNumber + j]);
 
+                    }
                 }
-                tempData[i] = new Datum(Vector<double>.Build.DenseOfVector(singleInputData), Vector<double>.Build.DenseOfVector(singleOutputData));
+                tempData[i] = new DatumWithD(Vector<double>.Build.DenseOfVector(singleInputData), Vector<double>.Build.DenseOfVector(singleOutputData));
             }
             return tempData;
         }
