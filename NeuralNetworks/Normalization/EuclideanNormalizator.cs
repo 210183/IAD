@@ -9,12 +9,11 @@ namespace NeuralNetworks.Normalization
 {
     public class EuclideanNormalizator : INormalizator
     {
-        public void Normalize(IDataProvider dataProvider)
+        public void Normalize(Datum[] dataSet)
         {
-            var set = dataProvider.Points;
-            foreach(var p in set)
+            for (int i = 0; i < dataSet.Length; i++)
             {
-                p.X = p.X / (Math.Sqrt(p.X.PointwisePower(2).Sum())); // x= x/Sqrt(E(x^2))
+                dataSet[i].X = dataSet[i].X / (Math.Sqrt(dataSet[i].X.PointwisePower(2).Sum())); // x= x/Sqrt(E(x^2))
             }
         }
     }

@@ -15,28 +15,25 @@ namespace NeuralNetworksTests
         {
             var distCalc = new EuclideanLength();
             var norm = new EuclideanNormalizator();
-            var provider = new PointsDataProvider
-            {
-                Points = new Datum[4]
-            };
-            provider.Points[0] = new Datum(Vector<double>.Build.Dense(new double[] {
+            var points = new Datum[4];
+            points[0] = new Datum(Vector<double>.Build.Dense(new double[] {
                 1.2342,
                 434
             }));
-            provider.Points[1] = new Datum(Vector<double>.Build.Dense(new double[] {
+            points[1] = new Datum(Vector<double>.Build.Dense(new double[] {
                 -12332,
                 0.01231
             }));
-            provider.Points[2] = new Datum(Vector<double>.Build.Dense(new double[] {
+            points[2] = new Datum(Vector<double>.Build.Dense(new double[] {
                 1123,
                 13
             }));
-            provider.Points[3] = new Datum(Vector<double>.Build.Dense(new double[] {
+            points[3] = new Datum(Vector<double>.Build.Dense(new double[] {
                 1.001,
                 -0.123
             }));
-            norm.Normalize(provider);
-            foreach(var p in provider.Points)
+            norm.Normalize(points);
+            foreach(var p in points)
             {
                 var length = distCalc.Length(p.X);
                 Assert.AreEqual(1, length, 0.001);

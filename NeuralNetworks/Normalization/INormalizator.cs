@@ -9,6 +9,6 @@ namespace NeuralNetworks.Normalization
 {
     interface INormalizator
     {
-        void Normalize(IDataProvider dataProvider);
+        void Normalize(Datum[] dataProvider);
     }
 }

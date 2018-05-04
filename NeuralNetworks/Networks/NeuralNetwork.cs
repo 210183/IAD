@@ -15,7 +15,6 @@ namespace NeuralNetworks
     /// </summary>
     public class NeuralNetwork
     {
-
         public int NumberOfInputs { get; set; }
         public int NumberOfLayers { get; set; }
         public bool IsBiasExisting { get; }

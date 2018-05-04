@@ -11,7 +11,7 @@ namespace NeuralNetworks.Data
     {
         public Datum[] Points { get; set; }
 
-        PointsDataProvider(string fileName, int inputsNumber)
+        public PointsDataProvider(string fileName, int inputsNumber)
         {
             Points = SetData(fileName, inputsNumber);
         }

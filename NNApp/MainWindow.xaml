@@ -64,6 +64,7 @@
             <ComboBoxItem Name="Approximation" >Approximation</ComboBoxItem>
             <ComboBoxItem Name="Classification">Classification</ComboBoxItem>
             <ComboBoxItem Name="Transformation">Transformation</ComboBoxItem>
+            <ComboBoxItem Name="SONWTA">WTA</ComboBoxItem>
             <ComboBoxItem Name="KohonenAlgorithm">SOM - Kohonen Algorithm</ComboBoxItem>
             <ComboBoxItem Name="NeuralGas">SOM - Neural Gas</ComboBoxItem>
             <ComboBoxItem Name="Kmeans">K-means Clustering</ComboBoxItem>

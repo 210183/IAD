@@ -53,9 +53,9 @@ namespace NNApp
         private IErrorCalculator errorCalculator;
         private int maxEpochs = 1000;
         private double desiredMaxError = 0;
-        private MLPLearningAlgorithm learningAlgorithm;
+        private ILearningAlgorithm learningAlgorithm;
 
-        public IDataWithDProvider DataProvider { get; set; }
+        public IBasicDataProvider DataProvider { get; set; }
 
         public TaskType? ChosenTaskType { get; set; }
         public bool IsTaskTypeSaved { get; set; } = false;
@@ -73,7 +73,7 @@ namespace NNApp
         public double Momentum { get => momentum; set => momentum = value; }
         public double ErrorIncreaseCoefficient { get => errorIncreaseCoefficient; set => errorIncreaseCoefficient = value; }
 
-        public MLPLearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
+        public ILearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
         public IErrorCalculator ErrorCalculator { get => errorCalculator; set => errorCalculator = value; }
         public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
         public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }
@@ -84,7 +84,6 @@ namespace NNApp
 
         private int ComboBoxMinIndexWithTest { get; set; } = 0;
         private int ComboBoxMaxIndexWithTest { get; set; } = 2;
-        
 
         #endregion
 
@@ -111,14 +110,20 @@ namespace NNApp
                     learnFileName = ShowFileWindow("Learn File", "Text File", "*.txt");
                 }
             }
-            UnlockParameters();
         }
 
         private void SetParameters_Click(object sender, RoutedEventArgs e)
         {
             SaveParameters();
-            Window paramWindow = new ParametersWindow();
-            paramWindow.ShowDialog();
+            if(TaskType.AnySON.HasFlag(ChosenTaskType))
+            {
+                //TODO: ADd WTA parameter Window
+            }
+            else
+            {
+                Window paramWindow = new ParametersWindow();
+                paramWindow.ShowDialog();
+            }
             LearnButton.IsEnabled = true;
         }
 
@@ -130,21 +135,30 @@ namespace NNApp
                 //create data provider before moving further
                 if (ChosenTaskType != null) // if any item was chosen 
                 {
-                    if (File.Exists(learnFileName) && File.Exists(testFileName)) //create learning provdier
+                    if(TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
-                        CreateLearningDataProvider();
-                        Window paramWindow = new TrainerParametersWindow();
+                        CreateSONDataProvider();
+                        Window paramWindow = new SONTrainerWindow();
                         paramWindow.Show();
-                    } 
-                    else if (File.Exists(testFileName))
-                    {
-                        CreateTestDataProvider();
-                        Window paramWindow = new TrainerParametersWindow(); //create provider for test only purposes
-                        paramWindow.Show();
-                    }   
+                    }
                     else
                     {
-                        MessageBox.Show("Could not find any files under specified paths.");
+                        if (File.Exists(learnFileName) && File.Exists(testFileName)) //create learning provdier
+                        {
+                            CreateLearningDataProvider();
+                            Window paramWindow = new TrainerParametersWindow();
+                            paramWindow.Show();
+                        }
+                        else if (File.Exists(testFileName))
+                        {
+                            CreateTestDataProvider();
+                            Window paramWindow = new TrainerParametersWindow(); //create provider for test only purposes
+                            paramWindow.Show();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Could not find any files under specified paths.");
+                        }
                     }
                 }
                 else
@@ -161,22 +175,29 @@ namespace NNApp
 
         private void NetworkResults_Click(object sender, RoutedEventArgs e)
         {
-            if (CurrentNetwork != null)
+            if (TaskType.AnySON.HasFlag(ChosenTaskType))
             {
-                if (Creator != null)
-                {
-                    Window networkWindow = new NetworkStatsWindow();
-                    networkWindow.ShowDialog();
-                }
-                else
-                {
-                    MessageBox.Show("You need to use some network creater first");
-                }
+                //TODO: Add SON network Window
             }
             else
             {
-                MessageBox.Show("You need to train some network first");
-            }
+                if (CurrentNetwork != null)
+                {
+                    if (Creator != null)
+                    {
+                        Window networkWindow = new NetworkStatsWindow();
+                        networkWindow.ShowDialog();
+                    }
+                    else
+                    {
+                        MessageBox.Show("You need to use some network creater first");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("You need to train some network first");
+                }
+            }  
         }
         #endregion
 
@@ -211,10 +232,16 @@ namespace NNApp
                 return TaskType.Classification;
             else if (TaskChooseComboBox.SelectedItem == Transformation)
                 return TaskType.Transformation;
+            else if (TaskChooseComboBox.SelectedItem == SONWTA)
+                return TaskType.SONWTA;
             else
                 return TaskType.None;
         }
-        
+
+        private void CreateSONDataProvider()
+        {
+            DataProvider = new PointsDataProvider(learnFileName,2);
+        }
         private void CreateLearningDataProvider()
         {
             if (ShouldCreateApproximationDataProvider()) // the same provider ffor both

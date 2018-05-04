@@ -79,7 +79,7 @@ namespace NNApp
                         InputsNumber = MainWindow.InputsNumber,
                         IsBiasOn = MainWindow.IsBiasOn,
                         Layers = MainWindow.Layers,
-                        LearningAlgorithm = MainWindow.LearningAlgorithm,
+                        LearningAlgorithm = MainWindow.LearningAlgorithm as MLPLearningAlgorithm,
                         MaxEpochs = MainWindow.MaxEpochs,
                     };
                     var network = creator.CreateNetwork( (TaskType)MainWindow.ChosenTaskType, MainWindow.NumberOfNetworksToTry);

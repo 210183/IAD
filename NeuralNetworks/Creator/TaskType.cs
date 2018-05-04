@@ -9,11 +9,16 @@ namespace NeuralNetworks
     /// <summary>
     /// Signalizes which type of task should network be able to solve
     /// </summary>
+    [Flags]
     public enum TaskType
     {
         None = 0,
-        Approximation,
-        Classification,
-        Transformation
+        Approximation = 1,
+        Classification = 2,
+        Transformation = 4,
+        SONKohonen = 8,
+        SONGas = 16,
+        SONWTA = 32,
+        AnySON = SONKohonen | SONGas
     }
 }
