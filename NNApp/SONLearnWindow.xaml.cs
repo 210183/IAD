@@ -1,4 +1,5 @@
-﻿using NeuralNetworks.Trainer;
+﻿using NeuralNetworks;
+using NeuralNetworks.Trainer;
 using OxyPlot;
 using OxyPlot.Series;
 using System;
@@ -25,11 +26,15 @@ namespace NNApp
         public SONTrainer Trainer { get; set; }
         public List<PlotModel> PlotModels { get; set; } = new List<PlotModel>();
         public int PlotModelIndex { get; set; } = 0;
-        public SONLearnWindow(SONTrainer trainer)
+
+        private NeuralNetwork network;
+
+        public SONLearnWindow(SONTrainer trainer, NeuralNetwork network)
         {
             InitializeComponent();
             Trainer = trainer;
-            //AddPlotModel();
+            this.network = network;
+            AddPlotModel();
         }
 
         private void AddPlotModel()
@@ -47,7 +52,7 @@ namespace NNApp
             {
                 neuronPoints.Add(new ScatterPoint(
                     weights[0, neuronIndex], //x
-                    weights[0, neuronIndex], //y
+                    weights[1, neuronIndex], //y
                     2                        //point size
                     ));
             }
@@ -77,6 +82,7 @@ namespace NNApp
             #endregion
             // add completed plot model
             PlotModels.Add(SONModel);
+            SONMainPlot.Model = PlotModels[PlotModelIndex]; // change currently viewed plot
             PlotModelIndex++;
         }
 
@@ -86,7 +92,8 @@ namespace NNApp
         }
         private void Nextbutton_Click(object sender, RoutedEventArgs e)
         {
-
+            Trainer.TrainNetwork(ref network, Convert.ToInt32(HowMuchDataInStepBox.Text));
+            AddPlotModel();
         }
 
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

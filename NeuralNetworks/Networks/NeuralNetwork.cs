@@ -27,28 +27,6 @@ namespace NeuralNetworks
         public Vector<double>[] LastDerivatives { get; set; } = new Vector<double>[1];
 
         /// <summary>
-        /// To be used for copy purposes
-        /// </summary>
-        /// <param name="numberOfInputs"></param>
-        /// <param name="layers"></param>
-        /// <param name="isBiasOn"></param>
-        public NeuralNetwork(int numberOfInputs, Layer[] layers, bool isBiasOn = true)
-        {
-            this.NumberOfLayers = layers.Length;
-            this.Layers = layers;
-            this.NumberOfInputs = numberOfInputs;
-            this.IsBiasExisting = isBiasOn;
-            //create place to store outputs
-            LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
-            //create place to store derivatives
-            LastDerivatives = new Vector<double>[NumberOfLayers];
-            for (int layerIndex = 0; layerIndex < NumberOfLayers; layerIndex++)
-            {
-                LastDerivatives[layerIndex] = Vector<double>.Build.Dense(Layers[layerIndex].Weights.ColumnCount);
-            }
-        }
-
-        /// <summary>
         /// 
         /// </summary>
         /// <param name="numberOfInputs">Size of input vector that network will take.</param>
@@ -74,6 +52,39 @@ namespace NeuralNetworks
                 int inputsAmount = Layers[i - 1].Weights.ColumnCount + inputNumberModifier;
                 Layers[i] = new Layer(Matrix<double>.Build.Dense(inputsAmount, numberOfNeurons, (x, y) => (randomizer.NextDouble()*2) - 1), layersChars[i].ActivationFunction); // +1 becuase of bias weights.
             }
+            //create place to store outputs
+            LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
+            for (int layerIndex = 0; layerIndex < NumberOfLayers + 1; layerIndex++)
+            {
+                if(layerIndex == 0)
+                {
+                    LastOutputs[layerIndex] = Vector<double>.Build.Dense(numberOfInputs);
+                }
+                else
+                {
+                    LastOutputs[layerIndex] = Vector<double>.Build.Dense(Layers[layerIndex-1].Weights.ColumnCount);
+                }
+            }
+            //create place to store derivatives
+            LastDerivatives = new Vector<double>[NumberOfLayers];
+            for (int layerIndex = 0; layerIndex < NumberOfLayers; layerIndex++)
+            {
+                LastDerivatives[layerIndex] = Vector<double>.Build.Dense(Layers[layerIndex].Weights.ColumnCount);
+            }
+        }
+
+        /// <summary>
+        /// To be used for copy purposes
+        /// </summary>
+        /// <param name="numberOfInputs"></param>
+        /// <param name="layers"></param>
+        /// <param name="isBiasOn"></param>
+        public NeuralNetwork(int numberOfInputs, Layer[] layers, bool isBiasOn = true)
+        {
+            this.NumberOfLayers = layers.Length;
+            this.Layers = layers;
+            this.NumberOfInputs = numberOfInputs;
+            this.IsBiasExisting = isBiasOn;
             //create place to store outputs
             LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
             //create place to store derivatives
@@ -132,16 +143,6 @@ namespace NeuralNetworks
             return output;
         }
 
-        public void ConsoleDisplay()
-        {
-            Console.WriteLine($"Neural network with : {NumberOfLayers} layers, {NumberOfInputs} inputs");
-            foreach(var layer in Layers)
-            {
-                Console.Write(layer.Weights);
-                Console.WriteLine("---------------------------------");
-            }
-        }
-
         public NeuralNetwork DeepCopy()
         {
             var copyLayers = new Layer[Layers.Length];
@@ -161,6 +162,16 @@ namespace NeuralNetworks
                 copyNetwork.LastDerivatives[i] = Vector<double>.Build.DenseOfVector(LastDerivatives[i]);
             }
             return copyNetwork;
+        }
+
+        public void ConsoleDisplay()
+        {
+            Console.WriteLine($"Neural network with : {NumberOfLayers} layers, {NumberOfInputs} inputs");
+            foreach (var layer in Layers)
+            {
+                Console.Write(layer.Weights);
+                Console.WriteLine("---------------------------------");
+            }
         }
     }
 }

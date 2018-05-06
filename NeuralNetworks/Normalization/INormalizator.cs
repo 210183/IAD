@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Normalization
 {
-    interface INormalizator
+    public interface INormalizator
     {
         void Normalize(Datum[] dataProvider);
     }

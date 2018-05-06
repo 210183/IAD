@@ -4,6 +4,7 @@ using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Data;
 using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Learning;
+using NeuralNetworks.Normalization;
 using NeuralNetworks.Trainer;
 using OxyPlot;
 using OxyPlot.Series;
@@ -123,8 +124,10 @@ namespace NNApp
             if(TaskType.AnySON.HasFlag(ChosenTaskType))
             {
                 CreateSONDataProvider();
+                var normalizer = new EuclideanNormalizator();
+                normalizer.Normalize(((IDataProvider)DataProvider).Points);
                 //TODO: ADd WTA parameter Window
-                LearningAlgorithm = new WTAAlgorithm(0.1, new EuclideanLength());
+                LearningAlgorithm = new WTAAlgorithm(0.01, new EuclideanLength());
             }
             else
             {
@@ -145,10 +148,11 @@ namespace NNApp
                     if(TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
                         var network = new NeuralNetwork(2, new LayerCharacteristic[1]{
-                            new LayerCharacteristic(100, new IdentityFunction())
-                        });
+                            new LayerCharacteristic(100, new IdentityFunction())},
+                            false
+                        );
                         SONTrainer trainer = new SONTrainer((SONLearningAlgorithm)LearningAlgorithm, network, (IDataProvider)DataProvider);
-                        Window paramWindow = new SONLearnWindow(trainer);
+                        Window paramWindow = new SONLearnWindow(trainer, network);
                         paramWindow.Show();
                     }
                     else
