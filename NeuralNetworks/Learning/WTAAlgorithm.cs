@@ -10,10 +10,9 @@ namespace NeuralNetworks.Learning
 {
     public class WTAAlgorithm : SONLearningAlgorithm
     {
-        public WTAAlgorithm(double learningRate, ILengthCalculator lengthCalculator)
+        public WTAAlgorithm(double learningRate, ILengthCalculator lengthCalculator) : base(learningRate, lengthCalculator)
         {
-            LearningRate = learningRate;
-            LengthCalculator = lengthCalculator;
+
         }
 
         public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint)

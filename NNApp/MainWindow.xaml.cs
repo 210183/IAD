@@ -4,6 +4,7 @@ using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Data;
 using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Learning;
+using NeuralNetworks.Learning.NeighborhoodFunctions;
 using NeuralNetworks.Normalization;
 using NeuralNetworks.Trainer;
 using OxyPlot;
@@ -42,7 +43,7 @@ namespace NNApp
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
 
-        private string learnFileName = @"C:\Users\Mateusz\Desktop\ImagesTests\generatedData.txt";
+        private string learnFileName = @"F:\ImagesTests\generatedData.txt";
         private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
         private int inputsNumber = 4;
@@ -124,10 +125,10 @@ namespace NNApp
             if(TaskType.AnySON.HasFlag(ChosenTaskType))
             {
                 CreateSONDataProvider();
-                var normalizer = new EuclideanNormalizator();
+                var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
                 normalizer.Normalize(((IDataProvider)DataProvider).Points);
                 //TODO: ADd WTA parameter Window
-                LearningAlgorithm = new WTAAlgorithm(0.01, new EuclideanLength());
+                LearningAlgorithm = new KohonenAlgorithm(0.005, new EuclideanLength(), new Lambda(0.1, 0.0001, 100_000), new BinaryNeighborhood());
             }
             else
             {

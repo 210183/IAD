@@ -9,9 +9,6 @@
         Style="{StaticResource MetroWindowStyle}"
         Title="Neural Networks" Height="310" Width="600"
         Loaded="Window_Loaded">
-    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <LinearGradientBrush x:Key="GrayBlueGradientBrush" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="FloralWhite" Offset="0" />

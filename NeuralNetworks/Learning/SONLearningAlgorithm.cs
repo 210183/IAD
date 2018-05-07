@@ -10,8 +10,14 @@ namespace NeuralNetworks.Learning
 {
     public abstract class SONLearningAlgorithm : ILearningAlgorithm
     {
-        public ILengthCalculator LengthCalculator { get; set; }
         public double LearningRate { get; set; }
+        public ILengthCalculator LengthCalculator { get; set; }
+
+        protected SONLearningAlgorithm(double learningRate, ILengthCalculator lengthCalculator)
+        {
+            LearningRate = learningRate;
+            LengthCalculator = lengthCalculator;
+        }
 
         public abstract void AdaptWeights(NeuralNetwork network,Vector<double> learningPoint);
     }

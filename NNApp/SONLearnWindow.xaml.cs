@@ -39,51 +39,55 @@ namespace NNApp
 
         private void AddPlotModel()
         {
-            var network = Trainer.NetworkStatesHistory[PlotModelIndex];
-            var weights = network.Layers[0].Weights;
-            var SONModel = new PlotModel
+            int trainedDataCount = Trainer.NetworkStatesHistory.Count();
+            while (PlotModelIndex < trainedDataCount)
             {
-                Title = "SON Number: " + PlotModelIndex.ToString(),
-                IsLegendVisible = true,
-            };
-            #region neurons series
-            var neuronPoints = new List<ScatterPoint>();
-            for (int neuronIndex = 0; neuronIndex < weights.ColumnCount; neuronIndex++)
-            {
-                neuronPoints.Add(new ScatterPoint(
-                    weights[0, neuronIndex], //x
-                    weights[1, neuronIndex], //y
-                    2                        //point size
-                    ));
+                var network = Trainer.NetworkStatesHistory[PlotModelIndex];
+                var weights = network.Layers[0].Weights;
+                var SONModel = new PlotModel
+                {
+                    Title = "SON Number: " + PlotModelIndex.ToString(),
+                    IsLegendVisible = true,
+                };
+                #region neurons series
+                var neuronPoints = new List<ScatterPoint>();
+                for (int neuronIndex = 0; neuronIndex < weights.ColumnCount; neuronIndex++)
+                {
+                    neuronPoints.Add(new ScatterPoint(
+                        weights[0, neuronIndex], //x
+                        weights[1, neuronIndex], //y
+                        2                        //point size
+                        ));
+                }
+                var neuronSeries = new ScatterSeries()
+                {
+                    Title = "Neurons",
+                };
+                neuronSeries.ItemsSource = neuronPoints;
+                SONModel.Series.Add(neuronSeries);
+                #endregion
+                #region learning data series
+                var learningPoints = new List<ScatterPoint>();
+                for (int dataIndex = 0; dataIndex < Trainer.DataSet.Length; dataIndex++)
+                {
+                    learningPoints.Add(new ScatterPoint(
+                        Trainer.DataSet[dataIndex].X[0], //x
+                        Trainer.DataSet[dataIndex].X[1], //y
+                        1                        //point size
+                        ));
+                }
+                var learningSeries = new ScatterSeries()
+                {
+                    Title = "Learning Data",
+                };
+                learningSeries.ItemsSource = learningPoints;
+                SONModel.Series.Add(learningSeries);
+                #endregion
+                // add completed plot model
+                PlotModels.Add(SONModel);
+                SONMainPlot.Model = PlotModels[PlotModelIndex]; // change currently viewed plot
+                PlotModelIndex++;
             }
-            var neuronSeries = new ScatterSeries()
-            {
-                Title = "Neurons",
-            };
-            neuronSeries.ItemsSource = neuronPoints;
-            SONModel.Series.Add(neuronSeries);
-            #endregion
-            #region learning data series
-            var learningPoints = new List<ScatterPoint>();
-            for (int dataIndex = 0; dataIndex < Trainer.DataSet.Length; dataIndex++)
-            {
-                learningPoints.Add(new ScatterPoint(
-                    Trainer.DataSet[dataIndex].X[0], //x
-                    Trainer.DataSet[dataIndex].X[1], //y
-                    1                        //point size
-                    ));
-            }
-            var learningSeries = new ScatterSeries()
-            {
-                Title = "Learning Data",
-            };
-            learningSeries.ItemsSource = learningPoints;
-            SONModel.Series.Add(learningSeries);
-            #endregion
-            // add completed plot model
-            PlotModels.Add(SONModel);
-            SONMainPlot.Model = PlotModels[PlotModelIndex]; // change currently viewed plot
-            PlotModelIndex++;
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
