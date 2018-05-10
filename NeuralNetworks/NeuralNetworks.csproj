@@ -54,6 +54,7 @@
     <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidBipolarFunction.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
+    <Compile Include="ConscienceWithPotential.cs" />
     <Compile Include="Creator\CompleteNetworkCreator.cs" />
     <Compile Include="DataGenerators\IDataGenerator.cs" />
     <Compile Include="DataGenerators\ImageDataGenerator.cs" />
@@ -79,7 +80,9 @@
     <Compile Include="Error\IErrorCalculator.cs" />
     <Compile Include="Learning\ILearningAlgorithm.cs" />
     <Compile Include="Learning\MLP\MLPLearningAlgorithm.cs" />
+    <Compile Include="Learning\MLP\SONLearningRateHandler.cs" />
     <Compile Include="Learning\NeighborhoodFunctions\BinaryNeighborhood.cs" />
+    <Compile Include="Learning\NeighborhoodFunctions\GaussianNeighborhood.cs" />
     <Compile Include="Learning\NeighborhoodFunctions\INeighborhoodFunction.cs" />
     <Compile Include="Learning\SONLearningAlgorithm.cs" />
     <Compile Include="Learning\WTAAlgorithm.cs" />
