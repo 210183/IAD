@@ -32,18 +32,18 @@ namespace NeuralNetworks
             }
         }
 
-        public List<int> SelectPossibleWinners(Matrix<double> weights)
+        public void FilterPossibleWinners(List<int> neuronsIndexes)
         {
             var possWinners = new List<int>();
-            for (int col = 0; col < weights.ColumnCount; col++)
+            foreach (var neuronIndex in neuronsIndexes)
             {
-                if (potentials[col] >= minimalPotential)
-                    possWinners.Add(col);
+                if (CanBeWinner(neuronIndex))
+                    possWinners.Add(neuronIndex);
             }
-            return possWinners;
+            neuronsIndexes =  possWinners;
         }
 
-        public bool CanBeWinner(int neuronIndex)
+        private bool CanBeWinner(int neuronIndex)
         {
             if(neuronIndex >= neuronAmount)
             {

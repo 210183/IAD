@@ -24,8 +24,6 @@ namespace NeuralNetworks.Learning
             LengthCalculator = lengthCalculator;
         }
 
-        public abstract void AdaptWeights(NeuralNetwork network,Vector<double> learningPoint, int iterationNumber);
-
-        public abstract Dictionary<int, double> GetCoefficients(NeuralNetwork network, List<int> possibleNeurons, Vector<double> learningPoint, int iterationNumber);
+        public abstract Dictionary<int, double> GetCoefficients(NeuralNetwork network, List<int> possibleNeurons, int winnerIndex, Vector<double> learningPoint, int iterationNumber);
     }
 }

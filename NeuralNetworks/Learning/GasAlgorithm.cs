@@ -11,40 +11,38 @@ namespace NeuralNetworks.Learning
 {
     public class GasAlgorithm : SONLearningAlgorithm
     {
-        public GasAlgorithm(SONLearningRateHandler learningRateHandler, ILengthCalculator lengthCalculator, Lambda lambda) : base(learningRateHandler, lengthCalculator, lambda)
+        public GasAlgorithm(ILengthCalculator lengthCalculator, Lambda lambda) : base(lengthCalculator, lambda)
         {
         }
 
-        public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint, int iterationNumber)
+        public override Dictionary<int, double> GetCoefficients(NeuralNetwork network, List<int> possibleNeurons, int winnerIndex, Vector<double> learningPoint, int iterationNumber)
         {
             var weights = network.Layers[0].Weights;
 
             var unsortedNeuron = new Dictionary<int, double>();
-            for (int colIndex = 0; colIndex < weights.ColumnCount; colIndex++) // add neuroins with distances
+            for (int colIndex = 0; colIndex < weights.ColumnCount; colIndex++) // add neurons with distances
             {
-                if (true) //place for conscience mechainsm
-                {
-                    unsortedNeuron.Add(colIndex, LengthCalculator.Distance(learningPoint, weights.Column(colIndex)));
-                }
+                unsortedNeuron.Add(colIndex, LengthCalculator.Distance(learningPoint, weights.Column(colIndex)));
             }
-            var sortedNeuron = unsortedNeuron.OrderBy(pair => pair.Value)
+            var sortedNeuron = unsortedNeuron.OrderBy(pair => pair.Value) // neuronindex in matrix and its index as ordered by distance
                .Select((pair, index) => new { pair.Key, index })
                .ToDictionary(x => x.Key, x => (double)x.index);
 
-            UpdateNeurons(learningPoint, weights, iterationNumber, sortedNeuron);
-        }
-
-        private void UpdateNeurons(Vector<double> learningPoint, Matrix<double> weights, int iterationNumber, Dictionary<int, double> neighborsPositions)
-        {
-            foreach (var neuronIndex in neighborsPositions.Keys)
+            var neuronCoefficients = new Dictionary<int, double>(); // neuron index in matrix and its coefficient for learning
+            var lambda = Lambda.GetValue(iterationNumber);
+            if (lambda == 0)
             {
-                Vector<double> correctionVector = LearningRateHandler.GetLearningRate(iterationNumber) * (learningPoint - weights.Column(neuronIndex));
-                var neighborCoef = Math.Exp(-neighborsPositions[neuronIndex] / Lambda.GetValue(iterationNumber));
-                for (int i = 0; i < correctionVector.Count; i++)
-                {
-                    weights[i, neuronIndex] += neighborCoef * correctionVector[i];
-                }
+                neuronCoefficients.Add(winnerIndex, 1);
             }
+            else
+            {
+                foreach (var neuronIndex in sortedNeuron.Keys)
+                {
+                    var nPosition = sortedNeuron[neuronIndex];
+                    neuronCoefficients.Add(neuronIndex, Math.Exp(-(nPosition / lambda)));
+                }
+            } 
+            return neuronCoefficients.Where(x => x.Value > 0).ToDictionary(x => x.Key, x =>x.Value);
         }
     }
 }

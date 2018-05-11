@@ -129,7 +129,7 @@ namespace NNApp
                 var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
                 normalizer.Normalize(((IDataProvider)DataProvider).Points);
                 //TODO: ADd WTA parameter Window
-                LearningAlgorithm = new WTAAlgorithm(new SONLearningRateHandler(0.40, 0.02, 2000), new EuclideanLength());
+                LearningAlgorithm = new GasAlgorithm(new EuclideanLength(), new Lambda(20, 0, 500));
             }
             else
             {
@@ -150,10 +150,11 @@ namespace NNApp
                     if(TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
                         var network = new NeuralNetwork(2, new LayerCharacteristic[1]{
-                            new LayerCharacteristic(100, new IdentityFunction())},
+                            new LayerCharacteristic(400, new IdentityFunction())},
                             false
                         );
-                        SONTrainer trainer = new SONTrainer((SONLearningAlgorithm)LearningAlgorithm, network, (IDataProvider)DataProvider);
+                        var learnRate = new SONLearningRateHandler(0.40, 0.02, 1000);
+                        SONTrainer trainer = new SONTrainer((IDataProvider)DataProvider, network, (SONLearningAlgorithm)LearningAlgorithm, learnRate, new EuclideanLength());    // new ConscienceWithPotential(0.8, 100));
                         Window paramWindow = new SONLearnWindow(trainer, network);
                         paramWindow.Show();
                     }
