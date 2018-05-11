@@ -69,7 +69,7 @@ namespace NNApp
 
             Lambda lambda = new Lambda(sonParameters.LambdaMax, sonParameters.LambdaMin, sonParameters.LambdaMaxIterations);
 
-            if (TaskType.SONKohonen.HasFlag(MainWindow.ChosenTaskType))
+            if (MainWindow.ChosenTaskType == TaskType.SONKohonen)
             {
                 MainWindow.LearningAlgorithm = new KohonenAlgorithm
                 (
@@ -78,11 +78,11 @@ namespace NNApp
                     sonParameters.NeighbourhoodFunction
                 );
             }
-            if(TaskType.SONGas.HasFlag(MainWindow.ChosenTaskType))
+            if(MainWindow.ChosenTaskType == TaskType.SONGas)
             {
                 MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);                   
             }
-            if (TaskType.SONWTA.HasFlag(MainWindow.ChosenTaskType))
+            if (MainWindow.ChosenTaskType == TaskType.SONWTA)
             {
                 MainWindow.LearningAlgorithm = new WTAAlgorithm(sonParameters.LengthCalculator);
             }
@@ -94,7 +94,7 @@ namespace NNApp
                 (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
                 new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
                 sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter)
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, sonParameters.LambdaMaxIterations)
                );
 
             this.Close();

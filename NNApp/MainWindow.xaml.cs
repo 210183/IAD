@@ -251,6 +251,10 @@ namespace NNApp
                 return TaskType.Transformation;
             else if (TaskChooseComboBox.SelectedItem == SONWTA)
                 return TaskType.SONWTA;
+            else if (TaskChooseComboBox.SelectedItem == KohonenAlgorithm)
+                return TaskType.SONKohonen;
+            else if (TaskChooseComboBox.SelectedItem == NeuralGas)
+                return TaskType.SONGas;
             else
                 return TaskType.None;
         }

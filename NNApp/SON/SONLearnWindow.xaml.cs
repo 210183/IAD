@@ -95,7 +95,14 @@ namespace NNApp
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
             int previousAmount = Convert.ToInt32(HowMuchDataInStepBox.Text);
-            UpdateDisplayedPlot(DisplayedPlotIndex - previousAmount);
+            if (DisplayedPlotIndex - previousAmount >=0)
+            {
+                UpdateDisplayedPlot(DisplayedPlotIndex - previousAmount);
+            }
+            else
+            {
+                UpdateDisplayedPlot(1);
+            }
         }
         private void Nextbutton_Click(object sender, RoutedEventArgs e)
         {
@@ -116,12 +123,14 @@ namespace NNApp
 
         private void UpdateDisplayedPlot()
         {
-            SONMainPlot.Model = PlotModels[DisplayedPlotIndex];
+            SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
         }
         private void UpdateDisplayedPlot(int index)
         {
+            if (index < 0) // more safe
+                index = 0;
             DisplayedPlotIndex = index;
-            SONMainPlot.Model = PlotModels[DisplayedPlotIndex];
+            SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
         }
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
