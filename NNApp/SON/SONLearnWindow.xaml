@@ -79,10 +79,10 @@
         <TextBlock Style ="{StaticResource DescriptionText}" Name="HowMuchDataInStepText" Grid.Column="0" Grid.Row="1" Margin="20,5.208,20.377,25.981" TextAlignment="Center">Data in one step</TextBlock>
         <TextBox Name="HowMuchDataInStepBox" Grid.Column="0" Grid.Row="1" Margin="21,32.208,19.377,33.981" >2</TextBox>
 
-        <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentEpochText" Grid.Column="4" Grid.Row="1" Margin="9.8,14.8,12.4,16.2" TextAlignment="Center">Current epoch</TextBlock>
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentEpochText" Grid.Column="4" Grid.Row="1" Margin="9.8,14.8,12.4,16.2" TextAlignment="Center">Epochs Loaded</TextBlock>
         <TextBlock Name="CurrentEpochNumber" Grid.Column="4" Grid.Row="1" Margin="9.302,39.208,12.075,1.981" TextAlignment="Center" FontSize="18">1</TextBlock>
 
-        <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentDataText" Grid.Column="1" Grid.Row="1" Margin="100.623,14.585,84.226,16.604" TextAlignment="Center" Grid.ColumnSpan="2" RenderTransformOrigin="1.015,0.556" Width="95">Current data</TextBlock>
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="CurrentDataText" Grid.Column="1" Grid.Row="1" Margin="100.623,14.585,84.226,16.604" TextAlignment="Center" Grid.ColumnSpan="2" RenderTransformOrigin="1.015,0.556" Width="95">Data Loaded</TextBlock>
         <TextBlock Name="CurrentDataNumber" Grid.Column="1" Grid.Row="1" Margin="21.623,38.585,138.698,2.604" TextAlignment="Center" FontSize="18" Grid.ColumnSpan="3">1</TextBlock>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="EpochSizeText" Grid.Column="2" Grid.Row="1" Margin="80.151,40.585,114.698,83.792" TextAlignment="Center" Grid.ColumnSpan="2" Grid.RowSpan="2" Width="85">Epoch size</TextBlock>

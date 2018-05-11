@@ -101,7 +101,6 @@ namespace NNApp
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         #region Buttons
@@ -131,8 +130,6 @@ namespace NNApp
                 CreateSONDataProvider();
                 var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
                 normalizer.Normalize(((IDataProvider)DataProvider).Points);
-                //TODO: ADd WTA parameter Window
-                //LearningAlgorithm = new KohonenAlgorithm(new SONLearningRateHandler(0.40, 0.02, 8000), new EuclideanLength(), new Lambda(0.13, 0.001, 15), new GaussianNeighborhood(), new ConscienceWithPotential(0.8, 300));
                 Window paramWindow = new SonParametersWindow();
                 paramWindow.ShowDialog();
             }
@@ -350,5 +347,10 @@ namespace NNApp
             NetworkResultsButton.IsEnabled = false;
         }
         #endregion
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskChooseComboBox.IsEnabled = true;
+        }
     }
 }

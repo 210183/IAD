@@ -55,9 +55,15 @@
                 <Image Source="Resources/minimize.ico"/>
             </Border>
         </Button>
+        <Button Margin="70,0,0,0" HorizontalAlignment="Center" Style="{StaticResource ImageButton128x128}" Name="ResetButton" Grid.Column="3" Grid.Row="1"  
+                 MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="ResetButton_Click" >
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Image Source="Resources/restart.ico"/>
+            </Border>
+        </Button>
 
         <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" FontSize="18" TextAlignment="Center" Text="Choose type of task" Margin="10,10,10,10"/>
-        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="10,10,10,10" SelectedIndex="2" FontSize="24" VerticalAlignment="Center">
+        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="9.66,42.585,81.547,41.679" SelectedIndex="2" FontSize="24" VerticalAlignment="Center">
             <ComboBoxItem Name="Approximation" >Approximation</ComboBoxItem>
             <ComboBoxItem Name="Classification">Classification</ComboBoxItem>
             <ComboBoxItem Name="Transformation">Transformation</ComboBoxItem>

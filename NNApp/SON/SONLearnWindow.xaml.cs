@@ -28,6 +28,8 @@ namespace NNApp
         public int GeneratedPlotModelIndex { get; set; } = 0;
         public int DisplayedPlotIndex { get; set; } = 0;
 
+        ScatterSeries
+
         private NeuralNetwork network;
 
         public SONLearnWindow(SONTrainer trainer, NeuralNetwork network)
@@ -36,6 +38,7 @@ namespace NNApp
             Trainer = trainer;
             this.network = network;
             AddPlotModel();
+            UpdateControlNumbers();
         }
 
         private void AddPlotModel()
@@ -103,6 +106,7 @@ namespace NNApp
             {
                 UpdateDisplayedPlot(1);
             }
+            UpdateControlNumbers();
         }
         private void Nextbutton_Click(object sender, RoutedEventArgs e)
         {
@@ -119,6 +123,7 @@ namespace NNApp
                 Trainer.TrainNetwork(ref network, toLearnCount);
                 AddPlotModel();
             }
+            UpdateControlNumbers();
         }
 
         private void UpdateDisplayedPlot()
@@ -132,6 +137,14 @@ namespace NNApp
             DisplayedPlotIndex = index;
             SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
         }
+
+        private void UpdateControlNumbers()
+        {
+            CurrentEpochNumber.Text = Trainer.EpochNumber.ToString();
+            EpochSizeNumber.Text = Trainer.DataSetLength.ToString();
+            CurrentDataNumber.Text = Trainer.DataIndexInEpoch.ToString();
+        }
+        #region WindowService
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -146,5 +159,6 @@ namespace NNApp
         {
             this.WindowState = WindowState.Minimized;
         }
+        #endregion 
     }
 }
