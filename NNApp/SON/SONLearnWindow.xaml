@@ -62,13 +62,13 @@
         <Button Margin="0,0,10,0" HorizontalAlignment="Right" Style="{StaticResource ImageButton24x24}" Name="CloseButton" Grid.Column="4" Grid.Row="0"  
                  MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="CloseButton_Click" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <Image Source="Resources/close.ico"/>
+                <Image Source="../Resources/close.ico"/>
             </Border>
         </Button>
         <Button Margin="40,0,0,0" HorizontalAlignment="Center" Style="{StaticResource ImageButton24x24}" Name="MinimizeButton" Grid.Column="4" Grid.Row="0"  
                  MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="MinimizeButton_Click" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <Image Source="Resources/minimize.ico"/>
+                <Image Source="../Resources/minimize.ico"/>
             </Border>
         </Button>
         <oxy:PlotView Name="SONMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" Grid.Row="3"/>

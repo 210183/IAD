@@ -1,5 +1,6 @@
 ﻿using NeuralNetworks;
 using NeuralNetworks.ActivationFunction;
+using NeuralNetworks.Data;
 using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Learning;
 using NeuralNetworks.Learning.MLP;
@@ -27,62 +28,106 @@ namespace NNApp
     public partial class SonParametersWindow : Window
     {
         public MainWindow MainWindow { get; set; } = ((MainWindow)Application.Current.MainWindow);
-        SonParameters SONParameters;
+        SonParameters sonParameters;
 
         public SonParametersWindow()
         {
             InitializeComponent();
         }
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            SONParameters.LengthCalculator = new EuclideanLength();
-            SONParameters.NeighbourhoodFunction = new GaussianNeighborhood();
-            SONParameters.StartingLearningRate = Convert.ToDouble(LearningStartingRateBox.Text);
-            minimumLearningRate = Convert.ToDouble(LearningMinRateBox.Text);
-            maxIterations = Convert.ToInt32(MaxIterationsBox.Text);
-            lambdaMaxIterations = Convert.ToInt32(LambdaMaxIterationsBox.Text);
-            lambdaMax = Convert.ToDouble(LambdaMaxBox.Text);
-            lambdaMin = Convert.ToDouble(LambdaMinBox.Text);
-            conscienceMinPotential = Convert.ToDouble(MinimalPotentialBox.Text);
-            neuronsCounter = Convert.ToInt32(NeuronsCounterBox.Text);
+            sonParameters.LengthCalculator = new EuclideanLength();
+            sonParameters.NeighbourhoodFunction = new GaussianNeighborhood();
+            sonParameters.StartingLearningRate = Convert.ToDouble(LearningStartingRateBox.Text);
+            sonParameters.MinimumLearningRate = Convert.ToDouble(LearningMinRateBox.Text);
+            sonParameters.MaxIterations = Convert.ToInt32(MaxIterationsBox.Text);
+            sonParameters.LambdaMaxIterations = Convert.ToInt32(LambdaMaxIterationsBox.Text);
+            sonParameters.LambdaMax = Convert.ToDouble(LambdaMaxBox.Text);
+            sonParameters.LambdaMin = Convert.ToDouble(LambdaMinBox.Text);
+            sonParameters.ConscienceMinPotential = Convert.ToDouble(MinimalPotentialBox.Text);
+            sonParameters.NeuronsCounter = Convert.ToInt32(NeuronsCounterBox.Text);
 
             MainWindow.CurrentNetwork = new NeuralNetwork
             (
                2,
-               new LayerCharacteristic[1] { new LayerCharacteristic(neuronsCounter, new IdentityFunction()) },
+               new LayerCharacteristic[1] { new LayerCharacteristic(sonParameters.NeuronsCounter, new IdentityFunction()) },
                false
             );
 
             if (NeighborhoodfunctionComboBox.SelectedItem == BinaryNeighbourhood)
             {
-                neighbourhoodFunction = new BinaryNeighborhood();
+                sonParameters.NeighbourhoodFunction = new BinaryNeighborhood();
             }
             if (NeighborhoodfunctionComboBox.SelectedItem == GaussianNeighbourhood)
             {
-                neighbourhoodFunction = new GaussianNeighborhood();
+                sonParameters.NeighbourhoodFunction = new GaussianNeighborhood();
             }
-
             if (LengthCalculatorComboBox.SelectedItem == Euclidean)
             {
-                lengthCalculator = new EuclideanLength();
+                sonParameters.LengthCalculator = new EuclideanLength();
             }
+
+            Lambda lambda = new Lambda(sonParameters.LambdaMax, sonParameters.LambdaMin, sonParameters.LambdaMaxIterations);
 
             if (TaskType.SONKohonen.HasFlag(MainWindow.ChosenTaskType))
             {
-                
                 MainWindow.LearningAlgorithm = new KohonenAlgorithm
                 (
-                    lengthCalculator,
-                    new Lambda(lambdaMax, lambdaMin, lambdaMaxIterations),
-                    neighbourhoodFunction
+                    sonParameters.LengthCalculator,
+                    lambda,
+                    sonParameters.NeighbourhoodFunction
                 );
             }
+            if(TaskType.SONGas.HasFlag(MainWindow.ChosenTaskType))
+            {
+                MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);                   
+            }
+            if (TaskType.SONWTA.HasFlag(MainWindow.ChosenTaskType))
+            {
+                MainWindow.LearningAlgorithm = new WTAAlgorithm(sonParameters.LengthCalculator);
+            }
 
-            // build trainer
-            var trainer = new SONTrainer();
-            //
+            MainWindow.Trainer = new SONTrainer
+               (
+                (IDataProvider)MainWindow.DataProvider,
+                MainWindow.CurrentNetwork,
+                (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
+                new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
+                sonParameters.LengthCalculator,
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter)
+               );
+
             this.Close();
+        }
+
+       
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            sonParameters = MainWindow.SonParameters;
+
+            LearningStartingRateBox.Text = sonParameters.StartingLearningRate.ToString();
+            LearningMinRateBox.Text = sonParameters.MinimumLearningRate.ToString();
+            MaxIterationsBox.Text = sonParameters.MaxIterations.ToString();
+            LambdaMaxIterationsBox.Text = sonParameters.LambdaMaxIterations.ToString();
+            LambdaMaxBox.Text = sonParameters.LambdaMax.ToString();
+            LambdaMinBox.Text = sonParameters.LambdaMin.ToString();
+            MinimalPotentialBox.Text = sonParameters.ConscienceMinPotential.ToString();
+            NeuronsCounterBox.Text = sonParameters.NeuronsCounter.ToString();
+
+            if (sonParameters.LengthCalculator as EuclideanLength != null)
+            {
+                LengthCalculatorComboBox.SelectedItem = Euclidean;
+            }
+            if (sonParameters.NeighbourhoodFunction as BinaryNeighborhood != null)
+            {
+                NeighborhoodfunctionComboBox.SelectedItem = BinaryNeighbourhood;
+            }
+            if (sonParameters.NeighbourhoodFunction as GaussianNeighborhood != null)
+            {
+                NeighborhoodfunctionComboBox.SelectedItem = GaussianNeighbourhood;
+            }
+
         }
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -96,35 +141,6 @@ namespace NNApp
         {
             this.WindowState = WindowState.Minimized;
             MainWindow.WindowState = WindowState.Minimized;
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            var par = MainWindow.SonParameters;
-            SONParameters = MainWindow.SonParameters;
-
-            LearningStartingRateBox.Text = par.StartingLearningRate.ToString();
-            LearningMinRateBox.Text = par.MinimumLearningRate.ToString();
-            MaxIterationsBox.Text = par.MaxIterations.ToString();
-            LambdaMaxIterationsBox.Text = par.LambdaMaxIterations.ToString();
-            LambdaMaxBox.Text = par.LambdaMax.ToString();
-            LambdaMinBox.Text = par.LambdaMin.ToString();
-            MinimalPotentialBox.Text = par.ConscienceMinPotential.ToString();
-            NeuronsCounterBox.Text = par.NeuronsCounter.ToString();
-
-            if (SONParameters.LengthCalculator as EuclideanLength != null)
-            {
-                LengthCalculatorComboBox.SelectedItem = Euclidean;
-            }
-            if (SONParameters.NeighbourhoodFunction as BinaryNeighborhood != null)
-            {
-                NeighborhoodfunctionComboBox.SelectedItem = BinaryNeighbourhood;
-            }
-            if (SONParameters.NeighbourhoodFunction as GaussianNeighborhood != null)
-            {
-                NeighborhoodfunctionComboBox.SelectedItem = GaussianNeighbourhood;
-            }
-
         }
 
     }
