@@ -18,6 +18,7 @@ namespace NeuralNetworks.Trainer
         public Datum[] DataSet { get; }
 
         private int dataIndexInEpoch = 0;
+        private int epochNumber = 0;
         private int dataSetLength;  // helper variable to shorten code
 
         public SONTrainer(SONLearningAlgorithm learningAlgorithm, NeuralNetwork network, IDataProvider dataProvider)
@@ -25,7 +26,7 @@ namespace NeuralNetworks.Trainer
             LearningAlgorithm = learningAlgorithm;
 
             DataSet = dataProvider.Points;
-            int shuffleAmount = dataProvider.Points.Length * 2;
+            int shuffleAmount = dataProvider.Points.Length * 10;
             dataProvider.ShuffleDataSet(DataSet,shuffleAmount);
 
             dataSetLength = DataSet.Length;
@@ -40,7 +41,7 @@ namespace NeuralNetworks.Trainer
                 CheckForNewEpoch();
                 currentPoint = DataSet[dataIndexInEpoch].X; // get next point
                 // learn with current point
-                LearningAlgorithm.AdaptWeights(networkToTrain,currentPoint);
+                LearningAlgorithm.AdaptWeights(networkToTrain,currentPoint, epochNumber * dataCount + dataIndexInEpoch);
                 //store network state
                 SaveNetworkState(networkToTrain);
                 dataIndexInEpoch++;
@@ -56,6 +57,7 @@ namespace NeuralNetworks.Trainer
                 if (dataIndexInEpoch == dataSetLength) // start new epoch
                 {
                     dataIndexInEpoch = 0;
+                    epochNumber++;
                 }
             }
         }

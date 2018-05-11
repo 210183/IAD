@@ -15,27 +15,18 @@ namespace NeuralNetworks.Learning
         public KohonenAlgorithm(
             SONLearningRateHandler learningRateHandler,
             ILengthCalculator lengthCalculator,
-            Lambda borderParameter,
+            Lambda lambda,
             INeighborhoodFunction neighborhoodFunction, 
-            ConscienceWithPotential conscience) : base(learningRateHandler, lengthCalculator)
+            ConscienceWithPotential conscience) : base(learningRateHandler, lengthCalculator, lambda)
         {
-            BorderParameter = borderParameter;
             NeighborhoodFunction = neighborhoodFunction;
             Conscience = conscience;
         }
 
-        /// <summary>
-        /// lambda
-        /// </summary>
-        public Lambda BorderParameter { get; }
-
         public INeighborhoodFunction NeighborhoodFunction { get; }
-
         public ConscienceWithPotential Conscience { get;}
 
-        private int iterationNumber = 0;
-
-        public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint)
+        public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint, int iterationNumber)
         {
             var weights = network.Layers[0].Weights;
 
@@ -48,13 +39,11 @@ namespace NeuralNetworks.Learning
             for (int colIndex = 0; colIndex < weights.ColumnCount; colIndex++)
             {
                 var colDistance = LengthCalculator.Distance(weights.Column(colIndex), winner);   
-                neighborsGrade.Add(colIndex, NeighborhoodFunction.Calculate(colDistance, BorderParameter.GetValue(iterationNumber)));
+                neighborsGrade.Add(colIndex, NeighborhoodFunction.Calculate(colDistance, Lambda.GetValue(iterationNumber)));
             }
             // adapt winner and neighbors weights
-            UpdateNeurons(learningPoint, weights, neighborsGrade);
+            UpdateNeurons(learningPoint, weights, iterationNumber, neighborsGrade);
             Conscience.UpdatePotential(winnerIndex);
-
-            iterationNumber++;
         }
 
         private int FindWinnerIndex(Matrix<double> weights, Vector<double> learningPoint, ILengthCalculator calculator)
@@ -86,7 +75,7 @@ namespace NeuralNetworks.Learning
             #endregion
         }
 
-        private void UpdateNeurons(Vector<double> learningPoint, Matrix<double> weights, Dictionary<int, double> neighborsGrade)
+        private void UpdateNeurons(Vector<double> learningPoint, Matrix<double> weights, int iterationNumber, Dictionary<int, double> neighborsGrade)
         {
             foreach (var neuronIndex in neighborsGrade.Keys)
             {

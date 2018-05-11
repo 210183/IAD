@@ -74,6 +74,7 @@
     <Compile Include="Data\PointsDataProvider.cs" />
     <Compile Include="Error\ClassificationMetrics.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Learning\GasAlgorithm.cs" />
     <Compile Include="Learning\KohonenAlgorithm.cs" />
     <Compile Include="Learning\Lambda.cs" />
     <Compile Include="Learning\MLP\BackPropagationAlgorithm.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Learning\NeighborhoodFunctions\BinaryNeighborhood.cs" />
     <Compile Include="Learning\NeighborhoodFunctions\GaussianNeighborhood.cs" />
     <Compile Include="Learning\NeighborhoodFunctions\INeighborhoodFunction.cs" />
+    <Compile Include="Learning\SONAdapter.cs" />
     <Compile Include="Learning\SONLearningAlgorithm.cs" />
     <Compile Include="Learning\WTAAlgorithm.cs" />
     <Compile Include="LengthMetrics\BasicLength.cs" />

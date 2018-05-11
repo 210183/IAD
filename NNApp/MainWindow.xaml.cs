@@ -129,7 +129,7 @@ namespace NNApp
                 var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
                 normalizer.Normalize(((IDataProvider)DataProvider).Points);
                 //TODO: ADd WTA parameter Window
-                LearningAlgorithm = new KohonenAlgorithm(new SONLearningRateHandler(0.40, 0.02, 8000), new EuclideanLength(), new Lambda(0.13, 0.001, 15), new GaussianNeighborhood(), new ConscienceWithPotential(0.8, 300));
+                LearningAlgorithm = new WTAAlgorithm(new SONLearningRateHandler(0.40, 0.02, 2000), new EuclideanLength());
             }
             else
             {
@@ -150,7 +150,7 @@ namespace NNApp
                     if(TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
                         var network = new NeuralNetwork(2, new LayerCharacteristic[1]{
-                            new LayerCharacteristic(300, new IdentityFunction())},
+                            new LayerCharacteristic(100, new IdentityFunction())},
                             false
                         );
                         SONTrainer trainer = new SONTrainer((SONLearningAlgorithm)LearningAlgorithm, network, (IDataProvider)DataProvider);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace NeuralNetworks
     {
         private double minimalPotential;
         private int neuronAmount;
-        private Dictionary<int, double> neuronPotential;
+        private Dictionary<int, double> potentials;
         public ConscienceWithPotential(double minimalPotential, int neuronAmount)
         {
             if(minimalPotential > 1 || minimalPotential < 0)
@@ -24,11 +25,22 @@ namespace NeuralNetworks
             }
             this.neuronAmount = neuronAmount;
 
-            neuronPotential = new Dictionary<int, double>();
+            potentials = new Dictionary<int, double>();
             for (int i = 0; i < neuronAmount; i++) // init dictionary
             {
-                neuronPotential.Add(i, minimalPotential);
+                potentials.Add(i, minimalPotential);
             }
+        }
+
+        public List<int> SelectPossibleWinners(Matrix<double> weights)
+        {
+            var possWinners = new List<int>();
+            for (int col = 0; col < weights.ColumnCount; col++)
+            {
+                if (potentials[col] >= minimalPotential)
+                    possWinners.Add(col);
+            }
+            return possWinners;
         }
 
         public bool CanBeWinner(int neuronIndex)
@@ -37,7 +49,7 @@ namespace NeuralNetworks
             {
                 throw new ArgumentException("Invalid neuron index >= than amount: " + neuronIndex.ToString() + " >= " + neuronAmount.ToString());
             }
-            return neuronPotential[neuronIndex] >= minimalPotential;
+            return potentials[neuronIndex] >= minimalPotential;
         }
 
         public void UpdatePotential(int winnerindex)
@@ -46,15 +58,15 @@ namespace NeuralNetworks
             {
                 if(i == winnerindex)
                 {
-                    neuronPotential[i] -= minimalPotential;
-                    if (neuronPotential[i] < 0)
-                        neuronPotential[i] = 0;
+                    potentials[i] -= minimalPotential;
+                    if (potentials[i] < 0)
+                        potentials[i] = 0;
                 }
                 else
                 {
-                    neuronPotential[i] += 1 / (double)neuronAmount;
-                    if (neuronPotential[i] > 1)
-                        neuronPotential[i] = 1;
+                    potentials[i] += 1 / (double)neuronAmount;
+                    if (potentials[i] > 1)
+                        potentials[i] = 1;
                 }
             }
         }

@@ -21,7 +21,7 @@ namespace NeuralNetworks.Learning.MLP
 
         public double GetLearningRate(int iterationNumber)
         {
-            return startingLearningRate * Math.Pow((minLearningRate / startingLearningRate), (iterationNumber / maxIterations));
+            return startingLearningRate * Math.Pow((minLearningRate / startingLearningRate), (iterationNumber * 1.0 / maxIterations));
         }
     }
 }

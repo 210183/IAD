@@ -11,12 +11,12 @@ namespace NeuralNetworks.Learning
 {
     public class WTAAlgorithm : SONLearningAlgorithm
     {
-        public WTAAlgorithm(SONLearningRateHandler learningRateHandler, ILengthCalculator lengthCalculator) : base(learningRateHandler, lengthCalculator)
+        public WTAAlgorithm(SONLearningRateHandler learningRateHandler, ILengthCalculator lengthCalculator) : base(learningRateHandler, lengthCalculator, null)
         {
 
         }
 
-        public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint)
+        public override void AdaptWeights(NeuralNetwork network, Vector<double> learningPoint, int iterationNumber)
         {
             var LC = LengthCalculator; // to shorten
             var weights = network.Layers[0].Weights;
@@ -27,26 +27,53 @@ namespace NeuralNetworks.Learning
             {
                 if(IsBetter(colIndex))
                 {
-                    UpdateWinner(colIndex);
+                    UpdateWinnerIndex(colIndex);
                 }
             }
-            // adapt winner weights
-            Vector<double> correctionVector = LearningRateHandler.GetLearningRate(1) *(learningPoint - weights.Column(winnerIndex));
-            for (int i = 0; i < correctionVector.Count; i++)
-            {
-                weights[i, winnerIndex] += correctionVector[i]; 
-            }
-
             //local methods
             bool IsBetter(int neuronIndex)
             {
                 return LC.Distance(learningPoint, weights.Column(neuronIndex)) < winnerDistance;
             }
-            void UpdateWinner(int newWinnerIndex)
+            void UpdateWinnerIndex(int newWinnerIndex)
             {
                 winnerIndex = newWinnerIndex; // assume first neuron is the winner
                 winnerDistance = LC.Distance(learningPoint, weights.Column(winnerIndex));
             }
+        }
+
+        public override Dictionary<int, double> GetCoefficients(NeuralNetwork network, List<int> possibleNeuronsIndexes, Vector<double> learningPoint, int iterationNumber)
+        {
+            var weights = network.Layers[0].Weights;
+            // find winner neuron
+            int winnerIndex = 0; // assume first neuron is the winner
+            double winnerDistance = LengthCalculator.Distance(learningPoint, weights.Column(winnerIndex));
+            foreach (var neuronIndex in possibleNeuronsIndexes)
+            {
+                if (IsBetter(neuronIndex))
+                {
+                    UpdateWinnerIndex(neuronIndex);
+                }
+            }
+
+            //result
+            var neuronsToAdapt = new Dictionary<int, double>()
+            {
+                {winnerIndex, winnerDistance }
+            };
+            return neuronsToAdapt;
+
+            #region local methods
+            bool IsBetter(int neuronIndex)
+            {
+                return LengthCalculator.Distance(learningPoint, weights.Column(neuronIndex)) < winnerDistance;
+            }
+            void UpdateWinnerIndex(int newWinnerIndex)
+            {
+                winnerIndex = newWinnerIndex; // assume first neuron is the winner
+                winnerDistance = LengthCalculator.Distance(learningPoint, weights.Column(winnerIndex));
+            }
+            #endregion
         }
     }
 }
