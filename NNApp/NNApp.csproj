@@ -70,6 +70,7 @@
     <Compile Include="SONLearnWindow.xaml.cs">
       <DependentUpon>SONLearnWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SonParameters.cs" />
     <Compile Include="SonParametersWindow.xaml.cs">
       <DependentUpon>SonParametersWindow.xaml</DependentUpon>
     </Compile>
