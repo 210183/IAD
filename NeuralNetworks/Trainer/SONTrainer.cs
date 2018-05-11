@@ -23,7 +23,11 @@ namespace NeuralNetworks.Trainer
         public SONTrainer(SONLearningAlgorithm learningAlgorithm, NeuralNetwork network, IDataProvider dataProvider)
         {
             LearningAlgorithm = learningAlgorithm;
+
             DataSet = dataProvider.Points;
+            int shuffleAmount = dataProvider.Points.Length * 2;
+            dataProvider.ShuffleDataSet(DataSet,shuffleAmount);
+
             dataSetLength = DataSet.Length;
             NetworkStatesHistory.Add(network.DeepCopy());
         }

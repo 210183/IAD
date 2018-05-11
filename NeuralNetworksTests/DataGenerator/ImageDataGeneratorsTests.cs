@@ -12,7 +12,7 @@ namespace NeuralNetworksTests.DataGenerator
         {
             var gen = new ImageDataGenerator();
             //gen.GenerateGrayData(123, "");
-            gen.GenerateData(@"C:\Users\Mateusz\Desktop\ImagesTests\test2.bmp", @"C:\Users\Mateusz\Desktop\ImagesTests\generatedData.txt");
+            gen.GenerateData(@"F:\ImagesTests\newImage2.bmp", @"F:\ImagesTests\generatedData.txt");
         }
     }
 }

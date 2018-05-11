@@ -24,7 +24,8 @@ namespace NeuralNetworks.Learning
         }
         public double GetValue(int iterationNumber)
         {
-            return max * Math.Pow((min / max), (iterationNumber / maxIterations));
+            double iterationCoef = iterationNumber <= maxIterations ? (iterationNumber / maxIterations) : 1;
+            return max * Math.Pow((min / max), iterationCoef);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using NeuralNetworks.DistanceMetrics;
+using NeuralNetworks.Learning.MLP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,12 @@ namespace NeuralNetworks.Learning
 {
     public abstract class SONLearningAlgorithm : ILearningAlgorithm
     {
-        public double LearningRate { get; set; }
+        public SONLearningRateHandler LearningRateHandler { get; }
         public ILengthCalculator LengthCalculator { get; set; }
 
-        protected SONLearningAlgorithm(double learningRate, ILengthCalculator lengthCalculator)
+        protected SONLearningAlgorithm(SONLearningRateHandler learningRateHandler, ILengthCalculator lengthCalculator)
         {
-            LearningRate = learningRate;
+            LearningRateHandler = learningRateHandler;
             LengthCalculator = lengthCalculator;
         }
 

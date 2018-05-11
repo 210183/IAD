@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using MathNet.Numerics.LinearAlgebra;
 using NeuralNetworks.DistanceMetrics;
+using NeuralNetworks.Learning.MLP;
 
 namespace NeuralNetworks.Learning
 {
     public class WTAAlgorithm : SONLearningAlgorithm
     {
-        public WTAAlgorithm(double learningRate, ILengthCalculator lengthCalculator) : base(learningRate, lengthCalculator)
+        public WTAAlgorithm(SONLearningRateHandler learningRateHandler, ILengthCalculator lengthCalculator) : base(learningRateHandler, lengthCalculator)
         {
 
         }
@@ -30,7 +31,7 @@ namespace NeuralNetworks.Learning
                 }
             }
             // adapt winner weights
-            Vector<double> correctionVector = LearningRate*(learningPoint - weights.Column(winnerIndex));
+            Vector<double> correctionVector = LearningRateHandler.GetLearningRate(1) *(learningPoint - weights.Column(winnerIndex));
             for (int i = 0; i < correctionVector.Count; i++)
             {
                 weights[i, winnerIndex] += correctionVector[i]; 
