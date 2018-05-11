@@ -27,16 +27,7 @@ namespace NNApp
     public partial class SonParametersWindow : Window
     {
         public MainWindow MainWindow { get; set; } = ((MainWindow)Application.Current.MainWindow);
-
-        ILengthCalculator lengthCalculator;
-        double startingLearningRate;
-        double minimumLearningRate;
-        int maxIterations;
-        int lambdaMaxIterations;
-        double lambdaMax;
-        double lambdaMin;
-        double conscienceMinPotential;
-        int neuronsCounter;
+        SonParameters SONParameters;
 
         public SonParametersWindow()
         {
@@ -45,9 +36,9 @@ namespace NNApp
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            ILengthCalculator lengthCalculator = new EuclideanLength();
-            INeighborhoodFunction neighbourhoodFunction = new GaussianNeighborhood();
-            startingLearningRate = Convert.ToDouble(LearningStartingRateBox.Text);
+            SONParameters.LengthCalculator = new EuclideanLength();
+            SONParameters.NeighbourhoodFunction = new GaussianNeighborhood();
+            SONParameters.StartingLearningRate = Convert.ToDouble(LearningStartingRateBox.Text);
             minimumLearningRate = Convert.ToDouble(LearningMinRateBox.Text);
             maxIterations = Convert.ToInt32(MaxIterationsBox.Text);
             lambdaMaxIterations = Convert.ToInt32(LambdaMaxIterationsBox.Text);
@@ -110,9 +101,8 @@ namespace NNApp
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var par = MainWindow.SonParameters;
+            SONParameters = MainWindow.SonParameters;
 
-            ILengthCalculator lengthCalculator = par.LengthCalculator;
-            INeighborhoodFunction neighbourhoodFunction = par.NeighbourhoodFunction;
             LearningStartingRateBox.Text = par.StartingLearningRate.ToString();
             LearningMinRateBox.Text = par.MinimumLearningRate.ToString();
             MaxIterationsBox.Text = par.MaxIterations.ToString();
@@ -122,15 +112,15 @@ namespace NNApp
             MinimalPotentialBox.Text = par.ConscienceMinPotential.ToString();
             NeuronsCounterBox.Text = par.NeuronsCounter.ToString();
 
-            if (lengthCalculator as EuclideanLength != null)
+            if (SONParameters.LengthCalculator as EuclideanLength != null)
             {
                 LengthCalculatorComboBox.SelectedItem = Euclidean;
             }
-            if (neighbourhoodFunction as BinaryNeighborhood != null)
+            if (SONParameters.NeighbourhoodFunction as BinaryNeighborhood != null)
             {
                 NeighborhoodfunctionComboBox.SelectedItem = BinaryNeighbourhood;
             }
-            if (neighbourhoodFunction as GaussianNeighborhood != null)
+            if (SONParameters.NeighbourhoodFunction as GaussianNeighborhood != null)
             {
                 NeighborhoodfunctionComboBox.SelectedItem = GaussianNeighbourhood;
             }

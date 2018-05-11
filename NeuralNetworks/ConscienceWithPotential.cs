@@ -12,7 +12,8 @@ namespace NeuralNetworks
         private double minimalPotential;
         private int neuronAmount;
         private Dictionary<int, double> potentials;
-        public ConscienceWithPotential(double minimalPotential, int neuronAmount)
+        private int maxIterations;
+        public ConscienceWithPotential(double minimalPotential, int neuronAmount, int maxIterations)
         {
             if(minimalPotential > 1 || minimalPotential < 0)
             {
@@ -24,7 +25,11 @@ namespace NeuralNetworks
                 throw new ArgumentException("Invalid amount value: " + neuronAmount.ToString());
             }
             this.neuronAmount = neuronAmount;
-
+            if (maxIterations <= 0)
+            {
+                throw new ArgumentException("Invalid iterations value: " + maxIterations.ToString());
+            }
+            this.maxIterations = maxIterations;
             potentials = new Dictionary<int, double>();
             for (int i = 0; i < neuronAmount; i++) // init dictionary
             {
@@ -32,15 +37,22 @@ namespace NeuralNetworks
             }
         }
 
-        public void FilterPossibleWinners(List<int> neuronsIndexes)
+        public void FilterPossibleWinners(List<int> neuronsIndexes, int iterationNumber)
         {
-            var possWinners = new List<int>();
-            foreach (var neuronIndex in neuronsIndexes)
+            if (iterationNumber > maxIterations)
             {
-                if (CanBeWinner(neuronIndex))
-                    possWinners.Add(neuronIndex);
+                return;
             }
-            neuronsIndexes =  possWinners;
+            else
+            {
+                var possWinners = new List<int>();
+                foreach (var neuronIndex in neuronsIndexes)
+                {
+                    if (CanBeWinner(neuronIndex))
+                        possWinners.Add(neuronIndex);
+                }
+                neuronsIndexes = possWinners;
+            }
         }
 
         private bool CanBeWinner(int neuronIndex)

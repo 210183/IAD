@@ -25,7 +25,8 @@ namespace NNApp
     {
         public SONTrainer Trainer { get; set; }
         public List<PlotModel> PlotModels { get; set; } = new List<PlotModel>();
-        public int PlotModelIndex { get; set; } = 0;
+        public int GeneratedPlotModelIndex { get; set; } = 0;
+        public int DisplayedPlotIndex { get; set; } = 0;
 
         private NeuralNetwork network;
 
@@ -40,13 +41,13 @@ namespace NNApp
         private void AddPlotModel()
         {
             int trainedDataCount = Trainer.NetworkStatesHistory.Count();
-            while (PlotModelIndex < trainedDataCount)
+            while (GeneratedPlotModelIndex < trainedDataCount)
             {
-                var network = Trainer.NetworkStatesHistory[PlotModelIndex];
+                var network = Trainer.NetworkStatesHistory[GeneratedPlotModelIndex];
                 var weights = network.Layers[0].Weights;
                 var SONModel = new PlotModel
                 {
-                    Title = "SON Number: " + PlotModelIndex.ToString(),
+                    Title = "SON Number: " + GeneratedPlotModelIndex.ToString(),
                     IsLegendVisible = true,
                 };
                 #region neurons series
@@ -85,21 +86,43 @@ namespace NNApp
                 #endregion
                 // add completed plot model
                 PlotModels.Add(SONModel);
-                SONMainPlot.Model = PlotModels[PlotModelIndex]; // change currently viewed plot
-                PlotModelIndex++;
+                GeneratedPlotModelIndex++;
             }
+            DisplayedPlotIndex = GeneratedPlotModelIndex;
+            UpdateDisplayedPlot();
         }
 
         private void PreviousButton_Click(object sender, RoutedEventArgs e)
         {
-
+            int previousAmount = Convert.ToInt32(HowMuchDataInStepBox.Text);
+            UpdateDisplayedPlot(DisplayedPlotIndex - previousAmount);
         }
         private void Nextbutton_Click(object sender, RoutedEventArgs e)
         {
-            Trainer.TrainNetwork(ref network, Convert.ToInt32(HowMuchDataInStepBox.Text));
-            AddPlotModel();
+            int nextAmount = Convert.ToInt32(HowMuchDataInStepBox.Text);
+            if (DisplayedPlotIndex + nextAmount < GeneratedPlotModelIndex)
+            {
+                UpdateDisplayedPlot(DisplayedPlotIndex + nextAmount);
+            }
+            else
+            {
+                int indexDifference = GeneratedPlotModelIndex - DisplayedPlotIndex;
+                UpdateDisplayedPlot(DisplayedPlotIndex + indexDifference);
+                int toLearnCount = nextAmount - indexDifference; // how many time sshould still learn
+                Trainer.TrainNetwork(ref network, toLearnCount);
+                AddPlotModel();
+            }
         }
 
+        private void UpdateDisplayedPlot()
+        {
+            SONMainPlot.Model = PlotModels[DisplayedPlotIndex];
+        }
+        private void UpdateDisplayedPlot(int index)
+        {
+            DisplayedPlotIndex = index;
+            SONMainPlot.Model = PlotModels[DisplayedPlotIndex];
+        }
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
