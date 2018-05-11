@@ -62,6 +62,7 @@ namespace NNApp
         private int maxEpochs = 1000;
         private double desiredMaxError = 0;
         private ILearningAlgorithm learningAlgorithm;
+        
 
         public IBasicDataProvider DataProvider { get; set; }
 
@@ -93,6 +94,8 @@ namespace NNApp
         private int ComboBoxMinIndexWithTest { get; set; } = 0;
         private int ComboBoxMaxIndexWithTest { get; set; } = 2;
 
+        public SonParameters SonParameters { get; set; } = new SonParameters();
+
         #endregion
 
         public MainWindow()
@@ -107,13 +110,13 @@ namespace NNApp
             if (IsTestWindowNeeded())
             {
                 learnFileName = ShowFileWindow("Learn File", "Text File", "*.txt");
-                testFileName =  ShowFileWindow("Test File", "Text File", "*.txt");
+                testFileName = ShowFileWindow("Test File", "Text File", "*.txt");
             }
             else
             {
-                
+
                 learnFileName = ShowFileWindow("Learn File", "Bitmap", "*.bmp");
-                if(learnFileName == "")
+                if (learnFileName == "")
                 {
                     learnFileName = ShowFileWindow("Learn File", "Text File", "*.txt");
                 }
@@ -123,13 +126,15 @@ namespace NNApp
         private void SetParameters_Click(object sender, RoutedEventArgs e)
         {
             SaveParameters();
-            if(TaskType.AnySON.HasFlag(ChosenTaskType))
+            if (TaskType.AnySON.HasFlag(ChosenTaskType))
             {
                 CreateSONDataProvider();
                 var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
                 normalizer.Normalize(((IDataProvider)DataProvider).Points);
                 //TODO: ADd WTA parameter Window
-                LearningAlgorithm = new GasAlgorithm(new EuclideanLength(), new Lambda(20, 0, 500));
+                //LearningAlgorithm = new KohonenAlgorithm(new SONLearningRateHandler(0.40, 0.02, 8000), new EuclideanLength(), new Lambda(0.13, 0.001, 15), new GaussianNeighborhood(), new ConscienceWithPotential(0.8, 300));
+                Window paramWindow = new SonParametersWindow();
+                paramWindow.ShowDialog();
             }
             else
             {
@@ -147,15 +152,10 @@ namespace NNApp
                 //create data provider before moving further
                 if (ChosenTaskType != null) // if any item was chosen 
                 {
-                    if(TaskType.AnySON.HasFlag(ChosenTaskType))
+                    if (TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
-                        var network = new NeuralNetwork(2, new LayerCharacteristic[1]{
-                            new LayerCharacteristic(400, new IdentityFunction())},
-                            false
-                        );
-                        var learnRate = new SONLearningRateHandler(0.40, 0.02, 1000);
-                        SONTrainer trainer = new SONTrainer((IDataProvider)DataProvider, network, (SONLearningAlgorithm)LearningAlgorithm, learnRate, new EuclideanLength());    // new ConscienceWithPotential(0.8, 100));
-                        Window paramWindow = new SONLearnWindow(trainer, network);
+                        SONTrainer trainer = new SONTrainer((SONLearningAlgorithm)LearningAlgorithm, CurrentNetwork, (IDataProvider)DataProvider);
+                        Window paramWindow = new SONLearnWindow(trainer, CurrentNetwork);
                         paramWindow.Show();
                     }
                     else
@@ -183,7 +183,7 @@ namespace NNApp
                     MessageBox.Show("You have to choose the type of the task first.");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -214,14 +214,14 @@ namespace NNApp
                 {
                     MessageBox.Show("You need to train some network first");
                 }
-            }  
+            }
         }
         #endregion
 
         #region helper methods
         private void SaveParameters()
         {
-            if(! IsTaskTypeSaved)
+            if (!IsTaskTypeSaved)
             {
                 ChosenTaskType = GetCurrentTaskType();
                 IsTaskTypeSaved = true;
@@ -257,7 +257,7 @@ namespace NNApp
 
         private void CreateSONDataProvider()
         {
-            DataProvider = new PointsDataProvider(learnFileName,2);
+            DataProvider = new PointsDataProvider(learnFileName, 2);
         }
         private void CreateLearningDataProvider()
         {
@@ -283,7 +283,7 @@ namespace NNApp
         }
         private bool ShouldCreateApproximationDataProvider()
         {
-            if(ChosenTaskType == TaskType.Approximation || ChosenTaskType == TaskType.Transformation)
+            if (ChosenTaskType == TaskType.Approximation || ChosenTaskType == TaskType.Transformation)
             {
                 return true;
             }
@@ -292,7 +292,7 @@ namespace NNApp
                 return false;
             }
         }
-        private bool ShouldCreateClassificationDataProvider( )
+        private bool ShouldCreateClassificationDataProvider()
         {
             if (ChosenTaskType == TaskType.Classification)
             {
@@ -315,7 +315,7 @@ namespace NNApp
         private string ShowFileWindow(string WindowName, string ExtensionName, string Extension)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = ExtensionName + " ("+Extension+")" + "|" + Extension + "|All files (*.*)|*.*"; //"Text files (*.txt)|*.txt" "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.Filter = ExtensionName + " (" + Extension + ")" + "|" + Extension + "|All files (*.*)|*.*"; //"Text files (*.txt)|*.txt" "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.Title = WindowName;
             if (openFileDialog.ShowDialog() == true)
                 return openFileDialog.FileName;
@@ -342,8 +342,8 @@ namespace NNApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           LearnButton.IsEnabled = false;
-           NetworkResultsButton.IsEnabled = false;
+            LearnButton.IsEnabled = false;
+            NetworkResultsButton.IsEnabled = false;
         }
         #endregion
     }
