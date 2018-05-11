@@ -99,7 +99,14 @@
         <TextBlock Style ="{StaticResource DescriptionText}" Name="LearningRateText" Grid.Column="3" Grid.Row="2" Margin="11.208,12.585,11.585,48.566" >Learning Rate</TextBlock>
         <TextBox Name="LearningRateBox" Grid.Column="3" Grid.Row="2" FontSize="18" TextAlignment="Center" Margin="12.208,50.585,11.585,10.566">4</TextBox>
 
-        
-        
+        <TextBlock Name="ConscienceText" Grid.Column="0" Grid.Row="3" Margin="10,30,10,30" TextAlignment="Center" FontSize="20" RenderTransformOrigin="0.506,0.222" >Conscience</TextBlock>
+
+        <TextBlock Style ="{StaticResource DescriptionText}" Name="MinimalPotentialText" Grid.Column="1" Grid.Row="3" Margin="11.208,12.585,11.585,48.566" >Min Potential</TextBlock>
+        <TextBox Name="MinimalPotentialBox" Grid.Column="1" Grid.Row="3" FontSize="18" TextAlignment="Center" Margin="12.208,50.585,11.585,10.566">4</TextBox>
+
+        <Button Name="SaveButton" Grid.Column="3" Grid.Row="4" Click="SaveButton_Click">Save</Button>
+
+
+
     </Grid>
 </Window>
