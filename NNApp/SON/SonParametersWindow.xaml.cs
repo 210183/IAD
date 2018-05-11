@@ -87,7 +87,7 @@ namespace NNApp
                 MainWindow.LearningAlgorithm = new WTAAlgorithm(sonParameters.LengthCalculator);
             }
 
-            var trainer = new SONTrainer
+            MainWindow.Trainer = new SONTrainer
                (
                 (IDataProvider)MainWindow.DataProvider,
                 MainWindow.CurrentNetwork,

@@ -93,14 +93,14 @@
         <Button Margin="0,0,10,0" HorizontalAlignment="Right" Style="{StaticResource ImageButton24x24blue}" Name="CloseButton" Grid.Column="8" Grid.Row="0"  
                  MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="CloseButton_Click" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <Image Source="Resources/close.ico"/>
+                <Image Source="../Resources/close.ico"/>
             </Border>
         </Button>
 
         <Button Margin="7,0,0,0" HorizontalAlignment="Left" Style="{StaticResource ImageButton24x24blue}" Name="MinimizeButton" Grid.Column="8" Grid.Row="0"  
                  MaxWidth="32" MaxHeight="24"  MinWidth="24" Click="MinimizeButton_Click" >
             <Border HorizontalAlignment="Center" VerticalAlignment="Center" >
-                <Image Source="Resources/minimize.ico"/>
+                <Image Source="../Resources/minimize.ico"/>
             </Border>
         </Button>
         
