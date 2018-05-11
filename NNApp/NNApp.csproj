@@ -64,17 +64,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="NetworkStatsWindow.xaml.cs">
+    <Compile Include="MLP\NetworkStatsWindow.xaml.cs">
       <DependentUpon>NetworkStatsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SONLearnWindow.xaml.cs">
+    <Compile Include="SON\SONLearnWindow.xaml.cs">
       <DependentUpon>SONLearnWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SonParameters.cs" />
-    <Compile Include="SonParametersWindow.xaml.cs">
+    <Compile Include="SON\SonParameters.cs" />
+    <Compile Include="SON\SonParametersWindow.xaml.cs">
       <DependentUpon>SonParametersWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TrainerParametersWindow.xaml.cs">
+    <Compile Include="MLP\TrainerParametersWindow.xaml.cs">
       <DependentUpon>TrainerParametersWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -89,29 +89,29 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="NetworkStatsWindow.xaml">
+    <Page Include="MLP\NetworkStatsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ParametersWindow.xaml">
+    <Page Include="MLP\ParametersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SONLearnWindow.xaml">
+    <Page Include="SON\SONLearnWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SonParametersWindow.xaml">
+    <Page Include="SON\SonParametersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TrainerParametersWindow.xaml">
+    <Page Include="MLP\TrainerParametersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParametersWindow.xaml.cs">
+    <Compile Include="MLP\ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -32,7 +32,7 @@ namespace NeuralNetworks.Trainer
             ConscienceWithPotential conscience = null)
         {
             DataProvider = dataProvider;
-            Adapter = new SONAdapter(learningAlgorithm, learningRateHandler, lengthCalculator ,conscience);
+            Adapter = new SONAdapter(learningAlgorithm, learningRateHandler, lengthCalculator, conscience);
 
             DataSet = dataProvider.Points;
             int shuffleAmount = DataProvider.Points.Length * 10; // shuffle data

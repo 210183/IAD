@@ -95,7 +95,7 @@ namespace NNApp
         private int ComboBoxMaxIndexWithTest { get; set; } = 2;
 
         public SonParameters SonParameters { get; set; } = new SonParameters();
-
+        public SONTrainer Trainer { get; set; }
         #endregion
 
         public MainWindow()
@@ -154,9 +154,9 @@ namespace NNApp
                 {
                     if (TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
-                        SONTrainer trainer = new SONTrainer((SONLearningAlgorithm)LearningAlgorithm, CurrentNetwork, (IDataProvider)DataProvider);
-                        Window paramWindow = new SONLearnWindow(trainer, CurrentNetwork);
-                        paramWindow.Show();
+                        
+                        Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork);
+                        SONLearnWindow.Show();
                     }
                     else
                     {

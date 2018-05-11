@@ -4,6 +4,7 @@ using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Learning;
 using NeuralNetworks.Learning.MLP;
 using NeuralNetworks.Learning.NeighborhoodFunctions;
+using NeuralNetworks.Trainer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,6 @@ namespace NNApp
         double conscienceMinPotential;
         int neuronsCounter;
 
-
         public SonParametersWindow()
         {
             InitializeComponent();
@@ -45,49 +45,52 @@ namespace NNApp
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            ILengthCalculator lengthCalculator = new EuclideanLength();
+            INeighborhoodFunction neighbourhoodFunction = new GaussianNeighborhood();
+            startingLearningRate = Convert.ToDouble(LearningStartingRateBox.Text);
+            minimumLearningRate = Convert.ToDouble(LearningMinRateBox.Text);
+            maxIterations = Convert.ToInt32(MaxIterationsBox.Text);
+            lambdaMaxIterations = Convert.ToInt32(LambdaMaxIterationsBox.Text);
+            lambdaMax = Convert.ToDouble(LambdaMaxBox.Text);
+            lambdaMin = Convert.ToDouble(LambdaMinBox.Text);
+            conscienceMinPotential = Convert.ToDouble(MinimalPotentialBox.Text);
+            neuronsCounter = Convert.ToInt32(NeuronsCounterBox.Text);
+
+            MainWindow.CurrentNetwork = new NeuralNetwork
+            (
+               2,
+               new LayerCharacteristic[1] { new LayerCharacteristic(neuronsCounter, new IdentityFunction()) },
+               false
+            );
+
+            if (NeighborhoodfunctionComboBox.SelectedItem == BinaryNeighbourhood)
+            {
+                neighbourhoodFunction = new BinaryNeighborhood();
+            }
+            if (NeighborhoodfunctionComboBox.SelectedItem == GaussianNeighbourhood)
+            {
+                neighbourhoodFunction = new GaussianNeighborhood();
+            }
+
+            if (LengthCalculatorComboBox.SelectedItem == Euclidean)
+            {
+                lengthCalculator = new EuclideanLength();
+            }
+
             if (TaskType.SONKohonen.HasFlag(MainWindow.ChosenTaskType))
             {
-                ILengthCalculator lengthCalculator = new EuclideanLength();
-                INeighborhoodFunction neighbourhoodFunction = new GaussianNeighborhood();
-                startingLearningRate = Convert.ToDouble(LearningStartingRateBox.Text);
-                minimumLearningRate = Convert.ToDouble(LearningMinRateBox.Text);
-                maxIterations = Convert.ToInt32(MaxIterationsBox.Text);
-                lambdaMaxIterations = Convert.ToInt32(LambdaMaxIterationsBox.Text);
-                lambdaMax = Convert.ToDouble(LambdaMaxBox.Text);
-                lambdaMin = Convert.ToDouble(LambdaMinBox.Text);
-                conscienceMinPotential = Convert.ToDouble(MinimalPotentialBox.Text);
-                neuronsCounter = Convert.ToInt32(NeuronsCounterBox.Text);
-
-                MainWindow.CurrentNetwork = new NeuralNetwork
-                (
-                   2,
-                   new LayerCharacteristic[1] { new LayerCharacteristic(neuronsCounter, new IdentityFunction()) },
-                   false
-                );
-
-                if (NeighborhoodfunctionComboBox.Text == "Binary")
-                {
-                    neighbourhoodFunction = new BinaryNeighborhood();
-                }
-                if (NeighborhoodfunctionComboBox.Text == "Gaussian")
-                {
-                    neighbourhoodFunction = new GaussianNeighborhood();
-                }
-
-                if (LengthCalculatorComboBox.Text == "Euclidean")
-                {
-                    lengthCalculator = new EuclideanLength();
-                }
-
+                
                 MainWindow.LearningAlgorithm = new KohonenAlgorithm
                 (
-                    new SONLearningRateHandler(startingLearningRate, minimumLearningRate, maxIterations),
                     lengthCalculator,
                     new Lambda(lambdaMax, lambdaMin, lambdaMaxIterations),
-                    neighbourhoodFunction,
-                    new ConscienceWithPotential(conscienceMinPotential, neuronsCounter)
+                    neighbourhoodFunction
                 );
             }
+
+            // build trainer
+            var trainer = new SONTrainer();
+            //
             this.Close();
         }
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -121,15 +124,15 @@ namespace NNApp
 
             if (lengthCalculator as EuclideanLength != null)
             {
-                LengthCalculatorComboBox.SelectedIndex = 0;
+                LengthCalculatorComboBox.SelectedItem = Euclidean;
             }
             if (neighbourhoodFunction as BinaryNeighborhood != null)
             {
-                NeighborhoodfunctionComboBox.SelectedIndex = 0;
+                NeighborhoodfunctionComboBox.SelectedItem = BinaryNeighbourhood;
             }
             if (neighbourhoodFunction as GaussianNeighborhood != null)
             {
-                NeighborhoodfunctionComboBox.SelectedIndex = 1;
+                NeighborhoodfunctionComboBox.SelectedItem = GaussianNeighbourhood;
             }
 
         }
