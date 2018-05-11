@@ -28,7 +28,6 @@ namespace NNApp
         public int GeneratedPlotModelIndex { get; set; } = 0;
         public int DisplayedPlotIndex { get; set; } = 0;
 
-        ScatterSeries
 
         private NeuralNetwork network;
 
