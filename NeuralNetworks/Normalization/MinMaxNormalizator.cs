@@ -19,10 +19,10 @@ namespace NeuralNetworks.Normalization
         {
             var xValues = dataProvider.Select(x => x.X[0]);
             var xMax = xValues.Max();
+            var xMin = xValues.Min();    //TODO: replace this assumption with calculated value
             var yValues = dataProvider.Select(x => x.X[1]);
             var yMax = xValues.Max();
-            var xMin = 0;    //TODO: replace this assumption with calculated value
-            var yMin = 0;    //TODO: replace this assumption with calculated value
+            var yMin = yValues.Min();    //TODO: replace this assumption with calculated value
             foreach (var vector in dataProvider.Select(x => x.X))
             {
                 vector[0] = ((vector[0] - xMin) / (xMax - xMin)) * (max - min) + min;

@@ -151,7 +151,7 @@ namespace NNApp
                             {
                                 Trainer = new KMeansTrainer((IDataProvider)DataProvider, CurrentNetwork, SonParameters.LengthCalculator, Observer);
                             }
-                            Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork, Observer);
+                            Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork, SonParameters.LengthCalculator, Observer);
                             SONLearnWindow.Show();
                         }
                     }

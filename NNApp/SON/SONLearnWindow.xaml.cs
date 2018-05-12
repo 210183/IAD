@@ -1,4 +1,6 @@
 ﻿using NeuralNetworks;
+using NeuralNetworks.DistanceMetrics;
+using NeuralNetworks.Error;
 using NeuralNetworks.Trainer;
 using OxyPlot;
 using OxyPlot.Series;
@@ -9,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -33,14 +36,16 @@ namespace NNApp
 
         public ScatterSeries NeuronsSeries { get; set; }
         public ScatterSeries LearningSeries { get; set; }
+        public QuantizationCalculator QuantizationCalculator { get; set; }
 
         private NeuralNetwork network;
 
-        public SONLearnWindow(IOnGoingTrainer trainer, NeuralNetwork network, LearningHistoryObserver observer)
+        public SONLearnWindow(IOnGoingTrainer trainer, NeuralNetwork network, ILengthCalculator lengthCalculator, LearningHistoryObserver observer)
         {
             InitializeComponent();
             Trainer = trainer;
             Observer = observer;
+            QuantizationCalculator = new QuantizationCalculator(lengthCalculator);
             this.network = network;
             CreatePlot();
             AddPlotModel();
@@ -146,6 +151,7 @@ namespace NNApp
             NeuronsSeries.ItemsSource = NeuronsData[DisplayedPlotIndex - 1];
             SONMainPlot.Model.Title = "SON Number: " + DisplayedPlotIndex.ToString();
             SONMainPlot.Model.InvalidatePlot(true);
+            CalculateErrorButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
         private void UpdateDisplayedPlot(int index)
         {
@@ -178,6 +184,12 @@ namespace NNApp
         {
             this.WindowState = WindowState.Minimized;
         }
-        #endregion 
+        #endregion
+
+        private void CalculateErrorButton_Click(object sender, RoutedEventArgs e)
+        {
+            double error = QuantizationCalculator.CalculateError(network, Trainer.DataSet);
+            ErrorTextBox.Text = error.ToString("e6");
+        }
     }
 }

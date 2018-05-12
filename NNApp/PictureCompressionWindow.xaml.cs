@@ -48,7 +48,7 @@ namespace NNApp
         {
             var sonParameters = MainWindow.SonParameters;
             bmpFileName = ShowFileWindow("Learn File", "Bitmap", "*.bmp");
-            var gen = new DataToCompressFromImageGenerator();
+            var gen = new DataToCompressGenerator();
             // var genFile = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "\\Files\\generatedData.txt");
             var genFile = Directory.GetCurrentDirectory() + "\\Files\\generatedData.txt";
             gen.GenerateData(bmpFileName, genFile);
@@ -69,7 +69,7 @@ namespace NNApp
         {
             currentNetwork = MainWindow.CurrentNetwork;
             int dataCount = Convert.ToInt32(DataCountBox.Text);
-            MainWindow.Trainer.TrainNetwork(ref currentNetwork, dataCount, false);
+            MainWindow.Trainer.TrainNetwork(ref currentNetwork, dataCount);
         }
 
         private void DataButton_Click(object sender, RoutedEventArgs e)
@@ -89,6 +89,8 @@ namespace NNApp
 
         private void CompressButton_Click(object sender, RoutedEventArgs e)
         {
+            dataFileName = Directory.GetCurrentDirectory() + "\\Files\\" + System.IO.Path.ChangeExtension(DataOutputBox.Text, ".txt");
+            codeBookFileName = Directory.GetCurrentDirectory() + "\\Files\\" + System.IO.Path.ChangeExtension(CodeBookOutputBox.Text, ".txt");
             var compressor = new DataCompressor(MainWindow.SonParameters.LengthCalculator);
             compressor.CompressData(
                 currentNetwork,
@@ -115,7 +117,8 @@ namespace NNApp
 
         private void DeCompressButton_Click(object sender, RoutedEventArgs e)
         {
-            var decompressor = new CompressedImageReader(399, 399);
+            deCompressedBmpFileName = Directory.GetCurrentDirectory() + "\\Files\\" + System.IO.Path.ChangeExtension(BmpOutputBox.Text, ".txt");
+            var decompressor = new CompressedImageReader();
             decompressor.ReadCompressedImage(
                 compressedDataFileName,
                 compressedCodeBookFileName,
@@ -128,6 +131,7 @@ namespace NNApp
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = ExtensionName + " (" + Extension + ")" + "|" + Extension + "|All files (*.*)|*.*"; //"Text files (*.txt)|*.txt" "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             openFileDialog.Title = WindowName;
+            openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
             if (openFileDialog.ShowDialog() == true)
                 return openFileDialog.FileName;
             else

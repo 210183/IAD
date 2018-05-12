@@ -135,7 +135,7 @@ namespace NNApp
                 MainWindow.Observer
                 );
             }
-            else
+            else if (TaskType.AnySON.HasFlag(MainWindow.ChosenTaskType))
             {
                 MainWindow.Trainer = new SONTrainer
                (
@@ -144,7 +144,7 @@ namespace NNApp
                 (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
                 new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
                 sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2),
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 4),
                 MainWindow.Observer
                );
             }

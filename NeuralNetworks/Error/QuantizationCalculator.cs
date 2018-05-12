@@ -18,11 +18,11 @@ namespace NeuralNetworks.Error
 
         public ILengthCalculator LengthCalculator { get; set; }
 
-        public double CalculateError(NeuralNetwork network, IDataProvider dataProvider)
+        public double CalculateError(NeuralNetwork network, Datum[] dataPoints)
         {
             var weights = network.Layers[0].Weights;
             double errorSum = 0; // to be modifed at the end (to become mean squared error)
-            var data = dataProvider.Points;
+            var data = dataPoints;
             double winnerDistance;
             foreach (var point in data)
             {

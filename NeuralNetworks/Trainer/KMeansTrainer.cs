@@ -63,9 +63,12 @@ namespace NeuralNetworks.Trainer
                 //Adapt weights
                 for (int neuronIndex = 0; neuronIndex < weights.ColumnCount; neuronIndex++)
                 {
-                    Vector<double> newWeights = Vector<double>.Build.Dense(weights.Column(neuronIndex).Count());
-                    newWeights = MeanFromVectors(neuronsAndItsData[neuronIndex]);
-                    weights.SetColumn(neuronIndex,(newWeights.ToArray()));
+                    if(neuronsAndItsData[neuronIndex].Count() > 0)
+                    {
+                        Vector<double> newWeights = Vector<double>.Build.Dense(weights.Column(neuronIndex).Count());
+                        newWeights = MeanFromVectors(neuronsAndItsData[neuronIndex]);
+                        weights.SetColumn(neuronIndex, (newWeights.ToArray()));
+                    }
                 }
                 Observer?.SaveNetworkState(networkToTrain);
             }            
@@ -75,9 +78,9 @@ namespace NeuralNetworks.Trainer
             Vector<double> newWeights = Vector<double>.Build.Dense(vectors[0].Count());
             foreach (var vector in vectors)
             {
-                newWeights.Add(vector);
+                newWeights += vector;
             }
-            newWeights.Divide(vectors.Count());
+            newWeights /= vectors.Count();
             return newWeights;
         }
         private int FindWinnerIndex(Matrix<double> weights, Vector<double> learningPoint)
