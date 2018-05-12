@@ -47,13 +47,13 @@ namespace NNApp
             sonParameters.ConscienceMinPotential = Convert.ToDouble(MinimalPotentialBox.Text);
             sonParameters.NeuronsCounter = Convert.ToInt32(NeuronsCounterBox.Text);
 
-            int numberOfNeurons = 2;
+            int numberOfInputs = 2;
             if(MainWindow.ChosenTaskType == TaskType.PictureCompression)
             {
-                numberOfNeurons = CompressionConstants.neuronsInFrame;
+                numberOfInputs = CompressionConstants.neuronsInFrame;
                 MainWindow.CurrentNetwork = new NeuralNetwork
                 (
-                   numberOfNeurons,
+                   numberOfInputs,
                    new LayerCharacteristic[1] { new LayerCharacteristic(sonParameters.NeuronsCounter, new IdentityFunction()) },
                    false,
                    0, 
@@ -64,7 +64,7 @@ namespace NNApp
             {
                 MainWindow.CurrentNetwork = new NeuralNetwork
                 (
-                   numberOfNeurons,
+                   numberOfInputs,
                    new LayerCharacteristic[1] { new LayerCharacteristic(sonParameters.NeuronsCounter, new IdentityFunction()) },
                    false
                 );
@@ -107,16 +107,30 @@ namespace NNApp
             {
                 MainWindow.LearningAlgorithm = new WTAAlgorithm(sonParameters.LengthCalculator);
             }
-
-            MainWindow.Trainer = new SONTrainer
+            MainWindow.Observer = new LearningHistoryObserver();
+            if (MainWindow.ChosenTaskType == TaskType.KMeans)
+            {
+                MainWindow.Trainer = new KMeansTrainer
+                (
+                (IDataProvider)MainWindow.DataProvider,
+                MainWindow.CurrentNetwork,
+                sonParameters.LengthCalculator,
+                MainWindow.Observer
+                );
+            }
+            else
+            {
+                MainWindow.Trainer = new SONTrainer
                (
                 (IDataProvider)MainWindow.DataProvider,
                 MainWindow.CurrentNetwork,
                 (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
                 new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
                 sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2)
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2),
+                MainWindow.Observer
                );
+            }
 
             this.Close();
         }

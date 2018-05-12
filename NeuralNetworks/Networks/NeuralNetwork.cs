@@ -45,12 +45,12 @@ namespace NeuralNetworks
                 inputNumberModifier = 0;
             // create layers
             Random randomizer = new Random();
-            Layers[0] = new Layer(Matrix<double>.Build.Dense(NumberOfInputs + inputNumberModifier, layersChars[0].NumberOfNeurons, (x,y) => (randomizer.NextDouble()*(min+max)) + min), layersChars[0].ActivationFunction); // input layer
+            Layers[0] = new Layer(Matrix<double>.Build.Dense(NumberOfInputs + inputNumberModifier, layersChars[0].NumberOfNeurons, (x,y) => (randomizer.NextDouble()*(max-min)) + min), layersChars[0].ActivationFunction); // input layer
             for (int i=1; i< NumberOfLayers; i++) 
             {
                 int numberOfNeurons = layersChars[i].NumberOfNeurons;
                 int inputsAmount = Layers[i - 1].Weights.ColumnCount + inputNumberModifier;
-                Layers[i] = new Layer(Matrix<double>.Build.Dense(inputsAmount, numberOfNeurons, (x, y) => (randomizer.NextDouble() * 2 * max) + min), layersChars[i].ActivationFunction); // +1 becuase of bias weights.
+                Layers[i] = new Layer(Matrix<double>.Build.Dense(inputsAmount, numberOfNeurons, (x, y) => (randomizer.NextDouble() * (max - min)) + min), layersChars[i].ActivationFunction); // +1 becuase of bias weights.
             }
             //create place to store outputs
             LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer

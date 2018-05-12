@@ -14,7 +14,6 @@ namespace NeuralNetworks
     public class DataCompressor 
     {
         private static readonly int neuronsInFrame = CC.neuronsInFrame;
-        private static readonly int stepSize = CC.stepSize;
 
         public DataCompressor(ILengthCalculator lengthCalculator)
         {

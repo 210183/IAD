@@ -60,7 +60,7 @@
     <Compile Include="DataCompressor.cs" />
     <Compile Include="DataGenerators\BasicDataGenerator.cs" />
     <Compile Include="DataGenerators\CompressedImageReader.cs" />
-    <Compile Include="DataGenerators\DataToCompressFromImageGenerator.cs" />
+    <Compile Include="DataGenerators\DataToCompressGenerator.cs" />
     <Compile Include="DataGenerators\IDataGenerator.cs" />
     <Compile Include="DataGenerators\ImageDataGenerator.cs" />
     <Compile Include="DataGenerators\ITwoDimensionalDataGenerator.cs" />
@@ -110,6 +110,8 @@
     <Compile Include="Normalization\MinMaxNormalizator.cs" />
     <Compile Include="Trainer\IMLPTrainer.cs" />
     <Compile Include="Trainer\IOnGoingTrainer.cs" />
+    <Compile Include="Trainer\KMeansTrainer.cs" />
+    <Compile Include="Trainer\LearningHistoryObserver.cs" />
     <Compile Include="Trainer\OnlineTrainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Creator\TaskType.cs" />

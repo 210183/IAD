@@ -23,24 +23,24 @@ namespace NNApp
     /// </summary>
     public partial class SONLearnWindow : Window
     {
-        public SONTrainer Trainer { get; set; }
+        public IOnGoingTrainer Trainer { get; set; }
+        public LearningHistoryObserver Observer { get; set; }
         public List<PlotModel> PlotModels { get; set; } = new List<PlotModel>();
         public int GeneratedPlotModelIndex { get; set; } = 0;
         public int DisplayedPlotIndex { get; set; } = 0;
 
         public List<List<ScatterPoint>> NeuronsData { get; set; } = new List<List<ScatterPoint>>();
-        //public List<List<ScatterPoint>> LearningData { get; set; } = new List<List<ScatterPoint>>();
 
         public ScatterSeries NeuronsSeries { get; set; }
         public ScatterSeries LearningSeries { get; set; }
 
-
         private NeuralNetwork network;
 
-        public SONLearnWindow(SONTrainer trainer, NeuralNetwork network)
+        public SONLearnWindow(IOnGoingTrainer trainer, NeuralNetwork network, LearningHistoryObserver observer)
         {
             InitializeComponent();
             Trainer = trainer;
+            Observer = observer;
             this.network = network;
             CreatePlot();
             AddPlotModel();
@@ -84,12 +84,11 @@ namespace NNApp
 
         private void AddPlotModel()
         {
-            int trainedDataCount = Trainer.NetworkStatesHistory.Count();
+            int trainedDataCount = Observer.NetworkStatesHistory.Count();
             while (GeneratedPlotModelIndex < trainedDataCount)
             {
-                var network = Trainer.NetworkStatesHistory[GeneratedPlotModelIndex];
+                var network = Observer.NetworkStatesHistory[GeneratedPlotModelIndex];
                 var weights = network.Layers[0].Weights;
-
                 
                 var neuronPoints = new List<ScatterPoint>();
                 for (int neuronIndex = 0; neuronIndex < weights.ColumnCount; neuronIndex++)
@@ -160,8 +159,8 @@ namespace NNApp
 
         private void UpdateControlNumbers()
         {
-            CurrentEpochNumber.Text = (DisplayedPlotIndex / Trainer.DataSetLength).ToString();//Trainer.EpochNumber.ToString();
-            EpochSizeNumber.Text = Trainer.DataSetLength.ToString();
+            CurrentEpochNumber.Text = (DisplayedPlotIndex / Trainer.DataSet.Length).ToString();//Trainer.EpochNumber.ToString();
+            EpochSizeNumber.Text = Trainer.DataSet.Length.ToString();
             CurrentDataNumber.Text = (DisplayedPlotIndex-(Convert.ToInt32(CurrentEpochNumber.Text) * Convert.ToInt32(EpochSizeNumber.Text))).ToString();
         }
         #region WindowService

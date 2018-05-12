@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.ActivationFunction
 {
-    public class SigmoidBipolarFunction : IOnGoingTrainer, IDifferentiable
+    public class SigmoidBipolarFunction : IActivationFunction, IDifferentiable
     {
         public double Beta { get; set; }
 

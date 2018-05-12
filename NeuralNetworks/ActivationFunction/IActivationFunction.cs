@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    public interface IOnGoingTrainer
+    public interface IActivationFunction
     {
         double Calculate(double argument);
     }

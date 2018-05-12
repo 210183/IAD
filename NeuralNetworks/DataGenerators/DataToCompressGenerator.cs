@@ -9,7 +9,7 @@ using CC = NeuralNetworks.CompressionConstants;
 
 namespace NeuralNetworks.DataGenerators
 {
-    public class DataToCompressFromImageGenerator : BasicDataGenerator, IDataGenerator
+    public class DataToCompressGenerator : BasicDataGenerator, IDataGenerator
     {
         private static readonly int neuronsInFrame = CC.neuronsInFrame;
         private static readonly int stepSize = CC.stepSize;
@@ -31,12 +31,12 @@ namespace NeuralNetworks.DataGenerators
                                 int width, height;
                                 if (sourceImage.Width >= sourceImage.Height) // width and height has to be the same, so choose smaller
                                 {
-                                    height = (sourceImage.Height / 3) * 3;
+                                    height = (sourceImage.Height / stepSize) * stepSize;
                                     width = height;
                                 }
                                 else
                                 {
-                                    width = (sourceImage.Width / 3) * 3;
+                                    width = (sourceImage.Width / stepSize) * stepSize;
                                     height = width;
                                 }
 
@@ -57,6 +57,19 @@ namespace NeuralNetworks.DataGenerators
                                             MakeMeanGray(frameColors);
                                         }
                                         SaveFrameData(writer, frameColors);
+                                        UpdateDestinationImage();
+                                    }
+                                }
+                                destinationImage.Save(Path.ChangeExtension(pathToSaveData, ".bmp"));
+                                //local method
+                                void UpdateDestinationImage()
+                                {
+                                    for (int i = 0; i < stepSize; i++)
+                                    {
+                                        for (int j = 0; j < stepSize; j++)
+                                        {
+                                            destinationImage.SetPixel(x + i, y + j, frameColors[i * stepSize + j]);
+                                        }
                                     }
                                 }
                             }

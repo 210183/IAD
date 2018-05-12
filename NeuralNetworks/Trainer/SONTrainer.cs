@@ -13,10 +13,10 @@ namespace NeuralNetworks.Trainer
 {
     public class SONTrainer : IOnGoingTrainer
     {
-        //public SONLearningAlgorithm LearningAlgorithm { get; set; }
         public List<NeuralNetwork> NetworkStatesHistory { get; set; } = new List<NeuralNetwork>();
         public SONAdapter Adapter { get; set; }
         public IDataProvider DataProvider { get; set; }
+        public LearningHistoryObserver Observer { get; set; }
         public Datum[] DataSet { get; }
 
         public int DataIndexInEpoch { get => dataIndexInEpoch; }
@@ -32,21 +32,21 @@ namespace NeuralNetworks.Trainer
             SONLearningAlgorithm learningAlgorithm,
             SONLearningRateHandler learningRateHandler,
             ILengthCalculator lengthCalculator,
-            ConscienceWithPotential conscience = null
+            ConscienceWithPotential conscience = null,
+            LearningHistoryObserver observer = null
             )
         {
-            DataProvider = dataProvider;
             Adapter = new SONAdapter(learningAlgorithm, learningRateHandler, lengthCalculator, conscience);
-
+            DataProvider = dataProvider;
             DataSet = dataProvider.Points;
+            dataSetLength = DataSet.Length;
             int shuffleAmount = DataProvider.Points.Length; // shuffle data
             DataProvider.ShuffleDataSet(DataSet, shuffleAmount);
-
-            dataSetLength = DataSet.Length;
-            NetworkStatesHistory.Add(network.DeepCopy());
+            Observer = observer;
+            Observer?.SaveNetworkState(network);
         }
 
-        public void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount, bool shouldStoreNetworks = true)
+        public void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount)
         {
             Vector<double> currentPoint;
             for (int trainCounter = 0; trainCounter < dataCount; trainCounter++)
@@ -55,17 +55,11 @@ namespace NeuralNetworks.Trainer
                 currentPoint = DataSet[dataIndexInEpoch].X; // get next point
                 // learn with current point
                 Adapter.AdaptWeights(networkToTrain, currentPoint, epochNumber * dataSetLength + dataIndexInEpoch);
-                //store network state
-                if(shouldStoreNetworks)
-                    SaveNetworkState(networkToTrain);
+                //store network state if needed
+                Observer?.SaveNetworkState(networkToTrain);
                 dataIndexInEpoch++;
             }
-
-            // local methods
-            void SaveNetworkState(NeuralNetwork network)
-            {
-                NetworkStatesHistory.Add(network.DeepCopy());
-            }
+            //local methods
             void CheckForNewEpoch()
             {
                 if (dataIndexInEpoch == dataSetLength) // start new epoch

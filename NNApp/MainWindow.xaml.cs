@@ -27,7 +27,7 @@ namespace NNApp
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
 
-        private string learnFileName = @"F:\ImagesTests\generatedDataForCompression.txt";
+        private string learnFileName = @"F:\ImagesTests\attract.txt";
         private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
         private int inputsNumber = 4;
@@ -78,7 +78,9 @@ namespace NNApp
         private int ComboBoxMaxIndexWithTest { get; set; } = 2;
 
         public SonParameters SonParameters { get; set; } = new SonParameters();
-        public SONTrainer Trainer { get; set; }
+        public IOnGoingTrainer Trainer { get; set; }
+        public LearningHistoryObserver Observer { get; set; } = new LearningHistoryObserver();
+
         #endregion
 
         public MainWindow()
@@ -134,7 +136,7 @@ namespace NNApp
                     {
                         if (ChosenTaskType == TaskType.PictureCompression)
                         {
-                            Trainer.TrainNetwork(ref _currentNetwork, 200000, false);
+                            Trainer.TrainNetwork(ref _currentNetwork, 40000);
                             var compressor = new DataCompressor(SonParameters.LengthCalculator);
                             compressor.CompressData(
                                 _currentNetwork,
@@ -142,7 +144,7 @@ namespace NNApp
                                 @"F:\ImagesTests\compressed\data.txt",
                                 @"F:\ImagesTests\compressed\codebook.txt"
                                 );
-                            var decompressor = new CompressedImageReader(600,600);
+                            var decompressor = new CompressedImageReader();
                             decompressor.ReadCompressedImage(
                                 @"F:\ImagesTests\compressed\data.txt",
                                 @"F:\ImagesTests\compressed\codebook.txt",
@@ -151,7 +153,11 @@ namespace NNApp
                         }
                         else
                         {
-                            Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork);
+                            if(ChosenTaskType == TaskType.KMeans)
+                            {
+                                Trainer = new KMeansTrainer((IDataProvider)DataProvider, CurrentNetwork, SonParameters.LengthCalculator, Observer);
+                            }
+                            Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork, Observer);
                             SONLearnWindow.Show();
                         }
                     }
@@ -252,6 +258,8 @@ namespace NNApp
                 return TaskType.SONKohonen;
             else if (TaskChooseComboBox.SelectedItem == NeuralGas)
                 return TaskType.SONGas;
+            else if (TaskChooseComboBox.SelectedItem == Kmeans)
+                return TaskType.KMeans;
             else if (TaskChooseComboBox.SelectedItem == PictureCompression)
                 return TaskType.PictureCompression;
             else

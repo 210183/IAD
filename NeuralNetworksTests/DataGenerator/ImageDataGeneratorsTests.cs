@@ -17,7 +17,7 @@ namespace NeuralNetworksTests.DataGenerator
         [TestMethod]
         public void GenerateDataForCompression()
         {
-            var gen = new DataToCompressFromImageGenerator();
+            var gen = new DataToCompressGenerator();
             //gen.GenerateData(@"F:\ImagesTests\imageForGeneratorTest.bmp", @"F:\ImagesTests\generatedDataForCompression.txt");
             gen.GenerateData(@"F:\ImagesTests\lenaFullSmall.bmp", @"F:\ImagesTests\generatedDataForCompression.txt");
         }

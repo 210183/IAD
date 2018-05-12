@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuralNetworks.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.Trainer
 {
-    interface IOnGoingTrainer
+    public interface IOnGoingTrainer
     {
-        void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount, bool shouldStoreNetworks = true);
+        Datum[] DataSet { get; }
+        void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount);
     }
 }

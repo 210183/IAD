@@ -15,40 +15,42 @@ namespace NeuralNetworks.DataGenerators
     {
         private static readonly int neuronsInFrame = CC.neuronsInFrame;
         private static readonly int stepSize = CC.stepSize;
-        private int width;
-        private int height;
 
-        public CompressedImageReader(int width = 200, int height = 200)
+        public CompressedImageReader()
         {
-            if (width >= height) // width and height has to be the same, so choose smaller
-            {
-                this.height = (height / 3) * 3;
-                this.width = this.height;
-            }
-            else
-            {
-                this.width = (width / 3) * 3;
-                this.height = this.width;
-            }
+
         }
 
         public void ReadCompressedImage(string pathToSourceData, string pathToCodeBook, string pathToSaveImage)
         {
             Dictionary<int, Color[]> codeBook = ReadCodeBook(pathToCodeBook);
-            using (var destinationImage = new Bitmap(width, height)) // TODO: add flexibiity
+            // prepare saving results
+            CheckDirectory(pathToSaveImage);
+            string[] lines = System.IO.File.ReadAllLines(pathToSourceData);
+            //calculate image side length
+            int neuronLength = codeBook.First().Value.Length;
+            if(Math.Sqrt(neuronLength) != Math.Round(Math.Sqrt(neuronLength)))
             {
-                // prepare saving results
-                CheckDirectory(pathToSaveImage);
-                string[] lines = System.IO.File.ReadAllLines(pathToSourceData);
-                List<int> neuronNumbers = new List<int>();
-                for (int lineNumber = 0; lineNumber < lines.Length; lineNumber++)
-                {
-                    string line = lines[lineNumber];
-                    int neuronNumber = Convert.ToInt32(line);
-                    neuronNumbers.Add(neuronNumber);
-                }
-                int x, y;
-                int frameNumber = 0;
+                throw new ArgumentException("Cannot use neuron with such weights number: " + neuronLength.ToString());
+            }
+            if (Math.Sqrt(lines.Length) != Math.Round(Math.Sqrt(lines.Length)))
+            {
+                throw new ArgumentException("That data does not form a square " + lines.Length.ToString());
+            }
+            int width = (int) (Math.Sqrt(neuronLength) * Math.Sqrt(lines.Length));
+            int height = width;
+            //
+            List<int> neuronNumbers = new List<int>();
+            for (int lineNumber = 0; lineNumber < lines.Length; lineNumber++)
+            {
+                string line = lines[lineNumber];
+                int neuronNumber = Convert.ToInt32(line);
+                neuronNumbers.Add(neuronNumber);
+            }
+            int x, y;
+            int frameNumber = 0;
+            using (var destinationImage = new Bitmap(width, height))
+            {
                 for (x = 0; x < width; x += stepSize)
                 {
                     for (y = 0; y < height; y += stepSize)

@@ -20,6 +20,8 @@ namespace NeuralNetworks
         SONGas = 16,
         SONWTA = 32,
         PictureCompression = 64,
-        AnySON = SONKohonen | SONGas | SONWTA | PictureCompression
+        KMeans = 128,
+        AnySON = SONKohonen | SONGas | SONWTA | KMeans,
+        AnyMLP =  Approximation | Classification | Transformation
     }
 }
