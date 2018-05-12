@@ -28,6 +28,13 @@ namespace NNApp
         public int GeneratedPlotModelIndex { get; set; } = 0;
         public int DisplayedPlotIndex { get; set; } = 0;
 
+        public List<List<ScatterPoint>> NeuronsData { get; set; } = new List<List<ScatterPoint>>();
+        //public List<List<ScatterPoint>> LearningData { get; set; } = new List<List<ScatterPoint>>();
+
+        public ScatterSeries NeuronsSeries { get; set; }
+        public ScatterSeries LearningSeries { get; set; }
+
+
         private NeuralNetwork network;
 
         public SONLearnWindow(SONTrainer trainer, NeuralNetwork network)
@@ -35,7 +42,44 @@ namespace NNApp
             InitializeComponent();
             Trainer = trainer;
             this.network = network;
+            CreatePlot();
             AddPlotModel();
+            UpdateControlNumbers();
+        }
+
+        public void CreatePlot()
+        {
+            var SONModel = new PlotModel
+            {
+                Title = "SON Number: " + GeneratedPlotModelIndex.ToString(),
+                IsLegendVisible = true,
+            };
+
+            NeuronsSeries = new ScatterSeries()
+            {
+                Title = "Neurons",
+            };
+
+            LearningSeries = new ScatterSeries()
+            {
+                Title = "Learning Data",
+            };
+
+            var learningPoints = new List<ScatterPoint>();
+            for (int dataIndex = 0; dataIndex < Trainer.DataSet.Length; dataIndex++)
+            {
+                learningPoints.Add(new ScatterPoint(
+                    Trainer.DataSet[dataIndex].X[0], //x
+                    Trainer.DataSet[dataIndex].X[1], //y
+                    1                        //point size
+                    ));
+            }
+            LearningSeries.ItemsSource = learningPoints;
+
+            SONModel.Series.Add(NeuronsSeries);
+            SONModel.Series.Add(LearningSeries);
+
+            SONMainPlot.Model = SONModel;
         }
 
         private void AddPlotModel()
@@ -45,12 +89,8 @@ namespace NNApp
             {
                 var network = Trainer.NetworkStatesHistory[GeneratedPlotModelIndex];
                 var weights = network.Layers[0].Weights;
-                var SONModel = new PlotModel
-                {
-                    Title = "SON Number: " + GeneratedPlotModelIndex.ToString(),
-                    IsLegendVisible = true,
-                };
-                #region neurons series
+
+                
                 var neuronPoints = new List<ScatterPoint>();
                 for (int neuronIndex = 0; neuronIndex < weights.ColumnCount; neuronIndex++)
                 {
@@ -60,32 +100,9 @@ namespace NNApp
                         2                        //point size
                         ));
                 }
-                var neuronSeries = new ScatterSeries()
-                {
-                    Title = "Neurons",
-                };
-                neuronSeries.ItemsSource = neuronPoints;
-                SONModel.Series.Add(neuronSeries);
-                #endregion
-                #region learning data series
-                var learningPoints = new List<ScatterPoint>();
-                for (int dataIndex = 0; dataIndex < Trainer.DataSet.Length; dataIndex++)
-                {
-                    learningPoints.Add(new ScatterPoint(
-                        Trainer.DataSet[dataIndex].X[0], //x
-                        Trainer.DataSet[dataIndex].X[1], //y
-                        1                        //point size
-                        ));
-                }
-                var learningSeries = new ScatterSeries()
-                {
-                    Title = "Learning Data",
-                };
-                learningSeries.ItemsSource = learningPoints;
-                SONModel.Series.Add(learningSeries);
-                #endregion
-                // add completed plot model
-                PlotModels.Add(SONModel);
+
+                NeuronsData.Add(neuronPoints);
+        
                 GeneratedPlotModelIndex++;
             }
             DisplayedPlotIndex = GeneratedPlotModelIndex;
@@ -103,6 +120,7 @@ namespace NNApp
             {
                 UpdateDisplayedPlot(1);
             }
+            UpdateControlNumbers();
         }
         private void Nextbutton_Click(object sender, RoutedEventArgs e)
         {
@@ -119,19 +137,34 @@ namespace NNApp
                 Trainer.TrainNetwork(ref network, toLearnCount);
                 AddPlotModel();
             }
+            UpdateControlNumbers();
         }
 
         private void UpdateDisplayedPlot()
         {
-            SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
+            //SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
+            //LearningSeries.ItemsSource = LearningData[DisplayedPlotIndex - 1];
+            NeuronsSeries.ItemsSource = NeuronsData[DisplayedPlotIndex - 1];
+            SONMainPlot.Model.Title = "SON Number: " + DisplayedPlotIndex.ToString();
+            SONMainPlot.Model.InvalidatePlot(true);
         }
         private void UpdateDisplayedPlot(int index)
         {
             if (index < 0) // more safe
                 index = 0;
             DisplayedPlotIndex = index;
-            SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
+            NeuronsSeries.ItemsSource = NeuronsData[DisplayedPlotIndex - 1];
+            SONMainPlot.Model.Title = "SON Number: " + DisplayedPlotIndex.ToString();
+            SONMainPlot.Model.InvalidatePlot(true);
         }
+
+        private void UpdateControlNumbers()
+        {
+            CurrentEpochNumber.Text = (DisplayedPlotIndex / Trainer.DataSetLength).ToString();//Trainer.EpochNumber.ToString();
+            EpochSizeNumber.Text = Trainer.DataSetLength.ToString();
+            CurrentDataNumber.Text = (DisplayedPlotIndex-(Convert.ToInt32(CurrentEpochNumber.Text) * Convert.ToInt32(EpochSizeNumber.Text))).ToString();
+        }
+        #region WindowService
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.DragMove();
@@ -146,5 +179,6 @@ namespace NNApp
         {
             this.WindowState = WindowState.Minimized;
         }
+        #endregion 
     }
 }

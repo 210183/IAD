@@ -19,6 +19,10 @@ namespace NeuralNetworks.Trainer
         public IDataProvider DataProvider { get; set; }
         public Datum[] DataSet { get; }
 
+        public int DataIndexInEpoch { get => dataIndexInEpoch; }
+        public int EpochNumber { get => epochNumber;}
+        public int DataSetLength { get => dataSetLength;}
+
         private int dataIndexInEpoch = 0;
         private int epochNumber = 0;
         private int dataSetLength;  // helper variable to shorten code

@@ -84,7 +84,6 @@ namespace NNApp
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         #region Buttons
@@ -359,5 +358,10 @@ namespace NNApp
             NetworkResultsButton.IsEnabled = false;
         }
         #endregion
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            TaskChooseComboBox.IsEnabled = true;
+        }
     }
 }
