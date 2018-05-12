@@ -88,9 +88,26 @@ namespace NNApp
 
             if (MainWindow.ChosenTaskType == TaskType.PictureCompression)
             {
-                MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);
+                if (LearningAlgorithmComboBox.SelectedItem == Kohonen)
+                {
+                    MainWindow.LearningAlgorithm = new KohonenAlgorithm
+                    (
+                        sonParameters.LengthCalculator,
+                        lambda,
+                        sonParameters.NeighbourhoodFunction
+                    );
+                }
+                if (LearningAlgorithmComboBox.SelectedItem == NeuralGas)
+                {
+                    MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);
+                }
+                if (LearningAlgorithmComboBox.SelectedItem == WTA)
+                {
+                    MainWindow.LearningAlgorithm = new WTAAlgorithm(sonParameters.LengthCalculator);
+                }
+                //MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);
             }
-            if (MainWindow.ChosenTaskType == TaskType.SONKohonen)
+            if (MainWindow.ChosenTaskType == TaskType.Kohonen)
             {
                 MainWindow.LearningAlgorithm = new KohonenAlgorithm
                 (
@@ -99,24 +116,24 @@ namespace NNApp
                     sonParameters.NeighbourhoodFunction
                 );
             }
-            if(MainWindow.ChosenTaskType == TaskType.SONGas)
+            if(MainWindow.ChosenTaskType == TaskType.Gas)
             {
                 MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);                   
             }
-            if (MainWindow.ChosenTaskType == TaskType.SONWTA)
+            if (MainWindow.ChosenTaskType == TaskType.WTA)
             {
                 MainWindow.LearningAlgorithm = new WTAAlgorithm(sonParameters.LengthCalculator);
             }
 
-            MainWindow.Trainer = new SONTrainer
-               (
-                (IDataProvider)MainWindow.DataProvider,
-                MainWindow.CurrentNetwork,
-                (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
-                new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
-                sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2)
-               );
+            //MainWindow.Trainer = new SONTrainer
+            //   (
+            //    (IDataProvider)MainWindow.DataProvider,
+            //    MainWindow.CurrentNetwork,
+            //    (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
+            //    new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
+            //    sonParameters.LengthCalculator,
+            //    new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2)
+            //   );
 
             this.Close();
         }
@@ -145,6 +162,11 @@ namespace NNApp
             if (sonParameters.NeighbourhoodFunction as GaussianNeighborhood != null)
             {
                 NeighborhoodfunctionComboBox.SelectedItem = GaussianNeighbourhood;
+            }
+            if (MainWindow.ChosenTaskType == TaskType.PictureCompression)
+            {
+                LearningAlgorithmText.Visibility = Visibility.Visible;
+                LearningAlgorithmComboBox.Visibility = Visibility.Visible;
             }
 
         }

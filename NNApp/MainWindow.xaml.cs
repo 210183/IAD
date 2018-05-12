@@ -114,12 +114,18 @@ namespace NNApp
                 Window paramWindow = new SonParametersWindow();
                 paramWindow.ShowDialog();
             }
-            else
+            if (TaskType.AnyMLP.HasFlag(ChosenTaskType))
             {
                 Window paramWindow = new ParametersWindow();
                 paramWindow.ShowDialog();
             }
-            LearnButton.IsEnabled = true;
+            if (ChosenTaskType == TaskType.PictureCompression)
+            {
+                Window paramWindow = new SonParametersWindow();
+                paramWindow.ShowDialog();
+            }
+                LearnButton.IsEnabled = true;
+            
         }
 
         private void Learn_Click(object sender, RoutedEventArgs e)
@@ -130,24 +136,26 @@ namespace NNApp
                 //create data provider before moving further
                 if (ChosenTaskType != null) // if any item was chosen 
                 {
-                    if (TaskType.AnySON.HasFlag(ChosenTaskType))
+                    if (TaskType.AnySON.HasFlag(ChosenTaskType) || ChosenTaskType == TaskType.PictureCompression)
                     {
                         if (ChosenTaskType == TaskType.PictureCompression)
                         {
-                            Trainer.TrainNetwork(ref _currentNetwork, 200000, false);
-                            var compressor = new DataCompressor(SonParameters.LengthCalculator);
-                            compressor.CompressData(
-                                _currentNetwork,
-                                @"F:\ImagesTests\generatedDataForCompression.txt",
-                                @"F:\ImagesTests\compressed\data.txt",
-                                @"F:\ImagesTests\compressed\codebook.txt"
-                                );
-                            var decompressor = new CompressedImageReader(600,600);
-                            decompressor.ReadCompressedImage(
-                                @"F:\ImagesTests\compressed\data.txt",
-                                @"F:\ImagesTests\compressed\codebook.txt",
-                                @"F:\ImagesTests\compressed\decompressed.bmp"
-                                );
+                            //Trainer.TrainNetwork(ref _currentNetwork, 200000, false);
+                            //var compressor = new DataCompressor(SonParameters.LengthCalculator);
+                            //compressor.CompressData(
+                            //    _currentNetwork,
+                            //    @"F:\ImagesTests\generatedDataForCompression.txt",
+                            //    @"F:\ImagesTests\compressed\data.txt",
+                            //    @"F:\ImagesTests\compressed\codebook.txt"
+                            //    );
+                            //var decompressor = new CompressedImageReader(600,600);
+                            //decompressor.ReadCompressedImage(
+                            //    @"F:\ImagesTests\compressed\data.txt",
+                            //    @"F:\ImagesTests\compressed\codebook.txt",
+                            //    @"F:\ImagesTests\compressed\decompressed.bmp"
+                            //    );
+                            Window compressionWindow = new PictureCompressionWindow();
+                            compressionWindow.ShowDialog();
                         }
                         else
                         {
@@ -157,22 +165,24 @@ namespace NNApp
                     }
                     else
                     {
-                        if (File.Exists(learnFileName) && File.Exists(testFileName)) //create learning provdier
-                        {
-                            CreateLearningDataProvider();
-                            Window paramWindow = new TrainerParametersWindow();
-                            paramWindow.Show();
-                        }
-                        else if (File.Exists(testFileName))
-                        {
-                            CreateTestDataProvider();
-                            Window paramWindow = new TrainerParametersWindow(); //create provider for test only purposes
-                            paramWindow.Show();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Could not find any files under specified paths.");
-                        }
+                        
+                            if (File.Exists(learnFileName) && File.Exists(testFileName)) //create learning provdier
+                            {
+                                CreateLearningDataProvider();
+                                Window paramWindow = new TrainerParametersWindow();
+                                paramWindow.Show();
+                            }
+                            else if (File.Exists(testFileName))
+                            {
+                                CreateTestDataProvider();
+                                Window paramWindow = new TrainerParametersWindow(); //create provider for test only purposes
+                                paramWindow.Show();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Could not find any files under specified paths.");
+                            }
+                        
                     }
                 }
                 else
@@ -247,11 +257,11 @@ namespace NNApp
             else if (TaskChooseComboBox.SelectedItem == Transformation)
                 return TaskType.Transformation;
             else if (TaskChooseComboBox.SelectedItem == SONWTA)
-                return TaskType.SONWTA;
+                return TaskType.WTA;
             else if (TaskChooseComboBox.SelectedItem == KohonenAlgorithm)
-                return TaskType.SONKohonen;
+                return TaskType.Kohonen;
             else if (TaskChooseComboBox.SelectedItem == NeuralGas)
-                return TaskType.SONGas;
+                return TaskType.Gas;
             else if (TaskChooseComboBox.SelectedItem == PictureCompression)
                 return TaskType.PictureCompression;
             else

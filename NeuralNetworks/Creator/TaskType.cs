@@ -16,10 +16,12 @@ namespace NeuralNetworks
         Approximation = 1,
         Classification = 2,
         Transformation = 4,
-        SONKohonen = 8,
-        SONGas = 16,
-        SONWTA = 32,
+        Kohonen = 8,
+        Gas = 16,
+        WTA = 32,
         PictureCompression = 64,
-        AnySON = SONKohonen | SONGas | SONWTA | PictureCompression
+        KMeans = 128,
+        AnySON = Kohonen | Gas | WTA | KMeans,
+        AnyMLP = Approximation | Classification | Transformation
     }
 }

@@ -67,6 +67,9 @@
     <Compile Include="MLP\NetworkStatsWindow.xaml.cs">
       <DependentUpon>NetworkStatsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PictureCompressionWindow.xaml.cs">
+      <DependentUpon>PictureCompressionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SON\SONLearnWindow.xaml.cs">
       <DependentUpon>SONLearnWindow.xaml</DependentUpon>
     </Compile>
@@ -94,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MLP\ParametersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PictureCompressionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
