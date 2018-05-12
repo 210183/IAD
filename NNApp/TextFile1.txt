@@ -1,6 +1,0 @@
-﻿- dane do kompresji
-- skomnpresowane dane
-- ksiazka kodowa
-- sciezka do obrazka do generacji danych
-- algorytm uczenia do kompresji
-- błąd kwantyzacji
