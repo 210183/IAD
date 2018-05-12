@@ -99,6 +99,13 @@
             <ComboBoxItem Name="GaussianNeighbourhood">Gaussian</ComboBoxItem>
         </ComboBox>
 
+        <TextBlock Style ="{StaticResource DescriptionText}" Visibility="Collapsed" Name="LearningAlgorithmText" Grid.Column="2" Grid.Row="4" Margin="11.208,12.585,11.585,48.566">Learning Algorithm</TextBlock>
+        <ComboBox Visibility="Collapsed" Name="LearningAlgorithmComboBox" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Margin="12.208,50.585,11.585,10.566" SelectedIndex="2">
+            <ComboBoxItem Name="NeuralGas">NeuralGas</ComboBoxItem>
+            <ComboBoxItem Name="Kohonen">Kohonen</ComboBoxItem>
+            <ComboBoxItem Name="WTA">WTA</ComboBoxItem>
+        </ComboBox>
+
         <TextBlock Name="LearningText" Grid.Column="0" Grid.Row="2" Margin="10,30,10,30" TextAlignment="Center" FontSize="20" RenderTransformOrigin="0.506,0.222" >Learning Rate</TextBlock>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Name="LearningStartingRateText" Grid.Column="1" Grid.Row="2" Margin="11.208,12.585,11.585,48.566" >Starting Rate</TextBlock>
