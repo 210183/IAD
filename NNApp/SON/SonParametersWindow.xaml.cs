@@ -47,12 +47,29 @@ namespace NNApp
             sonParameters.ConscienceMinPotential = Convert.ToDouble(MinimalPotentialBox.Text);
             sonParameters.NeuronsCounter = Convert.ToInt32(NeuronsCounterBox.Text);
 
-            MainWindow.CurrentNetwork = new NeuralNetwork
-            (
-               2,
-               new LayerCharacteristic[1] { new LayerCharacteristic(sonParameters.NeuronsCounter, new IdentityFunction()) },
-               false
-            );
+            int numberOfNeurons = 2;
+            if(MainWindow.ChosenTaskType == TaskType.PictureCompression)
+            {
+                numberOfNeurons = CompressionConstants.neuronsInFrame;
+                MainWindow.CurrentNetwork = new NeuralNetwork
+                (
+                   numberOfNeurons,
+                   new LayerCharacteristic[1] { new LayerCharacteristic(sonParameters.NeuronsCounter, new IdentityFunction()) },
+                   false,
+                   0, 
+                   255
+                );
+            }
+            else
+            {
+                MainWindow.CurrentNetwork = new NeuralNetwork
+                (
+                   numberOfNeurons,
+                   new LayerCharacteristic[1] { new LayerCharacteristic(sonParameters.NeuronsCounter, new IdentityFunction()) },
+                   false
+                );
+            }
+            
 
             if (NeighborhoodfunctionComboBox.SelectedItem == BinaryNeighbourhood)
             {
@@ -69,6 +86,10 @@ namespace NNApp
 
             Lambda lambda = new Lambda(sonParameters.LambdaMax, sonParameters.LambdaMin, sonParameters.LambdaMaxIterations);
 
+            if (MainWindow.ChosenTaskType == TaskType.PictureCompression)
+            {
+                MainWindow.LearningAlgorithm = new GasAlgorithm(sonParameters.LengthCalculator, lambda);
+            }
             if (MainWindow.ChosenTaskType == TaskType.SONKohonen)
             {
                 MainWindow.LearningAlgorithm = new KohonenAlgorithm
@@ -94,13 +115,11 @@ namespace NNApp
                 (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
                 new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
                 sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, sonParameters.LambdaMaxIterations)
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2)
                );
 
             this.Close();
         }
-
-       
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {

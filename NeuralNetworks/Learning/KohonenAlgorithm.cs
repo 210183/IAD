@@ -44,7 +44,7 @@ namespace NeuralNetworks.Learning
                     neighborsGrade.Add(colIndex, NeighborhoodFunction.Calculate(colDistance, lambda));
                 }
             }
-            return neighborsGrade.Where(x => x.Value > 0).ToDictionary(x => x.Key, x => x.Value);
+            return neighborsGrade.Where(x => x.Value > 0.0001).ToDictionary(x => x.Key, x => x.Value);
         }
     }
 }

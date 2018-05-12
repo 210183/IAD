@@ -54,8 +54,13 @@
     <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidBipolarFunction.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
+    <Compile Include="CompressionConstants.cs" />
     <Compile Include="ConscienceWithPotential.cs" />
     <Compile Include="Creator\CompleteNetworkCreator.cs" />
+    <Compile Include="DataCompressor.cs" />
+    <Compile Include="DataGenerators\BasicDataGenerator.cs" />
+    <Compile Include="DataGenerators\CompressedImageReader.cs" />
+    <Compile Include="DataGenerators\DataToCompressFromImageGenerator.cs" />
     <Compile Include="DataGenerators\IDataGenerator.cs" />
     <Compile Include="DataGenerators\ImageDataGenerator.cs" />
     <Compile Include="DataGenerators\ITwoDimensionalDataGenerator.cs" />
@@ -73,6 +78,7 @@
     <Compile Include="Data\DataWithD\LearningClassificationDataProvider.cs" />
     <Compile Include="Data\PointsDataProvider.cs" />
     <Compile Include="Error\ClassificationMetrics.cs" />
+    <Compile Include="Error\QuantizationCalculator.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Learning\GasAlgorithm.cs" />
     <Compile Include="Learning\KohonenAlgorithm.cs" />

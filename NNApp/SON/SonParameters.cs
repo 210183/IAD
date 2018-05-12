@@ -10,12 +10,12 @@ namespace NNApp
 {
     public class SonParameters
     {
-        public int NeuronsCounter { get; set; } = 200;
+        public int NeuronsCounter { get; set; } = 500;
         public double ConscienceMinPotential { get; set; } = 0.75;
-        public double LambdaMin { get; set; } = 0.01;
-        public double LambdaMax { get; set; } = 0.12;
-        public int LambdaMaxIterations { get; set; } = 20;
-        public int MaxIterations { get; set; } = 2000;
+        public double LambdaMin { get; set; } = 0.2;
+        public double LambdaMax { get; set; } = 15;
+        public int LambdaMaxIterations { get; set; } = 1000;
+        public int MaxIterations { get; set; } = 10000;
         public double MinimumLearningRate { get; set; } = 0.03;
         public double StartingLearningRate { get; set; } = 0.4;
         public INeighborhoodFunction NeighbourhoodFunction { get; set; } = new GaussianNeighborhood();

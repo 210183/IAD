@@ -42,7 +42,7 @@ namespace NeuralNetworks.Learning
                     neuronCoefficients.Add(neuronIndex, Math.Exp(-(nPosition / lambda)));
                 }
             } 
-            return neuronCoefficients.Where(x => x.Value > 0).ToDictionary(x => x.Key, x =>x.Value);
+            return neuronCoefficients.Where(x => x.Value > 0.0001).ToDictionary(x => x.Key, x =>x.Value);
         }
     }
 }

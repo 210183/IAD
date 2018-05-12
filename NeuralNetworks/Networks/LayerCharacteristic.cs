@@ -3,8 +3,8 @@
     public class LayerCharacteristic
     {
         public int NumberOfNeurons { get; set; }
-        public IActivationFunction ActivationFunction { get; set; }
-        public LayerCharacteristic(int numberOfNeurons, IActivationFunction activationFunction)
+        public IOnGoingTrainer ActivationFunction { get; set; }
+        public LayerCharacteristic(int numberOfNeurons, IOnGoingTrainer activationFunction)
         {
             this.NumberOfNeurons = numberOfNeurons;
             this.ActivationFunction = activationFunction;

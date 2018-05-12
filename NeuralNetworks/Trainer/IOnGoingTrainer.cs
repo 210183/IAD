@@ -8,6 +8,6 @@ namespace NeuralNetworks.Trainer
 {
     interface IOnGoingTrainer
     {
-        void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount);
+        void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount, bool shouldStoreNetworks = true);
     }
 }

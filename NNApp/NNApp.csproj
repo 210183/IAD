@@ -170,5 +170,8 @@
   <ItemGroup>
     <Resource Include="Resources\neuron_QPM_icon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TextFile1.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.ActivationFunction
 {
-    public class IdentityFunction : IActivationFunction, IDifferentiable
+    public class IdentityFunction : IOnGoingTrainer, IDifferentiable
     {
         public double Calculate(double argument)
         {

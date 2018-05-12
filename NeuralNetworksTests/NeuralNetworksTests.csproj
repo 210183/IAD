@@ -59,6 +59,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="CompressorTests.cs" />
     <Compile Include="DataGenerator\ImageDataGeneratorsTests.cs" />
     <Compile Include="Data\ClassificationDataProviderTests.cs" />
     <Compile Include="Error\ClassificationMetricsTests.cs" />

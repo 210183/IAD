@@ -10,8 +10,8 @@ namespace NeuralNetworks
     public class Layer
     {
         public Matrix<double> Weights  { get; set; }
-        public IActivationFunction ActivationFunction { get; set; }
-        public Layer(Matrix<double> weights, IActivationFunction activationFunction)
+        public IOnGoingTrainer ActivationFunction { get; set; }
+        public Layer(Matrix<double> weights, IOnGoingTrainer activationFunction)
         {
             Weights = weights;
             ActivationFunction = activationFunction;

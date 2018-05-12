@@ -1,31 +1,14 @@
 ﻿using Microsoft.Win32;
 using NeuralNetworks;
-using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Data;
-using NeuralNetworks.DistanceMetrics;
+using NeuralNetworks.DataGenerators;
 using NeuralNetworks.Learning;
-using NeuralNetworks.Learning.MLP;
-using NeuralNetworks.Learning.NeighborhoodFunctions;
 using NeuralNetworks.Normalization;
 using NeuralNetworks.Trainer;
-using OxyPlot;
-using OxyPlot.Series;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NNApp
 {
@@ -44,7 +27,7 @@ namespace NNApp
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
 
-        private string learnFileName = @"F:\ImagesTests\generatedData.txt";
+        private string learnFileName = @"F:\ImagesTests\generatedDataForCompression.txt";
         private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
         private int inputsNumber = 4;
@@ -62,7 +45,7 @@ namespace NNApp
         private int maxEpochs = 1000;
         private double desiredMaxError = 0;
         private ILearningAlgorithm learningAlgorithm;
-        
+        private NeuralNetwork _currentNetwork;
 
         public IBasicDataProvider DataProvider { get; set; }
 
@@ -89,7 +72,7 @@ namespace NNApp
 
         public int NumberOfNetworksToTry { get; set; } = 1;
         public CompleteNetworkCreator Creator { get; set; }
-        public NeuralNetwork CurrentNetwork { get; set; }
+        public NeuralNetwork CurrentNetwork { get => _currentNetwork; set => _currentNetwork = value; }
 
         private int ComboBoxMinIndexWithTest { get; set; } = 0;
         private int ComboBoxMaxIndexWithTest { get; set; } = 2;
@@ -129,10 +112,6 @@ namespace NNApp
             if (TaskType.AnySON.HasFlag(ChosenTaskType))
             {
                 CreateSONDataProvider();
-                var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
-                normalizer.Normalize(((IDataProvider)DataProvider).Points);
-                //TODO: ADd WTA parameter Window
-                //LearningAlgorithm = new KohonenAlgorithm(new SONLearningRateHandler(0.40, 0.02, 8000), new EuclideanLength(), new Lambda(0.13, 0.001, 15), new GaussianNeighborhood(), new ConscienceWithPotential(0.8, 300));
                 Window paramWindow = new SonParametersWindow();
                 paramWindow.ShowDialog();
             }
@@ -154,9 +133,28 @@ namespace NNApp
                 {
                     if (TaskType.AnySON.HasFlag(ChosenTaskType))
                     {
-                        
-                        Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork);
-                        SONLearnWindow.Show();
+                        if (ChosenTaskType == TaskType.PictureCompression)
+                        {
+                            Trainer.TrainNetwork(ref _currentNetwork, 200000, false);
+                            var compressor = new DataCompressor(SonParameters.LengthCalculator);
+                            compressor.CompressData(
+                                _currentNetwork,
+                                @"F:\ImagesTests\generatedDataForCompression.txt",
+                                @"F:\ImagesTests\compressed\data.txt",
+                                @"F:\ImagesTests\compressed\codebook.txt"
+                                );
+                            var decompressor = new CompressedImageReader(600,600);
+                            decompressor.ReadCompressedImage(
+                                @"F:\ImagesTests\compressed\data.txt",
+                                @"F:\ImagesTests\compressed\codebook.txt",
+                                @"F:\ImagesTests\compressed\decompressed.bmp"
+                                );
+                        }
+                        else
+                        {
+                            Window SONLearnWindow = new SONLearnWindow(Trainer, CurrentNetwork);
+                            SONLearnWindow.Show();
+                        }
                     }
                     else
                     {
@@ -255,13 +253,24 @@ namespace NNApp
                 return TaskType.SONKohonen;
             else if (TaskChooseComboBox.SelectedItem == NeuralGas)
                 return TaskType.SONGas;
+            else if (TaskChooseComboBox.SelectedItem == PictureCompression)
+                return TaskType.PictureCompression;
             else
                 return TaskType.None;
         }
 
         private void CreateSONDataProvider()
         {
-            DataProvider = new PointsDataProvider(learnFileName, 2);
+            if(ChosenTaskType == TaskType.PictureCompression)
+            {
+                DataProvider = new PointsDataProvider(learnFileName, CompressionConstants.neuronsInFrame);
+            }
+            else
+            {
+                DataProvider = new PointsDataProvider(learnFileName, 2);
+                var normalizer = new MinMaxNormalizator(1, -1);       //new EuclideanNormalizator()    
+                normalizer.Normalize(((IDataProvider)DataProvider).Points);
+            }
         }
         private void CreateLearningDataProvider()
         {

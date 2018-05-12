@@ -22,27 +22,27 @@ namespace NeuralNetworks.Trainer
         private int dataIndexInEpoch = 0;
         private int epochNumber = 0;
         private int dataSetLength;  // helper variable to shorten code
-
         public SONTrainer(
             IDataProvider dataProvider,
             NeuralNetwork network,
             SONLearningAlgorithm learningAlgorithm,
             SONLearningRateHandler learningRateHandler,
             ILengthCalculator lengthCalculator,
-            ConscienceWithPotential conscience = null)
+            ConscienceWithPotential conscience = null
+            )
         {
             DataProvider = dataProvider;
             Adapter = new SONAdapter(learningAlgorithm, learningRateHandler, lengthCalculator, conscience);
 
             DataSet = dataProvider.Points;
-            int shuffleAmount = DataProvider.Points.Length * 10; // shuffle data
+            int shuffleAmount = DataProvider.Points.Length; // shuffle data
             DataProvider.ShuffleDataSet(DataSet, shuffleAmount);
 
             dataSetLength = DataSet.Length;
             NetworkStatesHistory.Add(network.DeepCopy());
         }
 
-        public void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount)
+        public void TrainNetwork(ref NeuralNetwork networkToTrain, int dataCount, bool shouldStoreNetworks = true)
         {
             Vector<double> currentPoint;
             for (int trainCounter = 0; trainCounter < dataCount; trainCounter++)
@@ -52,7 +52,8 @@ namespace NeuralNetworks.Trainer
                 // learn with current point
                 Adapter.AdaptWeights(networkToTrain, currentPoint, epochNumber * dataSetLength + dataIndexInEpoch);
                 //store network state
-                SaveNetworkState(networkToTrain);
+                if(shouldStoreNetworks)
+                    SaveNetworkState(networkToTrain);
                 dataIndexInEpoch++;
             }
 
@@ -67,7 +68,7 @@ namespace NeuralNetworks.Trainer
                 {
                     dataIndexInEpoch = 0;
                     epochNumber++;
-                    int shuffleAmount = DataProvider.Points.Length * 2; // reshuffle data
+                    int shuffleAmount = DataProvider.Points.Length; // reshuffle data
                     DataProvider.ShuffleDataSet(DataSet, shuffleAmount);
                 }
             }

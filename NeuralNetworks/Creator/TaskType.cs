@@ -19,6 +19,7 @@ namespace NeuralNetworks
         SONKohonen = 8,
         SONGas = 16,
         SONWTA = 32,
-        AnySON = SONKohonen | SONGas | SONWTA
+        PictureCompression = 64,
+        AnySON = SONKohonen | SONGas | SONWTA | PictureCompression
     }
 }

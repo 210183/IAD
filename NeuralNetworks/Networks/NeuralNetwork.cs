@@ -32,25 +32,25 @@ namespace NeuralNetworks
         /// <param name="numberOfInputs">Size of input vector that network will take.</param>
         /// <param name="layersChars">Descripts each layer, one by one, to build network from. Number of layers is determined from this array size. Output layer should be also given here.</param>
         /// <param name="isBiasOn">Unmutable flag.</param>
-        public NeuralNetwork(int numberOfInputs, LayerCharacteristic[] layersChars, bool isBiasOn = true)
+        public NeuralNetwork(int numberOfInputs, LayerCharacteristic[] layersChars, bool isBiasOn = true, double min = -1, double max = 1)
         {
             this.NumberOfLayers = layersChars.Length;
             this.Layers = new Layer[NumberOfLayers];
             this.NumberOfInputs = numberOfInputs;
             this.IsBiasExisting = isBiasOn;
-            Random randomizer = new Random();
             int inputNumberModifier;
             if (isBiasOn)
                 inputNumberModifier = 1;
             else
                 inputNumberModifier = 0;
             // create layers
-            Layers[0] = new Layer(Matrix<double>.Build.Dense(NumberOfInputs + inputNumberModifier, layersChars[0].NumberOfNeurons, (x,y) => (randomizer.NextDouble()*2) - 1), layersChars[0].ActivationFunction); // input layer
+            Random randomizer = new Random();
+            Layers[0] = new Layer(Matrix<double>.Build.Dense(NumberOfInputs + inputNumberModifier, layersChars[0].NumberOfNeurons, (x,y) => (randomizer.NextDouble()*(min+max)) + min), layersChars[0].ActivationFunction); // input layer
             for (int i=1; i< NumberOfLayers; i++) 
             {
                 int numberOfNeurons = layersChars[i].NumberOfNeurons;
                 int inputsAmount = Layers[i - 1].Weights.ColumnCount + inputNumberModifier;
-                Layers[i] = new Layer(Matrix<double>.Build.Dense(inputsAmount, numberOfNeurons, (x, y) => (randomizer.NextDouble()*2) - 1), layersChars[i].ActivationFunction); // +1 becuase of bias weights.
+                Layers[i] = new Layer(Matrix<double>.Build.Dense(inputsAmount, numberOfNeurons, (x, y) => (randomizer.NextDouble() * 2 * max) + min), layersChars[i].ActivationFunction); // +1 becuase of bias weights.
             }
             //create place to store outputs
             LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
