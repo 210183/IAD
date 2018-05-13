@@ -79,6 +79,7 @@ namespace NNApp
 
         public SonParameters SonParameters { get; set; } = new SonParameters();
         public IOnGoingTrainer Trainer { get; set; }
+        public bool IsKMeansForCompressionChosen { get; set; } = false;
         public LearningHistoryObserver Observer { get; set; } = new LearningHistoryObserver();
 
         #endregion

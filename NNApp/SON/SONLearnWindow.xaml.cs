@@ -18,6 +18,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Threading;
+using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace NNApp
 {
@@ -29,7 +32,7 @@ namespace NNApp
         public IOnGoingTrainer Trainer { get; set; }
         public LearningHistoryObserver Observer { get; set; }
         public List<PlotModel> PlotModels { get; set; } = new List<PlotModel>();
-        public int GeneratedPlotModelIndex { get; set; } = 0;
+        public int GeneratedPlotIndex { get; set; } = 0;
         public int DisplayedPlotIndex { get; set; } = 0;
 
         public List<List<ScatterPoint>> NeuronsData { get; set; } = new List<List<ScatterPoint>>();
@@ -39,6 +42,8 @@ namespace NNApp
         public QuantizationCalculator QuantizationCalculator { get; set; }
 
         private NeuralNetwork network;
+
+        public BackgroundWorker AnimationWorker { get; set; }
 
         public SONLearnWindow(IOnGoingTrainer trainer, NeuralNetwork network, ILengthCalculator lengthCalculator, LearningHistoryObserver observer)
         {
@@ -56,7 +61,7 @@ namespace NNApp
         {
             var SONModel = new PlotModel
             {
-                Title = "SON Number: " + GeneratedPlotModelIndex.ToString(),
+                Title = "SON Number: " + GeneratedPlotIndex.ToString(),
                 IsLegendVisible = true,
             };
 
@@ -90,9 +95,9 @@ namespace NNApp
         private void AddPlotModel()
         {
             int trainedDataCount = Observer.NetworkStatesHistory.Count();
-            while (GeneratedPlotModelIndex < trainedDataCount)
+            while (GeneratedPlotIndex < trainedDataCount)
             {
-                var network = Observer.NetworkStatesHistory[GeneratedPlotModelIndex];
+                var network = Observer.NetworkStatesHistory[GeneratedPlotIndex];
                 var weights = network.Layers[0].Weights;
                 
                 var neuronPoints = new List<ScatterPoint>();
@@ -107,9 +112,9 @@ namespace NNApp
 
                 NeuronsData.Add(neuronPoints);
         
-                GeneratedPlotModelIndex++;
+                GeneratedPlotIndex++;
             }
-            DisplayedPlotIndex = GeneratedPlotModelIndex;
+            DisplayedPlotIndex = GeneratedPlotIndex;
             UpdateDisplayedPlot();
         }
 
@@ -129,34 +134,32 @@ namespace NNApp
         private void Nextbutton_Click(object sender, RoutedEventArgs e)
         {
             int nextAmount = Convert.ToInt32(HowMuchDataInStepBox.Text);
-            if (DisplayedPlotIndex + nextAmount < GeneratedPlotModelIndex)
+            if (DisplayedPlotIndex + nextAmount < GeneratedPlotIndex)
             {
                 UpdateDisplayedPlot(DisplayedPlotIndex + nextAmount);
             }
             else
             {
-                int indexDifference = GeneratedPlotModelIndex - DisplayedPlotIndex;
+                int indexDifference = GeneratedPlotIndex - DisplayedPlotIndex;
                 UpdateDisplayedPlot(DisplayedPlotIndex + indexDifference);
                 int toLearnCount = nextAmount - indexDifference; // how many time sshould still learn
                 Trainer.TrainNetwork(ref network, toLearnCount);
                 AddPlotModel();
             }
             UpdateControlNumbers();
+            CalculateErrorButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
 
         private void UpdateDisplayedPlot()
         {
-            //SONMainPlot.Model = PlotModels[DisplayedPlotIndex-1];
-            //LearningSeries.ItemsSource = LearningData[DisplayedPlotIndex - 1];
             NeuronsSeries.ItemsSource = NeuronsData[DisplayedPlotIndex - 1];
             SONMainPlot.Model.Title = "SON Number: " + DisplayedPlotIndex.ToString();
             SONMainPlot.Model.InvalidatePlot(true);
-            CalculateErrorButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
         private void UpdateDisplayedPlot(int index)
         {
-            if (index < 0) // more safe
-                index = 0;
+            if (index <= 1) // more safe
+                index = 1;
             DisplayedPlotIndex = index;
             NeuronsSeries.ItemsSource = NeuronsData[DisplayedPlotIndex - 1];
             SONMainPlot.Model.Title = "SON Number: " + DisplayedPlotIndex.ToString();
@@ -191,5 +194,38 @@ namespace NNApp
             double error = QuantizationCalculator.CalculateError(network, Trainer.DataSet);
             ErrorTextBox.Text = error.ToString("e6");
         }
+
+        private void AnimationButton_Click(object sender, RoutedEventArgs e)
+        {
+            AnimationWorker = new BackgroundWorker();
+            AnimationWorker.DoWork += AnimationWorker_DoWork;
+            AnimationWorker.WorkerReportsProgress = true;
+            AnimationWorker.WorkerSupportsCancellation = true; //Allow for the process to be cancelled
+            AnimationWorker.ProgressChanged += AnimationWorker_ProgressChanged;
+            AnimationWorker.RunWorkerAsync();
+        }
+
+        private void AnimationWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            while (DisplayedPlotIndex < GeneratedPlotIndex)
+            {
+                DisplayedPlotIndex++;
+                Thread.Sleep(400);
+                AnimationWorker.ReportProgress(0);
+            }
+            AnimationWorker.ReportProgress(100);
+        }
+        private void AnimationWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            if (e.ProgressPercentage == 0)
+            {
+                UpdateDisplayedPlot();
+            }
+            else if(e.ProgressPercentage == 100)
+            {
+                AnimationWorker.CancelAsync();
+            }
+        }
+
     }
 }

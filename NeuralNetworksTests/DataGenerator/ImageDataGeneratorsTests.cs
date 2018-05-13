@@ -12,14 +12,14 @@ namespace NeuralNetworksTests.DataGenerator
         {
             var gen = new ImageDataGenerator();
             //gen.GenerateGrayData(123, "");
-            gen.GenerateData(@"F:\ImagesTests\lenaSmall.bmp", @"F:\ImagesTests\generatedData.txt");
+            gen.GenerateData(@"F:\ImagesTests\kola.bmp", @"F:\ImagesTests\generatedDatakola.txt");
         }
         [TestMethod]
         public void GenerateDataForCompression()
         {
             var gen = new DataToCompressGenerator();
             //gen.GenerateData(@"F:\ImagesTests\imageForGeneratorTest.bmp", @"F:\ImagesTests\generatedDataForCompression.txt");
-            gen.GenerateData(@"F:\ImagesTests\lenaFullSmall.bmp", @"F:\ImagesTests\generatedDataForCompression.txt");
+            gen.GenerateData(@"F:\ImagesTests\owoc.jpg", @"F:\ImagesTests\generatedDataForCompression.txt");
         }
     }
 }

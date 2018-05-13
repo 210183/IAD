@@ -53,15 +53,27 @@ namespace NNApp
             var genFile = Directory.GetCurrentDirectory() + "\\Files\\generatedData.txt";
             gen.GenerateData(bmpFileName, genFile);
             MainWindow.DataProvider = new PointsDataProvider(genFile, CompressionConstants.neuronsInFrame);
-            MainWindow.Trainer = new SONTrainer
+            if(MainWindow.IsKMeansForCompressionChosen)
+            {
+                MainWindow.Trainer = new KMeansTrainer
+              (
+               (IDataProvider)MainWindow.DataProvider,
+               MainWindow.CurrentNetwork,
+               sonParameters.LengthCalculator
+              );
+            }
+            else
+            {
+                MainWindow.Trainer = new SONTrainer
                (
                 (IDataProvider)MainWindow.DataProvider,
                 MainWindow.CurrentNetwork,
                 (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
                 new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
                 sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 2)
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 4)
                );
+            }
 
         }
 

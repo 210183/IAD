@@ -100,9 +100,10 @@
         </ComboBox>
 
         <TextBlock Style ="{StaticResource DescriptionText}" Visibility="Collapsed" Name="LearningAlgorithmText" Grid.Column="2" Grid.Row="4" Margin="11.208,12.585,11.585,48.566">Learning Algorithm</TextBlock>
-        <ComboBox Visibility="Collapsed" Name="LearningAlgorithmComboBox" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Margin="12.208,50.585,11.585,10.566" SelectedIndex="2">
+        <ComboBox Visibility="Collapsed" Name="LearningAlgorithmComboBox" Grid.Column="2" Grid.Row="4" Grid.ColumnSpan="1" Margin="12.208,50.585,11.585,10.566" SelectedIndex="0">
             <ComboBoxItem Name="NeuralGas">NeuralGas</ComboBoxItem>
             <ComboBoxItem Name="Kohonen">Kohonen</ComboBoxItem>
+            <ComboBoxItem Name="KMeansForCompression">K-Means</ComboBoxItem>
             <ComboBoxItem Name="WTA">WTA</ComboBoxItem>
         </ComboBox>
 

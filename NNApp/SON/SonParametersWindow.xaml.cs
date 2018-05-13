@@ -88,6 +88,10 @@ namespace NNApp
 
             if (MainWindow.ChosenTaskType == TaskType.PictureCompression)
             {
+                if (LearningAlgorithmComboBox.SelectedItem == KMeansForCompression)
+                {
+                    MainWindow.IsKMeansForCompressionChosen = true;
+                }
                 if (LearningAlgorithmComboBox.SelectedItem == Kohonen)
                 {
                     MainWindow.LearningAlgorithm = new KohonenAlgorithm

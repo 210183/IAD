@@ -1,12 +1,14 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using NeuralNetworks.Data;
 using NeuralNetworks.DistanceMetrics;
+using NeuralNetworks.Error;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CC = NeuralNetworks.CompressionConstants;
 
 namespace NeuralNetworks
@@ -24,8 +26,10 @@ namespace NeuralNetworks
 
         public void CompressData(NeuralNetwork network, string dataToCompressPath, string compressedDataPath, string bookCodePath)
         {
+            var errorCalculator = new QuantizationCalculator(LengthCalculator);
             var weights = network.Layers[0].Weights;
             var dataProvider = new PointsDataProvider(dataToCompressPath, neuronsInFrame);
+            MessageBox.Show("Quantization error will be: " + errorCalculator.CalculateError(network, dataProvider.Points).ToString());
             using (var writer = new StreamWriter(compressedDataPath)) //save compressed data
             {
                 foreach (var data in dataProvider.Points) 

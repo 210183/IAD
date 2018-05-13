@@ -22,6 +22,14 @@
             <Setter Property="MaxHeight" Value="40" />
             <Setter Property="Margin" Value="5" />
         </Style>
+        <Style TargetType="{x:Type ToggleButton}">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="{StaticResource GrayBlueGradientBrush}" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="MaxWidth" Value="120" />
+            <Setter Property="MaxHeight" Value="40" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
         <Style TargetType="{x:Type TextBox}">
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="FontSize" Value="18" />
@@ -73,8 +81,10 @@
         </Button>
         <oxy:PlotView Name="SONMainPlot" Background="AliceBlue" Grid.Column="0" Grid.ColumnSpan="5" Grid.RowSpan="4" Grid.Row="3"/>
 
-        <Button  Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="3" Grid.Row="2" >Previous</Button>
-        <Button  Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="4" Grid.Row="2">Next</Button>
+        <Button  Name="PreviousButton" Click="PreviousButton_Click" Grid.Column="2" Grid.Row="2" >Previous</Button>
+        <Button  Name="Nextbutton" Click="Nextbutton_Click" Grid.Column="3" Grid.Row="2">Next</Button>
+
+        <Button  Name="AnimationButton" Click="AnimationButton_Click" Grid.Column="4" Grid.Row="2">Run</Button>
 
         <Button  Name="CalculateErrorButton" Click="CalculateErrorButton_Click" Grid.Column="0" Grid.Row="2">Calc Error</Button>
         <TextBlock Name="ErrorTextBox" Style ="{StaticResource DescriptionText}" Grid.Column="1" Grid.Row="2" Margin="21,32.208,19.377,33.981" ></TextBlock>
