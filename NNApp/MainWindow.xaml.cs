@@ -101,7 +101,20 @@ namespace NNApp
             {
 
                 learnFileName = ShowFileWindow("Learn File", "Bitmap", "*.bmp");
-                if (learnFileName == "")
+                if (learnFileName != "") // generate data from image
+                {
+                    try
+                    {
+                        ImageDataGenerator generator = new ImageDataGenerator();
+                        generator.GenerateData(learnFileName, Path.ChangeExtension(learnFileName, "txt"));
+                        learnFileName = Path.ChangeExtension(learnFileName, "txt");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                 if (learnFileName == "")
                 {
                     learnFileName = ShowFileWindow("Learn File", "Text File", "*.txt");
                 }
@@ -110,25 +123,31 @@ namespace NNApp
 
         private void SetParameters_Click(object sender, RoutedEventArgs e)
         {
-            SaveParameters();
-            if (TaskType.AnySON.HasFlag(ChosenTaskType))
+            try
             {
-                CreateSONDataProvider();
-                Window paramWindow = new SonParametersWindow();
-                paramWindow.ShowDialog();
+                SaveParameters();
+                if (TaskType.AnySON.HasFlag(ChosenTaskType))
+                {
+                    CreateSONDataProvider();
+                    Window paramWindow = new SonParametersWindow();
+                    paramWindow.ShowDialog();
+                }
+                if (TaskType.AnyMLP.HasFlag(ChosenTaskType))
+                {
+                    Window paramWindow = new ParametersWindow();
+                    paramWindow.ShowDialog();
+                }
+                if (ChosenTaskType == TaskType.PictureCompression)
+                {
+                    Window paramWindow = new SonParametersWindow();
+                    paramWindow.ShowDialog();
+                }
+                LearnButton.IsEnabled = true;
             }
-            if (TaskType.AnyMLP.HasFlag(ChosenTaskType))
+            catch(Exception ex)
             {
-                Window paramWindow = new ParametersWindow();
-                paramWindow.ShowDialog();
+                MessageBox.Show(ex.Message);
             }
-            if (ChosenTaskType == TaskType.PictureCompression)
-            {
-                Window paramWindow = new SonParametersWindow();
-                paramWindow.ShowDialog();
-            }
-            LearnButton.IsEnabled = true;
-            
         }
 
         private void Learn_Click(object sender, RoutedEventArgs e)

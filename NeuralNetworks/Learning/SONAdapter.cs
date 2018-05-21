@@ -31,7 +31,7 @@ namespace NeuralNetworks.Learning
             {
                 neuronsToAdapt.Add(col);
             }
-            Conscience?.FilterPossibleWinners(neuronsToAdapt, iterationNumber);
+            Conscience?.FilterPossibleWinners(ref neuronsToAdapt, iterationNumber);
             int winnerIndex = FindWinnerIndex(weights, neuronsToAdapt, learningPoint);
             var neuronsAdaptCoefficients = LearningAlgorithm.GetCoefficients(network, neuronsToAdapt, winnerIndex, learningPoint, iterationNumber);
             UpdateNeurons(learningPoint, weights, iterationNumber, neuronsAdaptCoefficients);

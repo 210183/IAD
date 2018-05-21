@@ -37,7 +37,7 @@ namespace NeuralNetworks
             }
         }
 
-        public void FilterPossibleWinners(List<int> neuronsIndexes, int iterationNumber)
+        public void FilterPossibleWinners(ref List<int> neuronsIndexes, int iterationNumber)
         {
             if (iterationNumber > maxIterations)
             {
@@ -51,7 +51,10 @@ namespace NeuralNetworks
                     if (CanBeWinner(neuronIndex))
                         possWinners.Add(neuronIndex);
                 }
-                neuronsIndexes = possWinners;
+                if(possWinners.Count != 0)
+                {
+                    neuronsIndexes = possWinners;
+                }
             }
         }
 

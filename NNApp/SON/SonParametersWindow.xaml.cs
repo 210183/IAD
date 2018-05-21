@@ -148,7 +148,7 @@ namespace NNApp
                 (SONLearningAlgorithm)MainWindow.LearningAlgorithm,
                 new SONLearningRateHandler(sonParameters.StartingLearningRate, sonParameters.MinimumLearningRate, sonParameters.MaxIterations),
                 sonParameters.LengthCalculator,
-                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, ((IDataProvider)MainWindow.DataProvider).Points.Length * 4),
+                new ConscienceWithPotential(sonParameters.ConscienceMinPotential, sonParameters.NeuronsCounter, sonParameters.MaxIterations / 2),    //((IDataProvider)MainWindow.DataProvider).Points.Length * 2),
                 MainWindow.Observer
                );
             }

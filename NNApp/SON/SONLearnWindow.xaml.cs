@@ -210,7 +210,7 @@ namespace NNApp
             while (DisplayedPlotIndex < GeneratedPlotIndex)
             {
                 DisplayedPlotIndex++;
-                Thread.Sleep(400);
+                Thread.Sleep(120);
                 AnimationWorker.ReportProgress(0);
             }
             AnimationWorker.ReportProgress(100);

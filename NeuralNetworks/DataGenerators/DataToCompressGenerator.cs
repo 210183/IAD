@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using CC = NeuralNetworks.CompressionConstants;
 
 namespace NeuralNetworks.DataGenerators
@@ -60,7 +61,20 @@ namespace NeuralNetworks.DataGenerators
                                         UpdateDestinationImage();
                                     }
                                 }
-                                destinationImage.Save(Path.ChangeExtension(pathToSaveData, ".bmp"));
+                                try
+                                {
+                                    if (File.Exists(pathToSaveData))
+                                    {
+                                        var dirPath = new FileInfo(pathToSaveData).Directory.FullName;
+                                        var newDirInfo = Directory.CreateDirectory(Path.Combine(dirPath, Path.GetRandomFileName()));
+                                        pathToSaveData = Path.Combine(newDirInfo.FullName, Path.GetFileName(pathToSaveData));
+                                    }
+                                    destinationImage.Save(Path.ChangeExtension(pathToSaveData, ".bmp"));
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
                                 //local method
                                 void UpdateDestinationImage()
                                 {

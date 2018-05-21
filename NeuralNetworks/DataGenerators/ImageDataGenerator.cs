@@ -72,6 +72,12 @@ namespace NeuralNetworks.DataGenerators
                                 }
                             }
                         }
+                        if (File.Exists(Path.ChangeExtension(pathToSaveData, ".bmp")))
+                        {
+                            var dirPath = new FileInfo(Path.ChangeExtension(pathToSaveData, ".bmp")).Directory.FullName;
+                            var newDirInfo = Directory.CreateDirectory(Path.Combine(dirPath, Path.GetRandomFileName()));
+                            pathToSaveData = Path.Combine(newDirInfo.FullName, Path.GetFileName(Path.ChangeExtension(pathToSaveData, ".bmp")));
+                        }
                         destinationImage.Save(Path.ChangeExtension(pathToSaveData, ".bmp"));
                         #endregion
                     }
