@@ -29,7 +29,7 @@ namespace NNApp
     /// </summary>
     public partial class NetworkStatsWindow : Window
     {
-        public NeuralNetwork CurrentNetwork { get; set; } = ((MainWindow)Application.Current.MainWindow).CurrentNetwork;
+        public NeuralNetworkRadial CurrentNetwork { get; set; } = ((MainWindow)Application.Current.MainWindow).CurrentNetwork;
         public CompleteNetworkCreator Creator { get; set; } = ((MainWindow)Application.Current.MainWindow).Creator;
         public TaskType ChosenTask { get; set; } = (TaskType)((MainWindow)Application.Current.MainWindow).ChosenTaskType;
         public int SelectedPlotIndex { get; set; } = 0;
@@ -201,7 +201,7 @@ namespace NNApp
             {
                 try
                 {
-                    int numberOfOutputs = Creator.BestNetwork.Layers[Creator.BestNetwork.Layers.Length-1].Weights.ColumnCount;
+                    int numberOfOutputs = Creator.BestNetwork.OutputLayer[Creator.BestNetwork.OutputLayer.Length-1].Weights.ColumnCount;
                     IDataProvider dataProvider;
 
                     if (ChosenTask == TaskType.Classification)

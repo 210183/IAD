@@ -17,13 +17,13 @@ namespace NeuralNetworksTests
                 new LayerCharacteristic(2, new SigmoidUnipolarFunction()),
                 new LayerCharacteristic(1, new IdentityFunction())
             };
-            var net = new NeuralNetwork(1, layers, false);
+            var net = new NeuralNetworkRadial(1, layers, false);
             var input = Vector<double>.Build.Dense(1);
             input[0] = 2;
-            net.Layers[0].Weights[0, 0] = 1.5;
-            net.Layers[0].Weights[0, 1] = 1 / 4.0;
-            net.Layers[1].Weights[0, 0] = 1 / 4.0;
-            net.Layers[1].Weights[1, 0] = 2;
+            net.OutputLayer[0].Weights[0, 0] = 1.5;
+            net.OutputLayer[0].Weights[0, 1] = 1 / 4.0;
+            net.OutputLayer[1].Weights[0, 0] = 1 / 4.0;
+            net.OutputLayer[1].Weights[1, 0] = 2;
             var output = net.CalculateOutput(input);
             Assert.AreEqual(1.483, Math.Round(output[0], 3));
         }
@@ -35,17 +35,17 @@ namespace NeuralNetworksTests
                 new LayerCharacteristic(2, new SigmoidUnipolarFunction()),
                 new LayerCharacteristic(1, new IdentityFunction())
             };
-            var net = new NeuralNetwork(1, layers, true);
+            var net = new NeuralNetworkRadial(1, layers, true);
             var input = Vector<double>.Build.Dense(2);
             input[0] = 1;
             input[1] = 2;
-            net.Layers[0].Weights[0, 0] = -1 / 2.0;
-            net.Layers[0].Weights[1, 0] = 1.5;
-            net.Layers[0].Weights[0, 1] = 1 / 4.0;
-            net.Layers[0].Weights[1, 1] = -1;
-            net.Layers[1].Weights[0, 0] = 1.5;
-            net.Layers[1].Weights[1, 0] = 1 / 4.0;
-            net.Layers[1].Weights[2, 0] = 2;
+            net.OutputLayer[0].Weights[0, 0] = -1 / 2.0;
+            net.OutputLayer[0].Weights[1, 0] = 1.5;
+            net.OutputLayer[0].Weights[0, 1] = 1 / 4.0;
+            net.OutputLayer[0].Weights[1, 1] = -1;
+            net.OutputLayer[1].Weights[0, 0] = 1.5;
+            net.OutputLayer[1].Weights[1, 0] = 1 / 4.0;
+            net.OutputLayer[1].Weights[2, 0] = 2;
             var output = net.CalculateOutput(input);
             Assert.AreEqual(0.527 + 1.5, Math.Round(output[0],3));
         }

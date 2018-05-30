@@ -28,7 +28,7 @@ namespace NeuralNetworks
         public int NumberOfPointForApproximationFunction { get; set; } = 1000;
         #endregion
 
-        public NeuralNetwork BestNetwork { get; set; }
+        public NeuralNetworkRadial BestNetwork { get; set; }
         /// <summary>
         /// Best network learning history is saved here afer CreateNetwork.
         /// </summary>
@@ -56,12 +56,12 @@ namespace NeuralNetworks
         /// <param name="taskType"></param>
         /// <param name="numberOfNetworksToTry"></param>
         /// <returns>Best network</returns>
-        public NeuralNetwork CreateNetwork(TaskType taskType, int numberOfNetworksToTry)
+        public NeuralNetworkRadial CreateNetwork(TaskType taskType, int numberOfNetworksToTry)
         {
             var trainer = new OnlineTrainer(ErrorCalculator, DataProvider, LearningAlgorithm);
             for (int networkIndex = 0; networkIndex < numberOfNetworksToTry; networkIndex++)
             {  
-                var currentNetwork = new NeuralNetwork(InputsNumber, Layers, IsBiasOn);
+                var currentNetwork = new NeuralNetworkRadial(InputsNumber, Layers, IsBiasOn);
                 trainer.TrainNetwork(ref currentNetwork, MaxEpochs, DesiredError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
                 if (isUpdated) // save learning history of best network
@@ -82,7 +82,7 @@ namespace NeuralNetworks
         /// </summary>
         /// <param name="newNetwork"></param>
         /// <returns>True if best network was changed. Otherwise, false</returns>
-        private bool UpdateBestNetwork(NeuralNetwork newNetwork)
+        private bool UpdateBestNetwork(NeuralNetworkRadial newNetwork)
         {
             var tester = new NetworkTester(ErrorCalculator);
             if(BestNetwork is null) //save new network as best
@@ -105,10 +105,10 @@ namespace NeuralNetworks
             }
         }
 
-        private void CreateResultMatrixForClassification(NeuralNetwork network)
+        private void CreateResultMatrixForClassification(NeuralNetworkRadial network)
         {
             var testSet = DataProvider.DataSet; //helper variable to shorten code and clarify;
-            int numberOfClasses = network.Layers[Layers.Length - 1].Weights.ColumnCount; //neurons in last layer
+            int numberOfClasses = network.OutputLayer[Layers.Length - 1].Weights.ColumnCount; //neurons in last layer
             ClassificationFullResults = Matrix<double>.Build.Dense(numberOfClasses, numberOfClasses);
             for (int dataIndex = 0; dataIndex < testSet.Length; dataIndex++)
             {
@@ -124,7 +124,7 @@ namespace NeuralNetworks
         /// Otherwise will just take first value from network output as function value.
         /// </summary>
         /// <param name="network"></param>
-        private void CreateApproximationFunctionPoints(NeuralNetwork network)
+        private void CreateApproximationFunctionPoints(NeuralNetworkRadial network)
         {
             ApproximationFunctionPoints = new Double[NumberOfPointForApproximationFunction, 2];
             double maximum = 0, minimum = 0;

@@ -80,7 +80,7 @@ namespace NNApp
 
         public int NumberOfNetworksToTry { get; set; } = 1;
         public CompleteNetworkCreator Creator { get; set; }
-        public NeuralNetwork CurrentNetwork { get; set; }
+        public NeuralNetworkRadial CurrentNetwork { get; set; }
         #endregion
 
         public MainWindow()

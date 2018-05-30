@@ -8,6 +8,6 @@ namespace NeuralNetworks
 {
     interface ITrainer
     {
-        void TrainNetwork(ref NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate);
+        void TrainNetwork(ref NeuralNetworkRadial networkToTrain, int maxEpochs, double desiredErrorRate);
     }
 }

@@ -22,7 +22,7 @@ namespace NeuralNetworks
             LearningRateHandler.UpdateRate(currentEpochError, previousEpochError);
         }
 
-        public abstract void AdaptWeights(NeuralNetwork network, Vector<double> errors, double currentDataError, double previousDataError);
+        public abstract void AdaptWeights(NeuralNetworkRadial network, Vector<double> errors, double currentDataError, double previousDataError);
 
     }
 }

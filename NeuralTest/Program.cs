@@ -21,7 +21,7 @@ namespace NeuralTest
             LayerCharacteristic[] layers = new LayerCharacteristic[2];
             layers[0] = new LayerCharacteristic(2, new SigmoidUnipolarFunction());
             layers[1] = new LayerCharacteristic(1, new IdentityFunction());
-            var network = new NeuralNetwork(1, layers);
+            var network = new NeuralNetworkRadial(1, layers);
 
             ILearningProvider dataProvider = new LearningApproximationDataProvider(learningFileName, testFileName, 1, 1, true);
 

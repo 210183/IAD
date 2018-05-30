@@ -21,7 +21,7 @@ namespace NeuralNetworks
         public Vector<double> EpochErrorHistory { get; set; } = Vector<double>.Build.Dense(1);
         public Vector<double> CurrentEpochErrorVector { get; set; }
         public double BestError { get; set; } = Double.MaxValue;
-        public NeuralNetwork BestNetworkState { get; set; }
+        public NeuralNetworkRadial BestNetworkState { get; set; }
 
         private NetworkTester tester;
 
@@ -32,7 +32,7 @@ namespace NeuralNetworks
             LearningAlgorithm = learningAlgorithm;
             tester = new NetworkTester(ErrorCalculator);
         }
-        public void TrainNetwork(ref NeuralNetwork networkToTrain, int maxEpochs, double desiredErrorRate = 0)
+        public void TrainNetwork(ref NeuralNetworkRadial networkToTrain, int maxEpochs, double desiredErrorRate = 0)
         {
             var learnSet = DataProvider.LearnSet; //shorter 
 
