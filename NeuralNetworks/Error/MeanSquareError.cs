@@ -31,7 +31,7 @@ namespace NeuralNetworks
         }
 
         /// <summary>
-        /// Calculates single error squared value
+        /// Calculates error for single vectors pair, as mean value from sum of every value to the power of 2.
         /// </summary>
         /// <param name="output"></param>
         /// <param name="desiredOutput"></param>
@@ -42,7 +42,7 @@ namespace NeuralNetworks
             {
                 var errors = CalculateErrorVector(output, desiredOutput);
                 errors = errors.PointwisePower(2);
-                var resultError = Math.Sqrt(errors.Sum() / errors.Count);
+                var resultError = errors.Sum() / errors.Count;
                 return resultError;
             }
             else
@@ -52,7 +52,7 @@ namespace NeuralNetworks
         }
 
         /// <summary>
-        /// Calculate square root from given errors and divides it by 2.
+        /// Calculate just sum of errors
         /// </summary>
         /// <param name="errors"> Vector of errors counted for single data. These values should probably be counted using CalculateSumError</param>
         /// <seealso cref="CalculateErrorSum"/>

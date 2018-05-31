@@ -22,7 +22,7 @@ namespace NeuralNetworks
         public RadialNeuron[] Neurons { get; set; }
         public ILengthCalculator LengthCalculator{ get; set; }
         public GaussianFunction RadialFunction { get; set; }
-
+        public RadialNeuron WinnerNeuron { get; set; }
         public Vector<double> CalculateOutput(Vector<double> input)
         {
             var output = Vector<double>.Build.Dense(NumberOfNeurons);
@@ -30,6 +30,7 @@ namespace NeuralNetworks
             {
                 output[neuronIndex] = RadialFunction.Calculate(input, Neurons[neuronIndex].Center, Neurons[neuronIndex].WidthModifier);
             }
+            WinnerNeuron = Neurons[output.MaximumIndex()];
             return output;
         }
 

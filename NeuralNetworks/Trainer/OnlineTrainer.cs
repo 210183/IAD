@@ -32,7 +32,7 @@ namespace NeuralNetworks
             LearningAlgorithm = learningAlgorithm;
             tester = new NetworkTester(ErrorCalculator);
         }
-        public void TrainNetwork(ref NeuralNetworkRadial networkToTrain, int maxEpochs, double desiredErrorRate = 0)
+        public void TrainNetwork(ref NeuralNetworkRadial network, int maxEpochs, double desiredErrorRate = 0)
         {
             var learnSet = DataProvider.LearnSet; //shorter 
 
@@ -54,13 +54,16 @@ namespace NeuralNetworks
                 #region calculate epoch
                 for (int dataIndex = 0; dataIndex < learnSet.Length; dataIndex++)
                 {
-                    output = networkToTrain.CalculateOutput(learnSet[dataIndex].X, CalculateMode.OutputsAndDerivatives);
+                    output = network.CalculateOutput(learnSet[dataIndex].X, CalculateMode.OutputsAndDerivatives);
                     errorVector = ErrorCalculator.CalculateErrorVector(output, learnSet[dataIndex].D); 
                     CurrentEpochErrorVector[dataIndex] = ErrorCalculator.CalculateErrorSum(output, learnSet[dataIndex].D);
                     #region adapt weights
-                    LearningAlgorithm.AdaptWeights(networkToTrain,errorVector, CurrentEpochErrorVector[dataIndex], CurrentEpochErrorVector[dataIndex.Previous()] );
+                    LearningAlgorithm.AdaptWeights(network, errorVector, CurrentEpochErrorVector[dataIndex], CurrentEpochErrorVector[dataIndex.Previous()] );
                     #endregion
-
+                    //adapt center
+                    var winnerCenter = network.RadialLayer.WinnerNeuron.Center;
+                    var differenceVector = ErrorCalculator.CalculateErrorVector(winnerCenter, learnSet[dataIndex].X);
+                    winnerCenter += LearningAlgorithm.LearningRateHandler.LearningRate * differenceVector;
                 }
                 #endregion
                 #region epoch error
@@ -74,13 +77,13 @@ namespace NeuralNetworks
                 LearningAlgorithm.AdaptLearningRate(TemporaryEpochErrorHistory[EpochIndex], TemporaryEpochErrorHistory[EpochIndex.Previous()]);
                 #endregion
                 #region create and store test results
-                var testError = tester.TestNetwork(networkToTrain, DataProvider);
+                var testError = tester.TestNetwork(network, DataProvider);
                 TempTestErrorHistory[EpochIndex] = testError;
                 #endregion
                 #region update best network state
                 if (TempTestErrorHistory[EpochIndex] < BestError)
                 {
-                    BestNetworkState = networkToTrain.DeepCopy();
+                    BestNetworkState = network.DeepCopy();
                     BestError = TempTestErrorHistory[EpochIndex];
                 }
                 #endregion
@@ -94,7 +97,7 @@ namespace NeuralNetworks
             TempTestErrorHistory.CopySubVectorTo(TestErrorHistory, 0, 0, EpochIndex);
             #endregion
             //restore best network state ( on set for verifying)
-            networkToTrain = BestNetworkState;
+            network = BestNetworkState;
         }
     }
 }
