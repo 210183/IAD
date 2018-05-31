@@ -33,8 +33,8 @@ namespace NNApp
         {
             MainWindow.NetworkParameters.NumberOfInputs = Convert.ToInt16(NumberOfInputsBox.Text);
             MainWindow.NetworkParameters.NumberOfOutputNeurons = Convert.ToInt16(NumberOfOutputsBox.Text);
-           
-           if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidUnipolar")
+            MainWindow.NetworkParameters.NumberOfRadialNeurons = Convert.ToInt16(NumberOfRadialNeuronsBox.Text);
+            if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidUnipolar")
                 MainWindow.NetworkParameters.ActivationFunction = new SigmoidUnipolarFunction();
             else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidBipolar")
                 MainWindow.NetworkParameters.ActivationFunction = new SigmoidBipolarFunction();
@@ -42,9 +42,9 @@ namespace NNApp
                 MainWindow.NetworkParameters.ActivationFunction = new IdentityFunction();
 
             if (BiasComboBox.SelectionBoxItem.ToString().Equals("true"))
-                ((MainWindow)Application.Current.MainWindow).NetworkParameters.IsBiased = true;
+                MainWindow.NetworkParameters.IsBiased = true;
             else if (BiasComboBox.SelectionBoxItem.ToString().Equals("false"))
-                ((MainWindow)Application.Current.MainWindow).NetworkParameters.IsBiased = false;
+                MainWindow.NetworkParameters.IsBiased = false;
 
             this.Close();
         }
@@ -61,14 +61,15 @@ namespace NNApp
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
-            ((MainWindow)Application.Current.MainWindow).WindowState = WindowState.Minimized;
+            MainWindow.WindowState = WindowState.Minimized;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            NumberOfInputsBox.Text = ((MainWindow)Application.Current.MainWindow).NetworkParameters.NumberOfInputs.ToString();
-            NumberOfOutputsBox.Text = ((MainWindow)Application.Current.MainWindow).NetworkParameters.NumberOfOutputNeurons.ToString();
-            if (((MainWindow)Application.Current.MainWindow).NetworkParameters.IsBiased)
+            NumberOfInputsBox.Text = MainWindow.NetworkParameters.NumberOfInputs.ToString();
+            NumberOfOutputsBox.Text = MainWindow.NetworkParameters.NumberOfOutputNeurons.ToString();
+            NumberOfRadialNeuronsBox.Text = MainWindow.NetworkParameters.NumberOfRadialNeurons.ToString();
+            if (MainWindow.NetworkParameters.IsBiased)
                 BiasComboBox.SelectedIndex = 0;
             else
                 BiasComboBox.SelectedIndex = 1;
