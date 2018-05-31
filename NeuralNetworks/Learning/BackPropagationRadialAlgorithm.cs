@@ -47,7 +47,7 @@ namespace NeuralNetworks
                         var signal = network.LastOutputs[outputLayerPosition-1][weightIndex];
                         var currentNeuronError = propagatedErrors[neuronIndex];
                         var activationFunc = network.OutputLayer.ActivationFunction as IDifferentiable;
-                        var derivative = network.LastDerivatives[neuronIndex];
+                        var derivative = network.OutputLayer.LastDerivatives[neuronIndex];
                         var backPropagationImpact = derivative * signal * currentNeuronError * LearningRateHandler.LearningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {

@@ -25,7 +25,7 @@ namespace NeuralNetworks
         /// Input is also stored as first vector (0 index) like output of virtual 'input layer'
         /// </summary>
         public Vector<double>[] LastOutputs { get; set; } = new Vector<double>[1];
-        public Vector<double> LastDerivatives { get; set; } = Vector<double>.Build.Dense(1);
+
 
         /// <summary>
         /// 
@@ -42,8 +42,6 @@ namespace NeuralNetworks
             OutputLayer = outputLayer;
             //create place to store outputs
             LastOutputs = new Vector<double>[NumberOfLayers + 1]; // +1 to store input as output for first layer
-            //create place to store derivatives
-            LastDerivatives = Vector<double>.Build.Dense(OutputLayer.Weights.ColumnCount);
         }
         /// <summary>
         /// Calculates output. Can also calculate and store all neurons outputs and act. function derivatives.
@@ -74,7 +72,7 @@ namespace NeuralNetworks
                 LastOutputs[1] = Vector<double>.Build.DenseOfVector(currentOutput); //copy of current
             }
             //calculate output layer
-            currentOutput = OutputLayer.CalculateOutput(currentOutput);
+            currentOutput = OutputLayer.CalculateOutput(currentOutput, mode);
             if (mode.HasFlag(CalculateMode.AllOutputs))
             {
                 LastOutputs[2] = Vector<double>.Build.DenseOfVector(currentOutput); //copy of current
@@ -91,7 +89,6 @@ namespace NeuralNetworks
             {
                 copyNetwork.LastOutputs[i] = Vector<double>.Build.DenseOfVector(LastOutputs[i]);
             }
-            copyNetwork.LastDerivatives = Vector<double>.Build.DenseOfVector(LastDerivatives);
             return copyNetwork;
         }
     }
