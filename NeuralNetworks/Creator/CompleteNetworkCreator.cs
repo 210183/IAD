@@ -21,7 +21,7 @@ namespace NeuralNetworks
         public ILearningProvider DataProvider { get; set; }
         public RadialNetworkParameters NetworkParameters { get; set; }
         public LearningAlgorithm LearningAlgorithm { get; set; }
-        public IErrorCalculator ErrorCalculator { get; set; }
+        public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
         public int MaxEpochs { get; set; }
         public double DesiredError { get; set; }
         public int NumberOfPointForApproximationFunction { get; set; } = 1000;
@@ -61,7 +61,7 @@ namespace NeuralNetworks
             var trainer = new OnlineTrainer(ErrorCalculator, DataProvider, LearningAlgorithm);
             for (int networkIndex = 0; networkIndex < numberOfNetworksToTry; networkIndex++)
             {
-                var currentNetwork = factory.CreateRadialNetwork(NetworkParameters);
+                var currentNetwork = factory.CreateRadialNetwork(NetworkParameters, DataProvider);
                 trainer.TrainNetwork(ref currentNetwork, MaxEpochs, DesiredError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
                 if (isUpdated) // save learning history of best network

@@ -60,7 +60,7 @@
         </Button>
 
         <TextBlock  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="1" TextWrapping="Wrap" FontSize="18" TextAlignment="Center" Text="Choose type of task" Margin="10,10,10,10"/>
-        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="10,10,10,10" SelectedIndex="2" FontSize="24" VerticalAlignment="Center">
+        <ComboBox Name="TaskChooseComboBox" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Margin="10,10,10,10" SelectedIndex="0" FontSize="24" VerticalAlignment="Center">
             <ComboBoxItem Name="Approximation" >Approximation</ComboBoxItem>
             <ComboBoxItem Name="Classification">Classification</ComboBoxItem>
             <ComboBoxItem Name="Transformation">Transformation</ComboBoxItem>

@@ -31,16 +31,14 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        //private string learnFileName = @"C:\Users\Mateusz\Desktop\approximation_train_1.txt";
-        //private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
+        private string learnFileName = @"C:\Users\Lola\Desktop\approximation_train_1.txt";
+        private string testFileName = @"C:\Users\Lola\Desktop\approximation_test.txt";
 
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\classification_train.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\classification_test.txt";
 
-        private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
-        private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
-
-        private bool isBiasOn = true;
+        //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
+        //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
         
         private double learningRate = 0.01;
         private double reductionRate = 0.8;
@@ -48,7 +46,7 @@ namespace NNApp
         private double maxErrorIncreaseRate = 1.04;
         private double momentum = 0.7;
         private double errorIncreaseCoefficient = 1.04;
-        private IErrorCalculator errorCalculator;
+        private IErrorCalculator errorCalculator = new MeanSquareErrorCalculator();
         private int maxEpochs = 1000;
         private double desiredMaxError = 0;
         private LearningAlgorithm learningAlgorithm;
@@ -207,7 +205,7 @@ namespace NNApp
                     testFileName,
                     NetworkParameters.NumberOfInputs,
                     NetworkParameters.NumberOfOutputNeurons,
-                    isBiasOn);
+                    NetworkParameters.IsBiased);
             }
             else if (ShouldCreateClassificationDataProvider())
             {
@@ -216,7 +214,7 @@ namespace NNApp
                     testFileName,
                     NetworkParameters.NumberOfInputs,
                     NetworkParameters.NumberOfOutputNeurons,
-                    isBiasOn);
+                    NetworkParameters.IsBiased);
             }
         }
         private void CreateTestDataProvider()
@@ -227,7 +225,7 @@ namespace NNApp
                     testFileName,
                     NetworkParameters.NumberOfInputs,
                     NetworkParameters.NumberOfOutputNeurons,
-                    isBiasOn);
+                    NetworkParameters.IsBiased);
             }
             else if (ShouldCreateClassificationDataProvider())
             {
@@ -235,7 +233,7 @@ namespace NNApp
                     testFileName,
                     NetworkParameters.NumberOfInputs,
                     NetworkParameters.NumberOfOutputNeurons,
-                    isBiasOn);
+                    NetworkParameters.IsBiased);
             }
         }
         private bool ShouldCreateApproximationDataProvider()

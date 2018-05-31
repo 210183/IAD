@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using NeuralNetworks.Data;
 using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Networks.RadialFunction;
 using System;
@@ -11,7 +12,7 @@ namespace NeuralNetworks.Networks.NetworkFactory
 {
     public class RadialNetworkFactory
     {
-        public NeuralNetworkRadial CreateRadialNetwork(RadialNetworkParameters parameters)
+        public NeuralNetworkRadial CreateRadialNetwork(RadialNetworkParameters parameters, IDataProvider dataProvider)
         {
             int biasModifier;
             if (parameters.IsBiased)
@@ -22,20 +23,31 @@ namespace NeuralNetworks.Networks.NetworkFactory
             {
                 biasModifier = 0;
             }
+            var radialLayer = CreateRadialLayer(parameters, biasModifier, dataProvider);
+            var outputLayer = CreateOutputLayer(parameters, biasModifier);
+            return new NeuralNetworkRadial(radialLayer, outputLayer, parameters.IsBiased);
+        }
+
+        private RadialLayer CreateRadialLayer(RadialNetworkParameters parameters, int biasModifier, IDataProvider dataProvider)
+        {
+ 
+            var dataSet = (dataProvider as ILearningProvider)?.LearnSet ?? dataProvider.DataSet; // try getting learn set, if cannot take data set (test set)
             var randomizer = new Random();
             var lengthCalculator = new EuclideanLength();
             var radialNeurons = new RadialNeuron[parameters.NumberOfRadialNeurons];
+            int dataIndex;
             for (int i = 0; i < radialNeurons.Length; i++)
             {
-                radialNeurons[i] = new RadialNeuron(1,
-                        Vector<double>.Build.Dense(
-                            parameters.NumberOfInputs + biasModifier,
-                            (x) => randomizer.NextDouble() * (parameters.Max - parameters.Min) + parameters.Min
-                            )
-                );
+                radialNeurons[i] = new RadialNeuron(1, Vector<double>.Build.Dense(parameters.NumberOfInputs + biasModifier));
+                dataIndex = randomizer.Next(dataSet.Length);
+                dataSet[dataIndex].X.CopySubVectorTo(radialNeurons[i].Center, biasModifier, biasModifier, dataSet[dataIndex].X.Count - biasModifier);
             }
-            var radialLayer = new RadialLayer(radialNeurons, lengthCalculator, new GaussianFunction(lengthCalculator));
-            var outputLayer = new SigmoidLayer(
+            return new RadialLayer(radialNeurons, lengthCalculator, new GaussianFunction(lengthCalculator));
+        }
+        private SigmoidLayer CreateOutputLayer(RadialNetworkParameters parameters, int biasModifier)
+        {
+            var randomizer = new Random();
+            return new SigmoidLayer(
                 Matrix<double>.Build.Dense(
                     parameters.NumberOfRadialNeurons + biasModifier,
                     parameters.NumberOfOutputNeurons,
@@ -43,7 +55,6 @@ namespace NeuralNetworks.Networks.NetworkFactory
                 parameters.ActivationFunction,
                 parameters.IsBiased
                 );
-            return new NeuralNetworkRadial(radialLayer, outputLayer, parameters.IsBiased);
         }
     }
 }
