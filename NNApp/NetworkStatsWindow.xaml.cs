@@ -201,13 +201,13 @@ namespace NNApp
             {
                 try
                 {
-                    int numberOfOutputs = Creator.BestNetwork.OutputLayer[Creator.BestNetwork.OutputLayer.Length-1].Weights.ColumnCount;
+                    int numberOfOutputs = Creator.BestNetwork.OutputLayer.Weights.ColumnCount;
                     IDataProvider dataProvider;
 
                     if (ChosenTask == TaskType.Classification)
-                        dataProvider = new ClassificationDataProvider(testFileName, Creator.InputsNumber, numberOfOutputs, Creator.IsBiasOn);
+                        dataProvider = new ClassificationDataProvider(testFileName, Creator.NetworkParameters.NumberOfInputs, numberOfOutputs, Creator.NetworkParameters.IsBiased);
                     else if (ChosenTask == TaskType.Approximation || ChosenTask == TaskType.Transformation)
-                        dataProvider = new ApproximationDataProvider(testFileName, Creator.InputsNumber, numberOfOutputs, Creator.IsBiasOn);
+                        dataProvider = new ApproximationDataProvider(testFileName, Creator.NetworkParameters.NumberOfInputs, numberOfOutputs, Creator.NetworkParameters.IsBiased);
                     else
                     {
                         MessageBox.Show("Choose task type!");

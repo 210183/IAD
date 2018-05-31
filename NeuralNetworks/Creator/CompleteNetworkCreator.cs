@@ -2,6 +2,7 @@
 using NeuralNetworks.Data;
 using NeuralNetworks.Learning;
 using NeuralNetworks.Networks;
+using NeuralNetworks.Networks.NetworkFactory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +19,8 @@ namespace NeuralNetworks
     {
         #region properties to be set from outside
         public ILearningProvider DataProvider { get; set; }
-        public LayerCharacteristic[] Layers { get; set; }
+        public RadialNetworkParameters NetworkParameters { get; set; }
         public LearningAlgorithm LearningAlgorithm { get; set; }
-        public int InputsNumber { get; set; }
-        public bool IsBiasOn { get; set; }
         public IErrorCalculator ErrorCalculator { get; set; }
         public int MaxEpochs { get; set; }
         public double DesiredError { get; set; }
@@ -58,10 +57,11 @@ namespace NeuralNetworks
         /// <returns>Best network</returns>
         public NeuralNetworkRadial CreateNetwork(TaskType taskType, int numberOfNetworksToTry)
         {
+            var factory = new RadialNetworkFactory();
             var trainer = new OnlineTrainer(ErrorCalculator, DataProvider, LearningAlgorithm);
             for (int networkIndex = 0; networkIndex < numberOfNetworksToTry; networkIndex++)
-            {  
-                var currentNetwork = new NeuralNetworkRadial(InputsNumber, Layers, IsBiasOn);
+            {
+                var currentNetwork = factory.CreateRadialNetwork(NetworkParameters);
                 trainer.TrainNetwork(ref currentNetwork, MaxEpochs, DesiredError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
                 if (isUpdated) // save learning history of best network
@@ -108,7 +108,7 @@ namespace NeuralNetworks
         private void CreateResultMatrixForClassification(NeuralNetworkRadial network)
         {
             var testSet = DataProvider.DataSet; //helper variable to shorten code and clarify;
-            int numberOfClasses = network.OutputLayer[Layers.Length - 1].Weights.ColumnCount; //neurons in last layer
+            int numberOfClasses = network.OutputLayer.Weights.ColumnCount; //neurons in last layer
             ClassificationFullResults = Matrix<double>.Build.Dense(numberOfClasses, numberOfClasses);
             for (int dataIndex = 0; dataIndex < testSet.Length; dataIndex++)
             {

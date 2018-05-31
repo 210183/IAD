@@ -59,10 +59,8 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="Data\ClassificationDataProviderTests.cs" />
     <Compile Include="Error\ClassificationMetricsTests.cs" />
     <Compile Include="Error\MeanSquareErrorCalculatorTests.cs" />
-    <Compile Include="NetworkTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorExtension.cs" />
   </ItemGroup>
@@ -74,6 +72,9 @@
       <Project>{BC81D4C4-C572-4EC2-AB24-FD3D7A068629}</Project>
       <Name>NeuralNetworks</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -11,6 +11,6 @@ namespace NeuralNetworks.Learning
     {
         double MomentumCoefficient { get; set; }
         double MaxErrorIncreaseCoefficient { get; set; }
-        Matrix<double>[] LastWeightsChange { get; set; }
+        Matrix<double> LastWeightsChange { get; set; }
     }
 }

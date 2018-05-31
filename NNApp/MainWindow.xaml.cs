@@ -3,6 +3,7 @@ using NeuralNetworks;
 using NeuralNetworks.ActivationFunction;
 using NeuralNetworks.Data;
 using NeuralNetworks.Learning;
+using NeuralNetworks.Networks.NetworkFactory;
 using OxyPlot;
 using OxyPlot.Series;
 using System;
@@ -30,19 +31,16 @@ namespace NNApp
     public partial class MainWindow : Window
     {
         #region properties
-        private string learnFileName = @"C:\Users\Mateusz\Desktop\approximation_train_1.txt";
-        private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
+        //private string learnFileName = @"C:\Users\Mateusz\Desktop\approximation_train_1.txt";
+        //private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
         //private string learnFileName = @"C:\Users\Mateusz\Desktop\classification_train.txt";
         //private string testFileName = @"C:\Users\Mateusz\Desktop\classification_test.txt";
 
-        //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
-        //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
+        private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
+        private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
 
-        private int inputsNumber = 4;
-        private int outputsNumber = 4;
         private bool isBiasOn = true;
-        private LayerCharacteristic[] layers;
         
         private double learningRate = 0.01;
         private double reductionRate = 0.8;
@@ -60,12 +58,8 @@ namespace NNApp
         public TaskType? ChosenTaskType { get; set; }
         public bool IsTaskTypeSaved { get; set; } = false;
 
-        public int InputsNumber { get => inputsNumber; set => inputsNumber = value; }
-        public int OutputsNumber { get => outputsNumber; set => outputsNumber = value; }
-        public bool IsBiasOn { get => isBiasOn; set => isBiasOn = value; }
-        public int NumberOfLayers { get; set; } = 2;
+        public RadialNetworkParameters NetworkParameters { get; set; } = new RadialNetworkParameters();
 
-        public LayerCharacteristic[] Layers { get => layers; set => layers = value; }
         public double LearningRate { get => learningRate; set => learningRate = value; }
         public double ReductionRate { get => reductionRate; set => reductionRate = value; }
         public double IncreaseRate { get => increaseRate; set => increaseRate = value; }
@@ -159,7 +153,7 @@ namespace NNApp
                 }
                 else
                 {
-                    MessageBox.Show("You need to use some network creater first");
+                    MessageBox.Show("You need to use some network creator first");
                 }
             }
             else
@@ -208,22 +202,40 @@ namespace NNApp
         {
             if (ShouldCreateApproximationDataProvider()) // the same provider ffor both
             {
-                DataProvider = new LearningApproximationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+                DataProvider = new LearningApproximationDataProvider(
+                    learnFileName,
+                    testFileName,
+                    NetworkParameters.NumberOfInputs,
+                    NetworkParameters.NumberOfOutputNeurons,
+                    isBiasOn);
             }
             else if (ShouldCreateClassificationDataProvider())
             {
-                DataProvider = new LearningClassificationDataProvider(learnFileName, testFileName, inputsNumber, outputsNumber, isBiasOn);
+                DataProvider = new LearningClassificationDataProvider(
+                    learnFileName,
+                    testFileName,
+                    NetworkParameters.NumberOfInputs,
+                    NetworkParameters.NumberOfOutputNeurons,
+                    isBiasOn);
             }
         }
         private void CreateTestDataProvider()
         {
             if (ShouldCreateApproximationDataProvider()) // the same provider ffor both
             {
-                DataProvider = new ApproximationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+                DataProvider = new ApproximationDataProvider(
+                    testFileName,
+                    NetworkParameters.NumberOfInputs,
+                    NetworkParameters.NumberOfOutputNeurons,
+                    isBiasOn);
             }
             else if (ShouldCreateClassificationDataProvider())
             {
-                DataProvider = new ClassificationDataProvider(learnFileName, inputsNumber, outputsNumber, isBiasOn);
+                DataProvider = new ClassificationDataProvider(
+                    testFileName,
+                    NetworkParameters.NumberOfInputs,
+                    NetworkParameters.NumberOfOutputNeurons,
+                    isBiasOn);
             }
         }
         private bool ShouldCreateApproximationDataProvider()

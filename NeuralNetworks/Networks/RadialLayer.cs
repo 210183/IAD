@@ -32,5 +32,15 @@ namespace NeuralNetworks
             }
             return output;
         }
+
+        public RadialLayer DeepCopy()
+        {
+            var neurons = new RadialNeuron[Neurons.Length];
+            for (int i = 0; i < Neurons.Length; i++)
+            {
+                neurons[i] = Neurons[i].DeepCopy();
+            }
+            return new RadialLayer(neurons, LengthCalculator, RadialFunction);
+        }
     }
 }

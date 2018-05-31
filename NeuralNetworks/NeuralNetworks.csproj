@@ -63,7 +63,6 @@
     <Compile Include="LengthMetrics\EuclideanLength.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="LengthMetrics\ILengthCalculator.cs" />
-    <Compile Include="Learning\BackPropagationAlgorithm.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="Data\Datum.cs" />
     <Compile Include="Error\IErrorCalculator.cs" />
@@ -80,7 +79,6 @@
     <Compile Include="Learning\IWithMomentum.cs" />
     <Compile Include="Learning\LearningRateHandler.cs" />
     <Compile Include="Networks\CalculateMode.cs" />
-    <Compile Include="Networks\LayerCharacteristic.cs" />
     <Compile Include="Learning\LearningAlgorithm.cs" />
     <Compile Include="Error\MeanSquareError.cs" />
     <Compile Include="Trainer\OnlineTrainer.cs" />

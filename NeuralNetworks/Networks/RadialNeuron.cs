@@ -18,6 +18,10 @@ namespace NeuralNetworks.Networks
 
         public double WidthModifier { get; set; }
         public Vector<double> Center { get; set; }
-        
+
+        public RadialNeuron DeepCopy()
+        {
+            return new RadialNeuron(WidthModifier, Vector<double>.Build.DenseOfVector(Center));
+        }
     }
 }

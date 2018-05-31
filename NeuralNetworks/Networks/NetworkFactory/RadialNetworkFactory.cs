@@ -13,22 +13,31 @@ namespace NeuralNetworks.Networks.NetworkFactory
     {
         public NeuralNetworkRadial CreateRadialNetwork(RadialNetworkParameters parameters)
         {
-            var lengthCalculator = new EuclideanLength();
+            int biasModifier;
+            if (parameters.IsBiased)
+            {
+                biasModifier = 1;
+            }
+            else
+            {
+                biasModifier = 0;
+            }
             var randomizer = new Random();
+            var lengthCalculator = new EuclideanLength();
             var radialNeurons = new RadialNeuron[parameters.NumberOfRadialNeurons];
             for (int i = 0; i < radialNeurons.Length; i++)
             {
                 radialNeurons[i] = new RadialNeuron(1,
                         Vector<double>.Build.Dense(
-                            parameters.NumberOfInputs,
+                            parameters.NumberOfInputs + biasModifier,
                             (x) => randomizer.NextDouble() * (parameters.Max - parameters.Min) + parameters.Min
                             )
                 );
             }
-            var radialLayer = new RadialLayer(radialNeurons, lengthCalculator, new GaussianFunction());
+            var radialLayer = new RadialLayer(radialNeurons, lengthCalculator, new GaussianFunction(lengthCalculator));
             var outputLayer = new SigmoidLayer(
                 Matrix<double>.Build.Dense(
-                    parameters.NumberOfInputs,
+                    parameters.NumberOfRadialNeurons + biasModifier,
                     parameters.NumberOfOutputNeurons,
                     (x, y) => randomizer.NextDouble() * (parameters.Max - parameters.Min) + parameters.Min),
                 parameters.ActivationFunction,

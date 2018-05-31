@@ -62,6 +62,13 @@ namespace NeuralNetworks
                 LastOutputs[0] = Vector<double>.Build.DenseOfVector(input); //copy of input
             }
             Vector<double> currentOutput = RadialLayer.CalculateOutput(input);
+            if (IsBiasExisting) // add 1 at the beginning
+            {
+                var newOutput = Vector<double>.Build.Dense(currentOutput.Count + 1);
+                newOutput[0] = 1;
+                currentOutput.CopySubVectorTo(newOutput, 0, 1, currentOutput.Count);
+                currentOutput = newOutput;
+            }
             if (mode.HasFlag(CalculateMode.AllOutputs))
             {
                 LastOutputs[1] = Vector<double>.Build.DenseOfVector(currentOutput); //copy of current
@@ -75,17 +82,17 @@ namespace NeuralNetworks
             return currentOutput;
         }
 
-        //public NeuralNetworkRadial DeepCopy()
-        //{
-        //    var copyOutputLayer = new SigmoidLayer(OutputLayer.Weights.Clone(), OutputLayer.ActivationFunction, OutputLayer.IsBiased);
-        //    var copyNetwork = new NeuralNetworkRadial(NumberOfInputs, copyOutputLayer, IsBiasExisting);
-        //    copyNetwork.LastOutputs = new Vector<double>[LastOutputs.Length];
-        //    for (int i = 0; i < LastOutputs.Length; i++)
-        //    {
-        //        copyNetwork.LastOutputs[i] = Vector<double>.Build.DenseOfVector(LastOutputs[i]);
-        //    }
-        //    copyNetwork.LastDerivatives = Vector<double>.Build.DenseOfVector(LastDerivatives);
-        //    return copyNetwork;
-        //}
+        public NeuralNetworkRadial DeepCopy()
+        {
+            var copyOutputLayer = new SigmoidLayer(OutputLayer.Weights.Clone(), OutputLayer.ActivationFunction, OutputLayer.IsBiased);
+            var copyNetwork = new NeuralNetworkRadial(RadialLayer.DeepCopy(), copyOutputLayer, IsBiasExisting);
+            copyNetwork.LastOutputs = new Vector<double>[LastOutputs.Length];
+            for (int i = 0; i < LastOutputs.Length; i++)
+            {
+                copyNetwork.LastOutputs[i] = Vector<double>.Build.DenseOfVector(LastOutputs[i]);
+            }
+            copyNetwork.LastDerivatives = Vector<double>.Build.DenseOfVector(LastDerivatives);
+            return copyNetwork;
+        }
     }
 }

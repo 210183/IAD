@@ -11,6 +11,8 @@ namespace NeuralNetworks
 {
     public class BackPropagationRadialAlgorithm : LearningAlgorithm, IWithMomentum
     {
+        private static readonly int outputLayerPosition = 2;
+
         public BackPropagationRadialAlgorithm(LearningRateHandler learningRateHandler, double momentum, double errorIncreaseCoefficient) : base(learningRateHandler)
         {
             MomentumCoefficient = momentum;
@@ -18,74 +20,48 @@ namespace NeuralNetworks
         }
 
         public double MomentumCoefficient { get; set; }
-        public Matrix<double>[] LastWeightsChange { get; set; }
+        public Matrix<double> LastWeightsChange { get; set; }
         public double MaxErrorIncreaseCoefficient { get; set; }
 
         public override void AdaptWeights(NeuralNetworkRadial network, Vector<double> errors, double currentDataError, double previousDataError)
         {
             #region helper variables
-            int numberOfLayers = network.OutputLayer.Count();
-            var layers = network.OutputLayer;
-            int biasModifier = network.IsBiasExisting ? 1 : 0; // TODO: check THat
+            var weights = network.OutputLayer.Weights;
+            var layer = network.OutputLayer;
+            int biasModifier = network.IsBiasExisting ? 1 : 0; // TODO: check That
             #endregion
             if (LastWeightsChange is null) // then initialize it with proper size
             {
-                LastWeightsChange = new Matrix<double>[numberOfLayers];
-                for (int layerIndex = 0; layerIndex < numberOfLayers; layerIndex++) // create weights changes vectors
-                {
-                    LastWeightsChange[layerIndex] = Matrix<double>.Build.Dense(layers[layerIndex].Weights.RowCount, layers[layerIndex].Weights.ColumnCount);
-                }
+                LastWeightsChange = Matrix<double>.Build.Dense(weights.RowCount, weights.ColumnCount);
             }
 
             #region calculate propagated errors
-            Vector<double>[] propagatedErrors = new Vector<double>[numberOfLayers];
-            for (int layerIndex = numberOfLayers - 1; layerIndex >= 0; layerIndex--) // begin with the ulitmate layer
-            {
-                propagatedErrors[layerIndex] = Vector<double>.Build.Dense(layers[layerIndex].Weights.ColumnCount);
-                for (int neuronIndex = 0; neuronIndex < layers[layerIndex].Weights.ColumnCount; neuronIndex++)
-                {
-                    if (layerIndex == numberOfLayers - 1) // for last layer is simple errors
-                    {
-                        propagatedErrors[layerIndex] = errors;
-                    }
-                    else
-                    {
-                        double propagatedError = 0;
-                        for (int weightIndex = 0; weightIndex < layers[layerIndex + 1].Weights.ColumnCount; weightIndex++)
-                        {
-                            propagatedError += layers[layerIndex + 1].Weights[neuronIndex + biasModifier, weightIndex] * propagatedErrors[layerIndex + 1][weightIndex]; //weight * propagated error
-                        }
-                        propagatedErrors[layerIndex][neuronIndex] = propagatedError;
-                    }
-                }
-            }
+            Vector<double> propagatedErrors = Vector<double>.Build.Dense(layer.Weights.ColumnCount);
+            propagatedErrors = errors;
             #endregion
             #region adapt weights using propagated error, outputs and derivatives
-            for (int layerIndex = numberOfLayers - 1; layerIndex >= 0; layerIndex--) // begin with the lastlayer
-            {
-                for (int neuronIndex = 0; neuronIndex < layers[layerIndex].Weights.ColumnCount; neuronIndex++)
+                for (int neuronIndex = 0; neuronIndex < layer.Weights.ColumnCount; neuronIndex++)
                 {
-                    for (int weightIndex = 0; weightIndex < layers[layerIndex].Weights.RowCount; weightIndex++)
+                    for (int weightIndex = 0; weightIndex < layer.Weights.RowCount; weightIndex++)
                     {
-                        var signal = network.LastOutputs[layerIndex][weightIndex];
-                        var currentNeuronError = propagatedErrors[layerIndex][neuronIndex];
-                        var activationFunc = network.OutputLayer[layerIndex].ActivationFunction as IDifferentiable;
-                        var derivative = network.LastDerivatives[layerIndex][neuronIndex];
+                        var signal = network.LastOutputs[outputLayerPosition-1][weightIndex];
+                        var currentNeuronError = propagatedErrors[neuronIndex];
+                        var activationFunc = network.OutputLayer.ActivationFunction as IDifferentiable;
+                        var derivative = network.LastDerivatives[neuronIndex];
                         var backPropagationImpact = derivative * signal * currentNeuronError * LearningRateHandler.LearningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {
-                            var momentumImpact = MomentumCoefficient * LastWeightsChange[layerIndex][weightIndex, neuronIndex];
-                            layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact + momentumImpact;
-                            LastWeightsChange[layerIndex][weightIndex, neuronIndex] = backPropagationImpact + momentumImpact; //update weights last change stored value
+                            var momentumImpact = MomentumCoefficient * LastWeightsChange[weightIndex, neuronIndex];
+                            layer.Weights[weightIndex, neuronIndex] += backPropagationImpact + momentumImpact;
+                            LastWeightsChange[weightIndex, neuronIndex] = backPropagationImpact + momentumImpact; //update weights last change stored value
                         }
                         else // ignore momentum
                         {
-                            layers[layerIndex].Weights[weightIndex, neuronIndex] += backPropagationImpact;
-                            LastWeightsChange[layerIndex][weightIndex, neuronIndex] = backPropagationImpact;
+                            layer.Weights[weightIndex, neuronIndex] += backPropagationImpact;
+                            LastWeightsChange[weightIndex, neuronIndex] = backPropagationImpact;
                         }
                     }
                 }
-            }
             #endregion
         }
     }

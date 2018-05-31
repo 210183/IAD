@@ -10,6 +10,11 @@ namespace NeuralNetworks.Networks.RadialFunction
 {
     public class GaussianFunction
     {
+        public GaussianFunction(ILengthCalculator lengthCalculator)
+        {
+            LengthCalculator = lengthCalculator ?? throw new ArgumentNullException(nameof(lengthCalculator));
+        }
+
         public ILengthCalculator LengthCalculator { get; set; }
         public double Calculate(Vector<double> input, Vector<double> center, double widthModifier)
         {

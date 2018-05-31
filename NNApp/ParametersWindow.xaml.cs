@@ -22,77 +22,31 @@ namespace NNApp
     /// </summary>
     public partial class ParametersWindow : Window
     {
-        public string Test{ get; set; }
-        private int currentLayer = 0;
-        private LayerCharacteristic[] layers;
-        private bool isLayersBaseCreated = false;
-
+        private MainWindow MainWindow;
         public ParametersWindow()
         {
             InitializeComponent();
+            MainWindow = ((MainWindow)Application.Current.MainWindow);
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
-            ((MainWindow)Application.Current.MainWindow).InputsNumber = Convert.ToInt16(NumberOfInputsBox.Text);
-            ((MainWindow)Application.Current.MainWindow).OutputsNumber = Convert.ToInt16(NumberOfOutputsBox.Text);
+            MainWindow.NetworkParameters.NumberOfInputs = Convert.ToInt16(NumberOfInputsBox.Text);
+            MainWindow.NetworkParameters.NumberOfOutputNeurons = Convert.ToInt16(NumberOfOutputsBox.Text);
+           
+           if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidUnipolar")
+                MainWindow.NetworkParameters.ActivationFunction = new SigmoidUnipolarFunction();
+            else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidBipolar")
+                MainWindow.NetworkParameters.ActivationFunction = new SigmoidBipolarFunction();
+            else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "IdentityFunction")
+                MainWindow.NetworkParameters.ActivationFunction = new IdentityFunction();
 
             if (BiasComboBox.SelectionBoxItem.ToString().Equals("true"))
-                ((MainWindow)Application.Current.MainWindow).IsBiasOn = true;
+                ((MainWindow)Application.Current.MainWindow).NetworkParameters.IsBiased = true;
             else if (BiasComboBox.SelectionBoxItem.ToString().Equals("false"))
-                ((MainWindow)Application.Current.MainWindow).IsBiasOn = false;
-
-            ((MainWindow)Application.Current.MainWindow).Layers = layers;
+                ((MainWindow)Application.Current.MainWindow).NetworkParameters.IsBiased = false;
 
             this.Close();
-        }
-
-        private void AddLayer_Click(object sender, RoutedEventArgs e)
-        {
-            if(isLayersBaseCreated == false) // first create Layers Vector, if incorrect layers number: return
-            {
-                if(Int32.TryParse((NumberOfLayersBox.Text), out _))
-                {
-                    int numberOfLayers = Convert.ToInt32(NumberOfLayersBox.Text);
-                    if (numberOfLayers <= 0)
-                    {
-                        MessageBox.Show("Incorrect layers number.");
-                        return;
-                    }
-                    else
-                    {
-                        NumberOfLayersBox.IsEnabled = false;
-                        layers = new LayerCharacteristic[numberOfLayers];
-                        isLayersBaseCreated = true;
-                        ((MainWindow)Application.Current.MainWindow).NumberOfLayers = numberOfLayers;
-                    }
-                }  
-            }
-            if (currentLayer < layers.Length)
-            {
-                if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidUnipolar")
-                    layers[currentLayer] = new LayerCharacteristic(Convert.ToInt32(CurrentLayerNeuronsBox.Text), new SigmoidUnipolarFunction());
-                else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "SigmoidBipolar")
-                    layers[currentLayer] = new LayerCharacteristic(Convert.ToInt32(CurrentLayerNeuronsBox.Text), new SigmoidBipolarFunction());
-                else if (ActivationFunctionComboBox.SelectionBoxItem.ToString() == "IdentityFunction")
-                    layers[currentLayer] = new LayerCharacteristic(Convert.ToInt32(CurrentLayerNeuronsBox.Text), new IdentityFunction());
-
-                CurrentLayerNumber.Text = (currentLayer+1).ToString();
-                currentLayer++;
-            }
-            else
-                MessageBox.Show("All layers already have description");
-        }
-
-        private void AddLayerBase_Click(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
-        private void CurrentLayerNeuronsBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
         }
 
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -112,10 +66,9 @@ namespace NNApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            NumberOfInputsBox.Text = ((MainWindow)Application.Current.MainWindow).InputsNumber.ToString();
-            NumberOfOutputsBox.Text = ((MainWindow)Application.Current.MainWindow).OutputsNumber.ToString();
-            NumberOfLayersBox.Text = ((MainWindow)Application.Current.MainWindow).NumberOfLayers.ToString();
-            if (((MainWindow)Application.Current.MainWindow).IsBiasOn)
+            NumberOfInputsBox.Text = ((MainWindow)Application.Current.MainWindow).NetworkParameters.NumberOfInputs.ToString();
+            NumberOfOutputsBox.Text = ((MainWindow)Application.Current.MainWindow).NetworkParameters.NumberOfOutputNeurons.ToString();
+            if (((MainWindow)Application.Current.MainWindow).NetworkParameters.IsBiased)
                 BiasComboBox.SelectedIndex = 0;
             else
                 BiasComboBox.SelectedIndex = 1;
