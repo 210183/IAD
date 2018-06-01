@@ -1,5 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using NeuralNetworks.Data;
+using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Networks;
 using System;
 using System.Collections.Generic;
@@ -76,6 +77,43 @@ namespace NeuralNetworks
                 #region Adapt Learning Rate
                 LearningAlgorithm.AdaptLearningRate(TemporaryEpochErrorHistory[EpochIndex], TemporaryEpochErrorHistory[EpochIndex.Previous()]);
                 #endregion
+                //for debug purpose
+                string centers = "";
+                // adapt width modifier (lambda)
+                var neurons = network.RadialLayer.Neurons;
+                var lengthCalculator = new EuclideanLength();
+                int k = 2;
+                if(k > neurons.Length)
+                {
+                    throw new ArgumentOutOfRangeException("K cannot be greater than number of neurons.");
+                }
+                foreach (var neuron in neurons)
+                {
+                    centers += " " + neuron.Center[0].ToString();
+                    //find k neighbors
+                    RadialNeuron[] neighbours = new RadialNeuron[k];
+                    Array.Copy(neurons, neighbours, k); // at the beginning assume that first neurons are closest neighbors.
+                    for (int i = k; i < neurons.Length; i++)
+                    {
+                        if(neuron != neurons[i])
+                        {
+                            for (int j = 0; j < neighbours.Length; j++)
+                            {
+                                if (lengthCalculator.Distance(neurons[i].Center, neuron.Center) < lengthCalculator.Distance(neighbours[j].Center, neuron.Center))
+                                {
+                                    neighbours[j] = neurons[i];
+                                }
+                            }
+                        }
+                    }
+                    //adapt width
+                    double distanceSum = 0;
+                    for (int i = 0; i < neighbours.Length; i++)
+                    {
+                        distanceSum += lengthCalculator.Distance(neuron.Center, neighbours[i].Center);
+                    }
+                    neuron.WidthModifier = Math.Sqrt((distanceSum) / (1.0 / k));
+                }
                 #region create and store test results
                 var testError = tester.TestNetwork(network, DataProvider);
                 TempTestErrorHistory[EpochIndex] = testError;

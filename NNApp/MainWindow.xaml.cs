@@ -47,7 +47,7 @@ namespace NNApp
         private double momentum = 0.7;
         private double errorIncreaseCoefficient = 1.04;
         private IErrorCalculator errorCalculator = new MeanSquareErrorCalculator();
-        private int maxEpochs = 1000;
+        private int maxEpochs = 150;
         private double desiredMaxError = 0;
         private LearningAlgorithm learningAlgorithm;
 

@@ -30,17 +30,24 @@ namespace NeuralNetworks.Networks.NetworkFactory
 
         private RadialLayer CreateRadialLayer(RadialNetworkParameters parameters, int biasModifier, IDataProvider dataProvider)
         {
- 
             var dataSet = (dataProvider as ILearningProvider)?.LearnSet ?? dataProvider.DataSet; // try getting learn set, if cannot take data set (test set)
-            var randomizer = new Random();
+            var widthModifier = 1.0 / dataSet.Length;
+            var randomNumbers = Enumerable.Range(0, dataSet.Length).ToList();
+            randomNumbers.Shuffle();
+            var randomEnumerator = randomNumbers.GetEnumerator();
+            randomEnumerator.MoveNext();
             var lengthCalculator = new EuclideanLength();
             var radialNeurons = new RadialNeuron[parameters.NumberOfRadialNeurons];
             int dataIndex;
             for (int i = 0; i < radialNeurons.Length; i++)
             {
-                radialNeurons[i] = new RadialNeuron(1, Vector<double>.Build.Dense(parameters.NumberOfInputs + biasModifier));
-                dataIndex = randomizer.Next(dataSet.Length);
+                radialNeurons[i] = new RadialNeuron(widthModifier, Vector<double>.Build.Dense(parameters.NumberOfInputs + biasModifier));
+                dataIndex = randomEnumerator.Current;
                 dataSet[dataIndex].X.CopySubVectorTo(radialNeurons[i].Center, biasModifier, biasModifier, dataSet[dataIndex].X.Count - biasModifier);
+                if (! randomEnumerator.MoveNext())
+                {
+                    randomEnumerator = randomNumbers.GetEnumerator();
+                }
             }
             return new RadialLayer(radialNeurons, lengthCalculator, new GaussianFunction(lengthCalculator));
         }

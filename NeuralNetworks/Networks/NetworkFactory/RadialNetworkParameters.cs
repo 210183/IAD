@@ -9,12 +9,12 @@ namespace NeuralNetworks.Networks.NetworkFactory
 {
     public class RadialNetworkParameters
     {
-        public int NumberOfRadialNeurons { get; set; } = 500;
+        public int NumberOfRadialNeurons { get; set; } = 50;
         public int NumberOfOutputNeurons { get; set; } = 1;
         public IActivationFunction ActivationFunction { get; set; } = new IdentityFunction();
         public int NumberOfInputs { get; set; } = 1;
         public double Min { get; set; } = -1;
         public double Max { get; set; } = 1;
-        public bool IsBiased { get; set; } = true;
+        public bool IsBiased { get; set; } = false;
     }
 }
