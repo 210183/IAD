@@ -23,46 +23,48 @@ namespace NNApp
     /// </summary>
     public partial class TrainerParametersWindow : Window
     {
+        public LearningParameters LearningParameters { get; set; } = ((MainWindow)Application.Current.MainWindow).LearningParameters;
         public MainWindow MainWindow { get; set; } = ((MainWindow)Application.Current.MainWindow);
-
         public TrainerParametersWindow()
         {
             InitializeComponent();
-            LearningRateBox.Text = MainWindow.LearningRate.ToString();
-            ReductionRateBox.Text = MainWindow.ReductionRate.ToString();
-            IncreaseRateBox.Text = MainWindow.IncreaseRate.ToString();
-            MaxErrorIncreaseRateBox.Text = MainWindow.MaxErrorIncreaseRate.ToString();
-            LearningRateBox.Text = MainWindow.LearningRate.ToString();
-            NumberOfNetworksBox.Text = MainWindow.NumberOfNetworksToTry.ToString();
-            MomentumBox.Text = MainWindow.Momentum.ToString();
-            ErrorIncreaseCoefficientBox.Text = MainWindow.ErrorIncreaseCoefficient.ToString();
-            MaxEpochsBox.Text = MainWindow.MaxEpochs.ToString();
-            NumberOfNetworksBox.Text = MainWindow.NumberOfNetworksToTry.ToString();
-            DesiredMaxErrorBox.Text = MainWindow.DesiredMaxError.ToString();
+            LearningRateBox.Text = LearningParameters.LearningRate.ToString();
+            ReductionRateBox.Text = LearningParameters.ReductionRate.ToString();
+            IncreaseRateBox.Text = LearningParameters.IncreaseRate.ToString();
+            MaxErrorIncreaseRateBox.Text = LearningParameters.MaxErrorIncreaseRate.ToString();
+            LearningRateBox.Text = LearningParameters.LearningRate.ToString();
+            NumberOfNetworksBox.Text = LearningParameters.NumberOfNetworksToTry.ToString();
+            MomentumBox.Text = LearningParameters.Momentum.ToString();
+            ErrorIncreaseCoefficientBox.Text = LearningParameters.ErrorIncreaseCoefficient.ToString();
+            MaxEpochsBox.Text = LearningParameters.MaxEpochs.ToString();
+            NumberOfNetworksBox.Text = LearningParameters.NumberOfNetworksToTry.ToString();
+            DesiredMaxErrorBox.Text = LearningParameters.DesiredMaxError.ToString();
+            NeighboursCountBox.Text = LearningParameters.WidthModifierAdjuster.CountedNeighbours.ToString();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow.LearningRate = Convert.ToDouble(LearningRateBox.Text);
-            MainWindow.LearningRate = Convert.ToDouble(LearningRateBox.Text);
-            MainWindow.ReductionRate = Convert.ToDouble(ReductionRateBox.Text);
-            MainWindow.IncreaseRate = Convert.ToDouble(IncreaseRateBox.Text);
-            MainWindow.MaxErrorIncreaseRate = Convert.ToDouble(MaxErrorIncreaseRateBox.Text);
-            MainWindow.Momentum = Convert.ToDouble(MomentumBox.Text);
-            MainWindow.ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
-            MainWindow.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
-            MainWindow.MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
-            MainWindow.DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
+            LearningParameters.LearningRate = Convert.ToDouble(LearningRateBox.Text);
+            LearningParameters.LearningRate = Convert.ToDouble(LearningRateBox.Text);
+            LearningParameters.ReductionRate = Convert.ToDouble(ReductionRateBox.Text);
+            LearningParameters.IncreaseRate = Convert.ToDouble(IncreaseRateBox.Text);
+            LearningParameters.MaxErrorIncreaseRate = Convert.ToDouble(MaxErrorIncreaseRateBox.Text);
+            LearningParameters.Momentum = Convert.ToDouble(MomentumBox.Text);
+            LearningParameters.ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
+            LearningParameters.WidthModifierAdjuster = new WidthModifierAdjuster(Convert.ToInt32(NeighboursCountBox.Text));
+;           LearningParameters.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
+            LearningParameters.MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
+            LearningParameters.DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
 
             LearningRateHandler tempHandler = new LearningRateHandler(Convert.ToDouble(LearningRateBox.Text), Convert.ToDouble(ReductionRateBox.Text), Convert.ToDouble(IncreaseRateBox.Text), Convert.ToDouble(MaxErrorIncreaseRateBox.Text));
 
             if (LearningAlgorithmComboBox.Text == "Back Propagation")
             {
-                MainWindow.LearningAlgorithm = new BackPropagationRadialAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
+                LearningParameters.LearningAlgorithm = new BackPropagationRadialAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
             }
             if (ErrorCalculatorComboBox.Text == "Mean Square Error")
             {
-                MainWindow.ErrorCalculator = new MeanSquareErrorCalculator();
+                LearningParameters.ErrorCalculator = new MeanSquareErrorCalculator();
             }
         }
 
@@ -73,13 +75,14 @@ namespace NNApp
                 var creator = new CompleteNetworkCreator()
                 {
                     DataProvider = MainWindow.DataProvider as ILearningProvider,
-                    DesiredError = MainWindow.DesiredMaxError,
-                    ErrorCalculator = MainWindow.ErrorCalculator,
+                    WidthModifierAdjuster = LearningParameters.WidthModifierAdjuster,
+                    DesiredError = LearningParameters.DesiredMaxError,
+                    ErrorCalculator = LearningParameters.ErrorCalculator,
                     NetworkParameters = MainWindow.NetworkParameters,
-                    LearningAlgorithm = MainWindow.LearningAlgorithm,
-                    MaxEpochs = MainWindow.MaxEpochs,
+                    LearningAlgorithm = LearningParameters.LearningAlgorithm,
+                    MaxEpochs = LearningParameters.MaxEpochs,
                 };
-                var network = creator.CreateNetwork( (TaskType)MainWindow.ChosenTaskType, MainWindow.NumberOfNetworksToTry);
+                var network = creator.CreateNetwork( (TaskType)MainWindow.ChosenTaskType, LearningParameters.NumberOfNetworksToTry);
                 MainWindow.Creator = creator;
                 MainWindow.CurrentNetwork = network;
             }

@@ -22,6 +22,7 @@ namespace NeuralNetworks
         public RadialNetworkParameters NetworkParameters { get; set; }
         public LearningAlgorithm LearningAlgorithm { get; set; }
         public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
+        public WidthModifierAdjuster WidthModifierAdjuster { get; set; }
         public int MaxEpochs { get; set; }
         public double DesiredError { get; set; }
         public int NumberOfPointForApproximationFunction { get; set; } = 1000;
@@ -58,7 +59,7 @@ namespace NeuralNetworks
         public NeuralNetworkRadial CreateNetwork(TaskType taskType, int numberOfNetworksToTry)
         {
             var factory = new RadialNetworkFactory();
-            var trainer = new OnlineTrainer(ErrorCalculator, DataProvider, LearningAlgorithm);
+            var trainer = new OnlineTrainer(ErrorCalculator, DataProvider, LearningAlgorithm, WidthModifierAdjuster);
             for (int networkIndex = 0; networkIndex < numberOfNetworksToTry; networkIndex++)
             {
                 var currentNetwork = factory.CreateRadialNetwork(NetworkParameters, DataProvider);

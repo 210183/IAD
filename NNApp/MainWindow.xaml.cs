@@ -34,43 +34,13 @@ namespace NNApp
         private string learnFileName = @"C:\Users\Mateusz\Desktop\approximation_train_1.txt";
         private string testFileName = @"C:\Users\Mateusz\Desktop\approximation_test.txt";
 
-        //private string learnFileName = @"C:\Users\Mateusz\Desktop\classification_train.txt";
-        //private string testFileName = @"C:\Users\Mateusz\Desktop\classification_test.txt";
-
-        //private string learnFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
-        //private string testFileName = @"C:\Users\Mateusz\Desktop\transformation.txt";
-        
-        private double learningRate = 0.01;
-        private double reductionRate = 0.8;
-        private double increaseRate = 1.1;
-        private double maxErrorIncreaseRate = 1.04;
-        private double momentum = 0.7;
-        private double errorIncreaseCoefficient = 1.04;
-        private IErrorCalculator errorCalculator = new MeanSquareErrorCalculator();
-        private int maxEpochs = 150;
-        private double desiredMaxError = 0;
-        private LearningAlgorithm learningAlgorithm;
-
         public IDataProvider DataProvider { get; set; }
 
         public TaskType? ChosenTaskType { get; set; }
         public bool IsTaskTypeSaved { get; set; } = false;
 
         public RadialNetworkParameters NetworkParameters { get; set; } = new RadialNetworkParameters();
-
-        public double LearningRate { get => learningRate; set => learningRate = value; }
-        public double ReductionRate { get => reductionRate; set => reductionRate = value; }
-        public double IncreaseRate { get => increaseRate; set => increaseRate = value; }
-        public double MaxErrorIncreaseRate { get => maxErrorIncreaseRate; set => maxErrorIncreaseRate = value; }
-        public double Momentum { get => momentum; set => momentum = value; }
-        public double ErrorIncreaseCoefficient { get => errorIncreaseCoefficient; set => errorIncreaseCoefficient = value; }
-
-        public LearningAlgorithm LearningAlgorithm { get => learningAlgorithm; set => learningAlgorithm = value; }
-        public IErrorCalculator ErrorCalculator { get => errorCalculator; set => errorCalculator = value; }
-        public int MaxEpochs { get => maxEpochs; set => maxEpochs = value; }
-        public double DesiredMaxError { get => desiredMaxError; set => desiredMaxError = value; }
-
-        public int NumberOfNetworksToTry { get; set; } = 1;
+        public LearningParameters LearningParameters { get; set; } = new LearningParameters();
         public CompleteNetworkCreator Creator { get; set; }
         public NeuralNetworkRadial CurrentNetwork { get; set; }
         #endregion

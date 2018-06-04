@@ -51,6 +51,8 @@
     <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidBipolarFunction.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
+    <Compile Include="Learning\LearningParameters.cs" />
+    <Compile Include="Learning\WidthModifierAdjuster.cs" />
     <Compile Include="LengthMetrics\BasicLength.cs" />
     <Compile Include="Creator\CompleteNetworkCreator.cs" />
     <Compile Include="Data\ApproximationDataProvider.cs" />
