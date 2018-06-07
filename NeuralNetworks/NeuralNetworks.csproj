@@ -69,6 +69,8 @@
     <Compile Include="Data\Datum.cs" />
     <Compile Include="Error\IErrorCalculator.cs" />
     <Compile Include="Learning\BackPropagationRadialAlgorithm.cs" />
+    <Compile Include="Learning\SON\GasAlgorithm.cs" />
+    <Compile Include="Learning\SON\Lambda.cs" />
     <Compile Include="Networks\NetworkFactory\RadialNetworkParameters.cs" />
     <Compile Include="Networks\NeuralNetworkRadial.cs" />
     <Compile Include="Networks\RadialFunction\GaussianFunction.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Networks\NetworkFactory\RadialNetworkFactory.cs" />
     <Compile Include="Networks\RadialNeuron.cs" />
     <Compile Include="Networks\SigmoidLayer.cs" />
+    <Compile Include="Learning\SON\SONLearningAlgorithm.cs" />
     <Compile Include="NetworkTester.cs" />
     <Compile Include="Trainer\ITrainer.cs" />
     <Compile Include="Learning\IWithMomentum.cs" />
