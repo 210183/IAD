@@ -22,6 +22,6 @@ namespace NeuralNetworks.Networks
             LengthCalculator = lengthCalculator;
         }
 
-        public abstract Dictionary<int, double> GetCoefficients(NeuralNetworkRadial network, List<int> possibleNeurons, int winnerIndex, Vector<double> learningPoint, int iterationNumber);
+        public abstract Dictionary<RadialNeuron, double> GetCoefficients(NeuralNetworkRadial network, List<int> possibleNeurons, int winnerIndex, Vector<double> learningPoint, int iterationNumber);
     }
 }
