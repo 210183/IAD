@@ -16,7 +16,6 @@ namespace NeuralNetworks
     public class NeuralNetworkRadial
     {
         public static readonly int NumberOfLayers = 2;
-        public int NumberOfInputs { get; set; }
         public bool IsBiasExisting { get; }
         public SigmoidLayer OutputLayer { get; set; }
         public RadialLayer RadialLayer { get; set; }
@@ -35,7 +34,6 @@ namespace NeuralNetworks
         /// <param name="isBiasOn">Unmutable flag.</param>
         public NeuralNetworkRadial(RadialLayer radialLayer, SigmoidLayer outputLayer, bool isBiasOn = true)
         {
-            this.NumberOfInputs = outputLayer.Weights.RowCount;
             this.IsBiasExisting = isBiasOn;
             // create layers
             RadialLayer = radialLayer;

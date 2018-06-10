@@ -51,6 +51,7 @@
     <Compile Include="ActivationFunction\IDifferentiable.cs" />
     <Compile Include="ActivationFunction\SigmoidBipolarFunction.cs" />
     <Compile Include="ActivationFunction\SigmoidUnipolarFunction.cs" />
+    <Compile Include="ConscienceWithPotential.cs" />
     <Compile Include="Learning\LearningParameters.cs" />
     <Compile Include="Learning\WidthModifierAdjuster.cs" />
     <Compile Include="LengthMetrics\BasicLength.cs" />
@@ -71,6 +72,9 @@
     <Compile Include="Learning\BackPropagationRadialAlgorithm.cs" />
     <Compile Include="Learning\SON\GasAlgorithm.cs" />
     <Compile Include="Learning\SON\Lambda.cs" />
+    <Compile Include="NeighborhoodFunctions\BinaryNeighborhood.cs" />
+    <Compile Include="NeighborhoodFunctions\GaussianNeighborhood.cs" />
+    <Compile Include="NeighborhoodFunctions\INeighborhoodFunction.cs" />
     <Compile Include="Networks\NetworkFactory\RadialNetworkParameters.cs" />
     <Compile Include="Networks\NeuralNetworkRadial.cs" />
     <Compile Include="Networks\RadialFunction\GaussianFunction.cs" />
@@ -80,6 +84,7 @@
     <Compile Include="Networks\SigmoidLayer.cs" />
     <Compile Include="Learning\SON\SONLearningAlgorithm.cs" />
     <Compile Include="NetworkTester.cs" />
+    <Compile Include="Learning\SON\SONAdapter.cs" />
     <Compile Include="Trainer\ITrainer.cs" />
     <Compile Include="Learning\IWithMomentum.cs" />
     <Compile Include="Learning\LearningRateHandler.cs" />

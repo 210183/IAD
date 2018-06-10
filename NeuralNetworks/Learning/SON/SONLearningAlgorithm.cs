@@ -10,16 +10,13 @@ namespace NeuralNetworks.Networks
 {
     public abstract class SONLearningAlgorithm
     {
-        public ILengthCalculator LengthCalculator { get; set; }
-        /// <summary>
-        /// lambda
-        /// </summary>
+        public ILengthCalculator LengthCalculator { get; set; } = new EuclideanLength();
+
         public Lambda Lambda { get; set; }
 
-        protected SONLearningAlgorithm(ILengthCalculator lengthCalculator, Lambda lambda)
+        protected SONLearningAlgorithm( Lambda lambda)
         {
             Lambda = lambda;
-            LengthCalculator = lengthCalculator;
         }
 
         public abstract Dictionary<RadialNeuron, double> GetCoefficients(NeuralNetworkRadial network, List<int> possibleNeurons, int winnerIndex, Vector<double> learningPoint, int iterationNumber);

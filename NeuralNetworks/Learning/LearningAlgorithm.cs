@@ -10,19 +10,10 @@ namespace NeuralNetworks
 {
     public abstract class LearningAlgorithm
     {
-        public LearningRateHandler LearningRateHandler { get; set; }
-
-        public LearningAlgorithm(LearningRateHandler learningRateHandler)
-        {
-            this.LearningRateHandler = learningRateHandler;
-        }
-
-        public void AdaptLearningRate(double currentEpochError, double previousEpochError)
-        {
-            LearningRateHandler.UpdateRate(currentEpochError, previousEpochError);
-        }
-
-        public abstract void AdaptWeights(NeuralNetworkRadial network, Vector<double> errors, double currentDataError, double previousDataError);
-
+        public abstract void AdaptWeights(NeuralNetworkRadial network, 
+                                          Vector<double> errors,
+                                          double learningRate,
+                                          double currentDataError,
+                                          double previousDataError);
     }
 }

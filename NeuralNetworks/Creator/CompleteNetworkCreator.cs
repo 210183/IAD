@@ -20,11 +20,10 @@ namespace NeuralNetworks
         #region properties to be set from outside
         public ILearningProvider DataProvider { get; set; }
         public RadialNetworkParameters NetworkParameters { get; set; }
-        public LearningAlgorithm LearningAlgorithm { get; set; }
-        public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
+        public LearningParameters LearningParameters { get; set; }
         public WidthModifierAdjuster WidthModifierAdjuster { get; set; }
-        public int MaxEpochs { get; set; }
-        public double DesiredError { get; set; }
+
+        public IErrorCalculator ErrorCalculator { get; set; } = new MeanSquareErrorCalculator();
         public int NumberOfPointForApproximationFunction { get; set; } = 1000;
         #endregion
 
@@ -59,11 +58,16 @@ namespace NeuralNetworks
         public NeuralNetworkRadial CreateNetwork(TaskType taskType, int numberOfNetworksToTry)
         {
             var factory = new RadialNetworkFactory();
-            var trainer = new OnlineTrainer(ErrorCalculator, DataProvider, LearningAlgorithm, WidthModifierAdjuster);
+            var trainer = new OnlineTrainer(ErrorCalculator,
+                                            DataProvider,
+                                            LearningParameters.LearningAlgorithm,
+                                            LearningParameters.LearningRateHandler, 
+                                            WidthModifierAdjuster,
+                                            LearningParameters.CenterAdapter);
             for (int networkIndex = 0; networkIndex < numberOfNetworksToTry; networkIndex++)
             {
                 var currentNetwork = factory.CreateRadialNetwork(NetworkParameters, DataProvider);
-                trainer.TrainNetwork(ref currentNetwork, MaxEpochs, DesiredError);
+                trainer.TrainNetwork(ref currentNetwork, LearningParameters.MaxEpochs, LearningParameters.DesiredMaxError);
                 bool isUpdated = UpdateBestNetwork(currentNetwork);
                 if (isUpdated) // save learning history of best network
                 {

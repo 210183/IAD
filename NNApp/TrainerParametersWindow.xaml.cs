@@ -1,6 +1,8 @@
 ﻿using NeuralNetworks;
 using NeuralNetworks.Data;
+using NeuralNetworks.DistanceMetrics;
 using NeuralNetworks.Learning;
+using NeuralNetworks.Networks;
 using NeuralNetworks.Networks.NetworkFactory;
 using System;
 using System.Collections.Generic;
@@ -28,44 +30,93 @@ namespace NNApp
         public TrainerParametersWindow()
         {
             InitializeComponent();
-            LearningRateBox.Text = LearningParameters.LearningRate.ToString();
-            ReductionRateBox.Text = LearningParameters.ReductionRate.ToString();
-            IncreaseRateBox.Text = LearningParameters.IncreaseRate.ToString();
-            MaxErrorIncreaseRateBox.Text = LearningParameters.MaxErrorIncreaseRate.ToString();
-            LearningRateBox.Text = LearningParameters.LearningRate.ToString();
-            NumberOfNetworksBox.Text = LearningParameters.NumberOfNetworksToTry.ToString();
+            MinLearningRateBox.Text = LearningParameters.MinLearningRate.ToString();
+            MaxLearningRateBox.Text = LearningParameters.MaxLearningRate.ToString();
+            //Momentum
             MomentumBox.Text = LearningParameters.Momentum.ToString();
             ErrorIncreaseCoefficientBox.Text = LearningParameters.ErrorIncreaseCoefficient.ToString();
+            //SON
+            NeighboursCountBox.Text = LearningParameters.WidthModifierAdjuster.CountedNeighbours.ToString();
+            MinPotentialBox.Text = LearningParameters.MinimalPotential.ToString();
+            LambdaMinBox.Text = LearningParameters.MinLambda.ToString();
+            LambdaMaxBox.Text = LearningParameters.MaxLambda.ToString();
+            LambdaIterationsBox.Text = LearningParameters.LambdaIterations.ToString();
+            MinPotentialBox.Text = LearningParameters.MinimalPotential.ToString();
+            //trainer
+            NumberOfNetworksBox.Text = LearningParameters.NumberOfNetworksToTry.ToString();
             MaxEpochsBox.Text = LearningParameters.MaxEpochs.ToString();
             NumberOfNetworksBox.Text = LearningParameters.NumberOfNetworksToTry.ToString();
             DesiredMaxErrorBox.Text = LearningParameters.DesiredMaxError.ToString();
-            NeighboursCountBox.Text = LearningParameters.WidthModifierAdjuster.CountedNeighbours.ToString();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            LearningParameters.LearningRate = Convert.ToDouble(LearningRateBox.Text);
-            LearningParameters.LearningRate = Convert.ToDouble(LearningRateBox.Text);
-            LearningParameters.ReductionRate = Convert.ToDouble(ReductionRateBox.Text);
-            LearningParameters.IncreaseRate = Convert.ToDouble(IncreaseRateBox.Text);
-            LearningParameters.MaxErrorIncreaseRate = Convert.ToDouble(MaxErrorIncreaseRateBox.Text);
+            LearningParameters.MinLearningRate = Convert.ToDouble(MinLearningRateBox.Text);
+            LearningParameters.MaxLearningRate = Convert.ToDouble(MaxLearningRateBox.Text);
+
             LearningParameters.Momentum = Convert.ToDouble(MomentumBox.Text);
             LearningParameters.ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
+            //SON
+            LearningParameters.MaxLambda = Convert.ToDouble(LambdaMaxBox.Text);
+            LearningParameters.MinLambda = Convert.ToDouble(LambdaMinBox.Text);
+            LearningParameters.LambdaIterations = Convert.ToInt32(LambdaIterationsBox.Text);
+            LearningParameters.MinimalPotential = Convert.ToDouble(MinPotentialBox.Text);
             LearningParameters.WidthModifierAdjuster = new WidthModifierAdjuster(Convert.ToInt32(NeighboursCountBox.Text));
-;           LearningParameters.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
+            //trainer
+            LearningParameters.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
             LearningParameters.MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
             LearningParameters.DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
+            LearningParameters.IterationsNumber = LearningParameters.MaxEpochs * (MainWindow.DataProvider as ILearningProvider).LearnSet.Length;
 
-            LearningRateHandler tempHandler = new LearningRateHandler(Convert.ToDouble(LearningRateBox.Text), Convert.ToDouble(ReductionRateBox.Text), Convert.ToDouble(IncreaseRateBox.Text), Convert.ToDouble(MaxErrorIncreaseRateBox.Text));
+            CreateComplexParameters();
 
             if (LearningAlgorithmComboBox.Text == "Back Propagation")
             {
-                LearningParameters.LearningAlgorithm = new BackPropagationRadialAlgorithm(tempHandler, Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
+                LearningParameters.LearningAlgorithm = new BackPropagationRadialAlgorithm(Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
             }
             if (ErrorCalculatorComboBox.Text == "Mean Square Error")
             {
                 LearningParameters.ErrorCalculator = new MeanSquareErrorCalculator();
             }
+        }
+        //creator methods
+        private void CreateComplexParameters()
+        {
+            CreateLearningRateHandler();
+            CreateLambda();
+            CreateConscience();
+            CreateSONLearningAlgorithm();
+            CreateCenterAdapter();
+        }
+        private void CreateLearningRateHandler()
+        {
+            LearningParameters.LearningRateHandler = new LearningRateHandler(LearningParameters.MaxLearningRate,
+                                                                      LearningParameters.MinLearningRate,
+                                                                      LearningParameters.IterationsNumber);
+        }
+        private void CreateConscience()
+        {
+            int iterationsNumber = 3 * (MainWindow.DataProvider as ILearningProvider).LearnSet.Length;
+            LearningParameters.Conscience = new ConscienceWithPotential(LearningParameters.MinimalPotential,
+                                                        MainWindow.NetworkParameters.NumberOfRadialNeurons,
+                                                        iterationsNumber);
+        }
+        private void CreateLambda()
+        {
+            LearningParameters.Lambda = new Lambda(LearningParameters.MaxLambda,
+                                                   LearningParameters.MinLambda,
+                                                   LearningParameters.LambdaIterations);
+        }
+        private void CreateSONLearningAlgorithm()
+        {
+            LearningParameters.SONLearningAlgorithm = new GasAlgorithm(LearningParameters.Lambda);
+        }
+        private void CreateCenterAdapter()
+        {
+            LearningParameters.CenterAdapter = new SONAdapter(LearningParameters.SONLearningAlgorithm,
+                                                              LearningParameters.LearningRateHandler,
+                                                              new EuclideanLength(),
+                                                              LearningParameters.Conscience);
         }
 
         private void TrainButton_Click(object sender, RoutedEventArgs e)
@@ -76,11 +127,9 @@ namespace NNApp
                 {
                     DataProvider = MainWindow.DataProvider as ILearningProvider,
                     WidthModifierAdjuster = LearningParameters.WidthModifierAdjuster,
-                    DesiredError = LearningParameters.DesiredMaxError,
                     ErrorCalculator = LearningParameters.ErrorCalculator,
                     NetworkParameters = MainWindow.NetworkParameters,
-                    LearningAlgorithm = LearningParameters.LearningAlgorithm,
-                    MaxEpochs = LearningParameters.MaxEpochs,
+                    LearningParameters = MainWindow.LearningParameters
                 };
                 var network = creator.CreateNetwork( (TaskType)MainWindow.ChosenTaskType, LearningParameters.NumberOfNetworksToTry);
                 MainWindow.Creator = creator;

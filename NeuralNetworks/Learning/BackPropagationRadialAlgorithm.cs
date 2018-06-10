@@ -13,7 +13,7 @@ namespace NeuralNetworks
     {
         private static readonly int outputLayerPosition = 2;
 
-        public BackPropagationRadialAlgorithm(LearningRateHandler learningRateHandler, double momentum, double errorIncreaseCoefficient) : base(learningRateHandler)
+        public BackPropagationRadialAlgorithm(double momentum, double errorIncreaseCoefficient) : base()
         {
             MomentumCoefficient = momentum;
             MaxErrorIncreaseCoefficient = errorIncreaseCoefficient;
@@ -23,12 +23,12 @@ namespace NeuralNetworks
         public Matrix<double> LastWeightsChange { get; set; }
         public double MaxErrorIncreaseCoefficient { get; set; }
 
-        public override void AdaptWeights(NeuralNetworkRadial network, Vector<double> errors, double currentDataError, double previousDataError)
+        public override void AdaptWeights(NeuralNetworkRadial network, Vector<double> errors, double learningRate, double currentDataError, double previousDataError)
         {
             #region helper variables
             var weights = network.OutputLayer.Weights;
             var layer = network.OutputLayer;
-            int biasModifier = network.IsBiasExisting ? 1 : 0; // TODO: check That
+            int biasModifier = network.IsBiasExisting ? 1 : 0; // TODO: test That
             #endregion
             if (LastWeightsChange is null) // then initialize it with proper size
             {
@@ -48,7 +48,7 @@ namespace NeuralNetworks
                         var currentNeuronError = propagatedErrors[neuronIndex];
                         var activationFunc = network.OutputLayer.ActivationFunction as IDifferentiable;
                         var derivative = network.OutputLayer.LastDerivatives[neuronIndex];
-                        var backPropagationImpact = derivative * signal * currentNeuronError * LearningRateHandler.LearningRate;
+                        var backPropagationImpact = derivative * signal * currentNeuronError * learningRate;
                         if (currentDataError < previousDataError * MaxErrorIncreaseCoefficient) // accept that step and add momentum modifier
                         {
                             var momentumImpact = MomentumCoefficient * LastWeightsChange[weightIndex, neuronIndex];

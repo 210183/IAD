@@ -12,29 +12,20 @@ namespace NeuralNetworks.Learning
     /// </summary>
     public class LearningRateHandler
     {
-        public LearningRateHandler(double learningRate, double reductionRate, double increaseRate, double maxErrorIncreaseRate)
+        private double startingLearningRate;
+        private double minLearningRate;
+        private int maxIterations;
+
+        public LearningRateHandler(double startingLearningRate, double minLearningRate, int maxIterations)
         {
-            LearningRate = learningRate;
-            ReductionRate = reductionRate;
-            IncreaseRate = increaseRate;
-            MaxErrorIncreaseRate = maxErrorIncreaseRate;
+            this.startingLearningRate = startingLearningRate;
+            this.minLearningRate = minLearningRate;
+            this.maxIterations = maxIterations;
         }
 
-        public double LearningRate { get; set; }
-        public double ReductionRate { get; set; }
-        public double IncreaseRate { get; set; }
-        public double MaxErrorIncreaseRate {get; set;}
-
-        public void UpdateRate(double currentError, double previousError)
+        public double GetLearningRate(int iterationNumber)
         {
-            if (currentError >= MaxErrorIncreaseRate*previousError)
-            {
-                 LearningRate *= ReductionRate;
-            }
-            else
-            {
-                 LearningRate *= IncreaseRate;
-            }
+            return startingLearningRate * Math.Pow((minLearningRate / startingLearningRate), (iterationNumber * 1.0 / maxIterations));
         }
     }
 }

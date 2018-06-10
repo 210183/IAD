@@ -9,9 +9,6 @@
         Style="{StaticResource MetroWindowStyle}"
         Title="NetworkStatsWindow" Height="600" Width="600"
         Loaded="Window_Loaded">
-    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
     <Window.Resources>
         <!--<Style x:Key="notCalledBorder" TargetType="{x:Type Border}">
             <Setter Property="BorderThickness" Value="1" />

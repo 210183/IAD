@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuralNetworks.Networks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,25 @@ namespace NeuralNetworks.Learning
 {
     public class LearningParameters
     {
-        public double LearningRate { get; set; } = 0.01;
-        public double ReductionRate { get; set; } = 0.8;
-        public double IncreaseRate { get; set; } = 1.1;
-        public double MaxErrorIncreaseRate { get; set; } = 1.04;
+        public int IterationsNumber { get; set; } = 10000;
+
+        public double MinLearningRate { get; set; } = 0.01;
+        public double MaxLearningRate { get; set; } = 0.1;
+        public LearningRateHandler LearningRateHandler { get; set; }
+        // momentum
         public double Momentum { get; set; } = 0.7;
         public double ErrorIncreaseCoefficient { get; set; } = 1.04;
-        //public int NeigboursCount { get; set; } = 3;
+        //SON
+        public int NeighboursCount { get; set; } = 3;
+        public double MinimalPotential { get; set; } = 0.75;
+        public int LambdaIterations { get; set; } = 200;
+        public double MinLambda { get; set; } = 0;
+        public double MaxLambda { get; set; } = 10;
+        public Lambda Lambda { get; set; } = new Lambda(10, 0.01, 10000);
+        public ConscienceWithPotential Conscience { get; set; }
+        public SONLearningAlgorithm SONLearningAlgorithm { get; set; }
+        public SONAdapter CenterAdapter { get; set; }
+        //trainer
         public int MaxEpochs { get; set; } = 150;
         public double DesiredMaxError { get; set; } = 0;
         public int NumberOfNetworksToTry { get; set; } = 1;

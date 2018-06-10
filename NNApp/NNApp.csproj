@@ -100,7 +100,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainWindowModel.cs" />
     <Compile Include="ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
     </Compile>

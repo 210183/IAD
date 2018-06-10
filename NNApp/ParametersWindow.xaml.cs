@@ -73,6 +73,23 @@ namespace NNApp
                 BiasComboBox.SelectedIndex = 0;
             else
                 BiasComboBox.SelectedIndex = 1;
+            LoadActivationFunction();
+        }
+
+        private void LoadActivationFunction()
+        {
+            if (MainWindow.NetworkParameters.ActivationFunction is IdentityFunction)
+            {
+                ActivationFunctionComboBox.SelectedItem = IdentityFunction;
+            }
+            else if (MainWindow.NetworkParameters.ActivationFunction is SigmoidBipolarFunction)
+            {
+                ActivationFunctionComboBox.SelectedItem = SigmoidBipolar;
+            }
+            else if (MainWindow.NetworkParameters.ActivationFunction is SigmoidUnipolarFunction)
+            {
+                ActivationFunctionComboBox.SelectedItem = SigmoidUnipolar;
+            }
         }
     }
 }

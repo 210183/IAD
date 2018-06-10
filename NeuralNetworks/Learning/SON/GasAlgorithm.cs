@@ -10,7 +10,7 @@ namespace NeuralNetworks.Networks
 {
     public class GasAlgorithm : SONLearningAlgorithm
     {
-        public GasAlgorithm(ILengthCalculator lengthCalculator, Lambda lambda) : base(lengthCalculator, lambda)
+        public GasAlgorithm(Lambda lambda) : base(lambda)
         {
         }
 
