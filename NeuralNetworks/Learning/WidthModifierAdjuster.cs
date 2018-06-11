@@ -22,6 +22,10 @@ namespace NeuralNetworks.Learning
         public int CountedNeighbours { get; private set; } = 2;
         public void AdapthWidthModifier(NeuralNetworkRadial network)
         {
+            if(CountedNeighbours == 0)
+            {
+                return;
+            }
             // adapt width modifier (lambda)
             var neurons = network.RadialLayer.Neurons;
             var lengthCalculator = new EuclideanLength();
@@ -53,7 +57,7 @@ namespace NeuralNetworks.Learning
                 {
                     distanceSum += lengthCalculator.Distance(neuron.Center, neighbours[i].Center);
                 }
-                neuron.WidthModifier = Math.Sqrt((distanceSum) / (1.0 / CountedNeighbours));
+                neuron.WidthModifier = Math.Sqrt((distanceSum) * (1.0 / CountedNeighbours));
             }
         }
     }

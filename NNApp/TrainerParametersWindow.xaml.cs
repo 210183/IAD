@@ -51,32 +51,43 @@ namespace NNApp
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            LearningParameters.MinLearningRate = Convert.ToDouble(MinLearningRateBox.Text);
-            LearningParameters.MaxLearningRate = Convert.ToDouble(MaxLearningRateBox.Text);
-
-            LearningParameters.Momentum = Convert.ToDouble(MomentumBox.Text);
-            LearningParameters.ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
-            //SON
-            LearningParameters.MaxLambda = Convert.ToDouble(LambdaMaxBox.Text);
-            LearningParameters.MinLambda = Convert.ToDouble(LambdaMinBox.Text);
-            LearningParameters.LambdaIterations = Convert.ToInt32(LambdaIterationsBox.Text);
-            LearningParameters.MinimalPotential = Convert.ToDouble(MinPotentialBox.Text);
-            LearningParameters.WidthModifierAdjuster = new WidthModifierAdjuster(Convert.ToInt32(NeighboursCountBox.Text));
-            //trainer
-            LearningParameters.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
-            LearningParameters.MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
-            LearningParameters.DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
-            LearningParameters.IterationsNumber = LearningParameters.MaxEpochs * (MainWindow.DataProvider as ILearningProvider).LearnSet.Length;
-
-            CreateComplexParameters();
-
-            if (LearningAlgorithmComboBox.Text == "Back Propagation")
+            try
             {
-                LearningParameters.LearningAlgorithm = new BackPropagationRadialAlgorithm(Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
+                if (Convert.ToInt32(NeighboursCountBox.Text) >= MainWindow.NetworkParameters.NumberOfRadialNeurons)
+                {
+                    throw new ArgumentException("Neighbour count cannot be greater than or equal neurons count");
+                }
+                LearningParameters.MinLearningRate = Convert.ToDouble(MinLearningRateBox.Text);
+                LearningParameters.MaxLearningRate = Convert.ToDouble(MaxLearningRateBox.Text);
+
+                LearningParameters.Momentum = Convert.ToDouble(MomentumBox.Text);
+                LearningParameters.ErrorIncreaseCoefficient = Convert.ToDouble(ErrorIncreaseCoefficientBox.Text);
+                //SON
+                LearningParameters.MaxLambda = Convert.ToDouble(LambdaMaxBox.Text);
+                LearningParameters.MinLambda = Convert.ToDouble(LambdaMinBox.Text);
+                LearningParameters.LambdaIterations = Convert.ToInt32(LambdaIterationsBox.Text);
+                LearningParameters.MinimalPotential = Convert.ToDouble(MinPotentialBox.Text);
+                LearningParameters.WidthModifierAdjuster = new WidthModifierAdjuster(Convert.ToInt32(NeighboursCountBox.Text));
+                //trainer
+                LearningParameters.NumberOfNetworksToTry = Convert.ToInt32(NumberOfNetworksBox.Text);
+                LearningParameters.MaxEpochs = Convert.ToInt32(MaxEpochsBox.Text);
+                LearningParameters.DesiredMaxError = Convert.ToDouble(DesiredMaxErrorBox.Text);
+                LearningParameters.IterationsNumber = LearningParameters.MaxEpochs * (MainWindow.DataProvider as ILearningProvider).LearnSet.Length;
+
+                CreateComplexParameters();
+
+                if (LearningAlgorithmComboBox.Text == "Back Propagation")
+                {
+                    LearningParameters.LearningAlgorithm = new BackPropagationRadialAlgorithm(Convert.ToDouble(MomentumBox.Text), Convert.ToDouble(ErrorIncreaseCoefficientBox.Text));
+                }
+                if (ErrorCalculatorComboBox.Text == "Mean Square Error")
+                {
+                    LearningParameters.ErrorCalculator = new MeanSquareErrorCalculator();
+                }
             }
-            if (ErrorCalculatorComboBox.Text == "Mean Square Error")
+            catch(Exception ex)
             {
-                LearningParameters.ErrorCalculator = new MeanSquareErrorCalculator();
+                MessageBox.Show(ex.Message);
             }
         }
         //creator methods
@@ -121,26 +132,33 @@ namespace NNApp
 
         private void TrainButton_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.DataProvider is ILearningProvider)
+            try
             {
-                var creator = new CompleteNetworkCreator()
+                if (MainWindow.DataProvider is ILearningProvider)
                 {
-                    DataProvider = MainWindow.DataProvider as ILearningProvider,
-                    WidthModifierAdjuster = LearningParameters.WidthModifierAdjuster,
-                    ErrorCalculator = LearningParameters.ErrorCalculator,
-                    NetworkParameters = MainWindow.NetworkParameters,
-                    LearningParameters = MainWindow.LearningParameters
-                };
-                var network = creator.CreateNetwork( (TaskType)MainWindow.ChosenTaskType, LearningParameters.NumberOfNetworksToTry);
-                MainWindow.Creator = creator;
-                MainWindow.CurrentNetwork = network;
+                    var creator = new CompleteNetworkCreator()
+                    {
+                        DataProvider = MainWindow.DataProvider as ILearningProvider,
+                        WidthModifierAdjuster = LearningParameters.WidthModifierAdjuster,
+                        ErrorCalculator = LearningParameters.ErrorCalculator,
+                        NetworkParameters = MainWindow.NetworkParameters,
+                        LearningParameters = MainWindow.LearningParameters
+                    };
+                    var network = creator.CreateNetwork((TaskType)MainWindow.ChosenTaskType, LearningParameters.NumberOfNetworksToTry);
+                    MainWindow.Creator = creator;
+                    MainWindow.CurrentNetwork = network;
+                }
+                else
+                {
+                    MessageBox.Show("Cannot start training without data for learning and testing. Setup data sources first.");
+                }
+                SystemSounds.Beep.Play();
+                this.Close();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Cannot start training without data for learning and testing. Setup data sources first.");
+                MessageBox.Show(ex.Message);
             }
-            SystemSounds.Beep.Play();
-            this.Close();
         }
 
         private void TopBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

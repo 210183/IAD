@@ -31,7 +31,7 @@ namespace NeuralNetworks.Networks.NetworkFactory
         private RadialLayer CreateRadialLayer(RadialNetworkParameters parameters, int biasModifier, IDataProvider dataProvider)
         {
             var dataSet = (dataProvider as ILearningProvider)?.LearnSet ?? dataProvider.DataSet; // try getting learn set, if cannot take data set (test set)
-            var widthModifier = 1.0 / dataSet.Length;
+            var widthModifier = 1.0 * dataSet.Length;
             var randomNumbers = Enumerable.Range(0, dataSet.Length).ToList();
             randomNumbers.Shuffle();
             var randomEnumerator = randomNumbers.GetEnumerator();
